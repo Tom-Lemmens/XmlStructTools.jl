@@ -1,0 +1,51 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:DocumentationExample="DocumentationExample" targetNamespace="DocumentationExample">
+
+  <xsd:element name="houseDescription" type="DocumentationExample:HouseDescriptionDocumentType"/>
+
+  <xsd:complexType name="HouseDescriptionDocumentType">
+    <xsd:sequence>
+      <xsd:element name="address"          type="DocumentationExample:AddressType"/>
+      <xsd:element name="owner"            type="DocumentationExample:OwnerType"/>
+      <xsd:element name="houseDescription" type="DocumentationExample:HouseDescriptionType"/>
+    </xsd:sequence>
+    <xsd:attribute name="documentDate" type="xsd:date"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="AddressType">
+    <xsd:sequence>
+      <xsd:element name="street"     type="xsd:string"/>
+      <xsd:element name="city"       type="xsd:string"/>
+      <xsd:element name="state"      type="xsd:string"/>
+      <xsd:element name="postalCode" type="xsd:decimal"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="OwnerType">
+    <xsd:sequence>
+      <xsd:element name="name"    type="xsd:string"/>
+      <xsd:element name="address" type="DocumentationExample:AddressType"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="HouseDescriptionType">
+    <xsd:sequence>
+      <xsd:element name="overallProperties" type="DocumentationExample:overallPropertiesType"/>
+      <xsd:element name="room"              type="DocumentationExample:roomType" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="overallPropertiesType">
+    <xsd:sequence>
+      <xsd:element name="totalArea"   type="xsd:decimal"/>
+      <xsd:element name="livableArea" type="xsd:decimal"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="roomType">
+    <xsd:sequence>
+      <xsd:element name="name" type="xsd:string"/>
+      <xsd:element name="area" type="xsd:decimal"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+</xsd:schema>

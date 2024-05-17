@@ -1,0 +1,15 @@
+
+# Ignore everything
+*
+# But descend into directories
+!*/
+
+# Allow specific extensions
+!*.jl
+!*.md
+
+# Allow specific files
+!.gitignore
+!Project.toml
+!.JuliaFormatter.toml
+!LICENSE

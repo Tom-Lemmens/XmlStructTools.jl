@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:TestDateFormats="TestDateFormats" targetNamespace="TestDateFormats">
+
+<element name="document" type="TestDateFormats:documentType"/>
+
+<complexType name="TestComplexType1">
+    <annotation>
+        <documentation>An example of a complex xsd type with a vector of date times.</documentation>
+    </annotation>
+    <sequence>
+        <element name="Element_dateTime" type="dateTime" maxOccurs="unbounded"/>
+    </sequence>
+</complexType>
+
+<complexType name="documentType">
+    <sequence>
+        <element name="TestElement1" type="TestDateFormats:TestComplexType1"/>
+    </sequence>
+</complexType>
+
+</schema>
