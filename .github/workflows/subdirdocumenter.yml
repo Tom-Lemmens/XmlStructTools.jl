@@ -16,6 +16,9 @@ jobs:
       contents: write
       pull-requests: read
       statuses: write
+    defaults:
+      run:
+        working-directory: ${{ inputs.subdir }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -23,8 +26,6 @@ jobs:
         with:
           version: '1.9'
       - uses: julia-actions/cache@v1
-      - name: cd to sub directory
-        run: cd ${{ inputs.subdir }}
       - name: Install dependencies
         run: julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
       - name: Build and deploy
