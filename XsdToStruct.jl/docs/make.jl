@@ -12,5 +12,6 @@ makedocs(;
 
 deploydocs(
     repo=repo,
-    target="XsdToStruct.jl"
+    dirname="XsdToStruct.jl",
+    tag_prefix="XsdToStruct.jl-",
 )

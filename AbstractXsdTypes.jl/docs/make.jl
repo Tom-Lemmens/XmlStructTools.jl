@@ -12,5 +12,6 @@ makedocs(;
 
 deploydocs(
     repo=repo,
-    target="AbstractXsdTypes.jl"
+    dirname="AbstractXsdTypes.jl",
+    tag_prefix="AbstractXsdTypes.jl-",
 )
