@@ -1,7 +1,5 @@
 # XmlStructTools.jl
 
-[![Dev Docs](https://img.shields.io/badge/docs-dev-blue.svg)](https://tom-lemmens.github.io/XmlStructTools.jl/dev/)
-
 The tools in XmlStructTools.jl aim to fill the role of schema based XML data binding in Julia.
 The functionality is split up into four packages:
 
