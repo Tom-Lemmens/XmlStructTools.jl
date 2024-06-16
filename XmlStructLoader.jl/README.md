@@ -1,4 +1,6 @@
-# XmlStructLoaderExampleXml
+# XmlStructLoader.jl
+
+[![Dev Docs](https://img.shields.io/badge/docs-dev-blue.svg)](https://tom-lemmens.github.io/XmlStructTools.jl/XmlStructLoader.jl/dev/)
 
 ## Getting the required files
 
