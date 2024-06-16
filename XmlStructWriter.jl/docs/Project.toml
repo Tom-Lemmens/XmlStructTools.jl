@@ -1,3 +1,5 @@
 [deps]
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
-XmlStructWriter = "21e59797-a7c6-4d09-a473-68ce4806eb3f"
+
+[compat]
+Documenter = "1.4"
