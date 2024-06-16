@@ -12,5 +12,6 @@ makedocs(;
 
 deploydocs(
     repo=repo,
-    target="XmlStructLoader.jl"
+    dirname="XmlStructLoader.jl",
+    tag_prefix="XmlStructLoader.jl-",
 )
