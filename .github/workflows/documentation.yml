@@ -1,0 +1,34 @@
+name: Documentation
+
+on:
+  push:
+    branches:
+      - main
+    tags: '*'
+  pull_request:
+
+jobs:
+  call-documenter-AbstractXsdTypes:
+    uses: ./.github/workflows/subdirdocumenter
+    with:
+      subdir: AbstractXsdTypes.jl
+    secrets:
+      DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
+  call-documenter-XmlStructLoader:
+    uses: ./.github/workflows/subdirdocumenter
+    with:
+      subdir: XmlStructLoader.jl
+    secrets:
+      DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
+  call-documenter-XmlStructWriter:
+    uses: ./.github/workflows/subdirdocumenter
+    with:
+      subdir: XmlStructWriter.jl
+    secrets:
+      DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
+  call-documenter-XsdToStruct:
+    uses: ./.github/workflows/subdirdocumenter
+    with:
+      subdir: XsdToStruct.jl
+    secrets:
+      DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
