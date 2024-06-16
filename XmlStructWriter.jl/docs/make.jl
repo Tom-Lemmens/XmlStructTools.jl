@@ -11,7 +11,7 @@ makedocs(;
 )
 
 deploydocs(
-    repo=repo,
+    repo="github.com/$(repo.user)/$(repo.repo)",
     dirname="XmlStructWriter.jl",
     tag_prefix="XmlStructWriter.jl-",
 )

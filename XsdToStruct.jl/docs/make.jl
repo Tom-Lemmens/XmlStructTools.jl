@@ -11,7 +11,7 @@ makedocs(;
 )
 
 deploydocs(
-    repo=repo,
+    repo="github.com/$(repo.user)/$(repo.repo)",
     dirname="XsdToStruct.jl",
     tag_prefix="XsdToStruct.jl-",
 )
