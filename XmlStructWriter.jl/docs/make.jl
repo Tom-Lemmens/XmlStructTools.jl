@@ -1,7 +1,7 @@
 using XmlStructWriter
 using Documenter
 
-repo = Remotes.GitHub("Tom-Lemmens", "XmlStructWriter.jl")
+repo = Remotes.GitHub("Tom-Lemmens", "XmlStructTools.jl")
 
 makedocs(;
     modules = [XmlStructWriter],

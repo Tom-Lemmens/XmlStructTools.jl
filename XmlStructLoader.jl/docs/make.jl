@@ -1,7 +1,7 @@
 using XmlStructLoader
 using Documenter
 
-repo = Remotes.GitHub("Tom-Lemmens", "XmlStructLoader.jl")
+repo = Remotes.GitHub("Tom-Lemmens", "XmlStructTools.jl")
 
 makedocs(;
     modules = [XmlStructLoader],

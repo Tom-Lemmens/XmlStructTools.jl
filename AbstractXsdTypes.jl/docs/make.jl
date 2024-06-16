@@ -1,7 +1,7 @@
 using AbstractXsdTypes
 using Documenter
 
-repo = Remotes.GitHub("Tom-Lemmens", "AbstractXsdTypes.jl")
+repo = Remotes.GitHub("Tom-Lemmens", "XmlStructTools.jl")
 
 makedocs(;
     modules = [AbstractXsdTypes],

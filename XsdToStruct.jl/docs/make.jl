@@ -1,7 +1,7 @@
 using XsdToStruct
 using Documenter
 
-repo = Remotes.GitHub("Tom-Lemmens", "XsdToStruct.jl")
+repo = Remotes.GitHub("Tom-Lemmens", "XmlStructTools.jl")
 
 makedocs(;
     modules = [XsdToStruct],
