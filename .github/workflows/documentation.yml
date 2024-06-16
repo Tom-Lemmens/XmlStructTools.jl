@@ -8,26 +8,42 @@ on:
   pull_request:
   workflow_dispatch:
 
-jobs:
+jobs:   
   call-documenter-AbstractXsdTypes:
+    permissions:
+      contents: write
+      pull-requests: read
+      statuses: write
     uses: ./.github/workflows/subdirdocumenter.yml
     with:
       subdir: AbstractXsdTypes.jl
     secrets:
       DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
   call-documenter-XmlStructLoader:
+    permissions:
+      contents: write
+      pull-requests: read
+      statuses: write
     uses: ./.github/workflows/subdirdocumenter.yml
     with:
       subdir: XmlStructLoader.jl
     secrets:
       DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
   call-documenter-XmlStructWriter:
+    permissions:
+      contents: write
+      pull-requests: read
+      statuses: write
     uses: ./.github/workflows/subdirdocumenter.yml
     with:
       subdir: XmlStructWriter.jl
     secrets:
       DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
   call-documenter-XsdToStruct:
+    permissions:
+      contents: write
+      pull-requests: read
+      statuses: write
     uses: ./.github/workflows/subdirdocumenter.yml
     with:
       subdir: XsdToStruct.jl
