@@ -88,7 +88,7 @@ end
 
     # format into string and parse back, if these are equal we are ok
     max_fraction_digits = get_max_fraction_digits(T)
-    value_string = sprintf1("%.$(max_fraction_digits)f", value)
+    value_string = cfmt("%.$(max_fraction_digits)f", value)
 
     if parse(S, value_string) != value
         throw(

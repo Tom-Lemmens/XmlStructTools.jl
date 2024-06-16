@@ -3,7 +3,7 @@ module XmlStructWriter
 using LightXML
 using TimeZones
 using Printf
-using Formatting
+using Format
 using AbstractXsdTypes
 
 export write_xml
@@ -149,7 +149,7 @@ function generate_xml_string(xml_object::AbstractXsdTypes.AbstractXSDFloat)::Str
     @debug "Generating XML string from $xml_object"
     if AbstractXsdTypes.fraction_digits_check in AbstractXsdTypes.get_restriction_checks(typeof(xml_object))
         max_fraction_digits = AbstractXsdTypes.get_max_fraction_digits(typeof(xml_object))
-        xml_object = sprintf1("%.$(max_fraction_digits)f", xml_object)
+        xml_object = cfmt("%.$(max_fraction_digits)f", xml_object)
     else
         xml_object = @sprintf("%f", xml_object)
     end
