@@ -21,6 +21,8 @@ jobs:
         with:
           version: '1.10'
       - uses: julia-actions/cache@v1
+      - name: Install dependencies
+        run: julia --project=docs/ -e 'using Pkg; Pkg.instantiate()'
       - name: Build and deploy
         env:
           DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
