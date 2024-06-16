@@ -9,16 +9,22 @@ on:
   workflow_dispatch:
 
 jobs:
-  call-documenter-XmlStructTools:
+  documenter-XmlStructTools:
     permissions:
       contents: write
       pull-requests: read
       statuses: write
-    uses: ./.github/workflows/subdirdocumenter.yml
-    with:
-      subdir: .
-    secrets:
-      DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: '1.10'
+      - uses: julia-actions/cache@v1
+      - name: Build and deploy
+        env:
+          DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}
+        run: julia --project=docs/ docs/make.jl
   call-documenter-AbstractXsdTypes:
     permissions:
       contents: write
