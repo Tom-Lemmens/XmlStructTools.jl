@@ -6,7 +6,11 @@ using Documenter
 using ConcreteStructs
 using Random
 
-const RNG = Xoshiro(20231002)
+if VERSION < v"1.7"
+    const RNG = MersenneTwister(20231002)
+else
+    const RNG = Xoshiro(20231002)
+end
 
 include("type_tests.jl")
 include(joinpath("restriction_tests", "restriction_tests.jl"))
