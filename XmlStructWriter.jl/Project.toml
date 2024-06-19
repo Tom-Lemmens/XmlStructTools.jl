@@ -8,3 +8,6 @@ AbstractXsdTypes = "1d4aff4b-e088-40cb-b713-ffe4caf1580b"
 LightXML = "9c8b4983-aa76-5018-a973-4c85ecc9e179"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 TimeZones = "f269a46b-ccf7-5d73-abea-4c690281aa53"
+
+[compat]
+TimeZones = "1"
