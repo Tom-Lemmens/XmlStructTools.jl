@@ -1,0 +1,39 @@
+name: TestXmlStructLoader
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+      os:
+        required: true
+        type: string
+      arch:
+        required: true
+        type: string
+
+jobs:
+  test:
+    name: Julia ${{ inputs.version }} - ${{ inputs.os }} - ${{ inputs.arch }} - ${{ github.event_name }}
+    runs-on: ${{ inputs.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: ${{ inputs.version }}
+          arch: ${{ inputs.arch }}
+      - uses: julia-actions/cache@v2
+      - name: Install local AbstractXsdTypes
+        run: julia --project=XmlStructLoader.jl -e 'using Pkg; Pkg.add(path=".", subdir="AbstractXsdTypes.jl");'
+      - name: Install local XsdToStruct
+        run: julia --project=XmlStructLoader.jl/test -e 'using Pkg; Pkg.add(path=".", subdir="XsdToStruct.jl");'
+      - uses: julia-actions/julia-buildpkg@v1
+        with:
+          project: XmlStructLoader.jl
+      - uses: julia-actions/julia-runtest@v1
+        with:
+          project: XmlStructLoader.jl
+      - uses: julia-actions/julia-processcoverage@v1
+        with:
+          directories: XmlStructLoader.jl/src
