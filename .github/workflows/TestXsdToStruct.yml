@@ -15,7 +15,7 @@ on:
 
 jobs:
   test:
-    name: Julia ${{ inputs.version }} - ${{ inputs.os }} - ${{ inputs.arch }} - ${{ github.event_name }}
+    name: TestXsdToStruct - Julia ${{ inputs.version }} - ${{ inputs.os }} - ${{ inputs.arch }} - ${{ github.event_name }}
     runs-on: ${{ inputs.os }}
     steps:
       - uses: actions/checkout@v4
