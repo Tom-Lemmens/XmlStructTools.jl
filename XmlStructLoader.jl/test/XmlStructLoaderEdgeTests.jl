@@ -1,6 +1,10 @@
 
 # input data
-edge_data_dir = abspath(joinpath(pkgdir(XmlStructLoader), "test", "test_data", "edge_cases"))
+if VERSION < v"1.7"
+    edge_data_dir = joinpath(pkgdir(XmlStructLoader), "test", "test_data", "edge_cases")
+else
+    edge_data_dir = pkgdir(XmlStructLoader, "test", "test_data", "edge_cases")
+end
 edge_test_files = get_test_files(edge_data_dir)
 
 # generate modules for testing

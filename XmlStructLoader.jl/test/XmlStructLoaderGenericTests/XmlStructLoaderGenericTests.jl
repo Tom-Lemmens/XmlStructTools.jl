@@ -1,6 +1,10 @@
 
 # input data
-generic_data_dir = abspath(joinpath(pkgdir(XmlStructLoader), "test", "test_data", "generic_cases"))
+if VERSION < v"1.7"
+    generic_data_dir = joinpath(pkgdir(XmlStructLoader), "test", "test_data", "generic_cases")
+else
+    generic_data_dir = pkgdir(XmlStructLoader, "test", "test_data", "generic_cases")
+end
 generic_test_files = get_test_files(generic_data_dir)
 
 # generate modules for testing

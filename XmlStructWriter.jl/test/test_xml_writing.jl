@@ -1,8 +1,12 @@
 
 # input data directory
-generic_data_dir = joinpath(pkgdir(XmlStructWriter), "test", "test_data", "generic_cases")
-
-output_dir = joinpath(pkgdir(XmlStructWriter), "test", "test_output")
+if VERSION < v"1.7"
+    generic_data_dir = joinpath(pkgdir(XmlStructWriter), "test", "test_data", "generic_cases")
+    output_dir = joinpath(pkgdir(XmlStructWriter), "test", "test_output")
+else
+    generic_data_dir = pkgdir(XmlStructWriter, "test", "test_data", "generic_cases")
+    output_dir = pkgdir(XmlStructWriter, "test", "test_output")
+end
 if isdir(output_dir)
     # cleanup
     rm(output_dir, recursive = true)

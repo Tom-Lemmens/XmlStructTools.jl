@@ -6,7 +6,12 @@ using Dates
 using Downloads: download
 
 const XsdToStruct_VERSION = let
-    project = joinpath(pkgdir(XsdToStruct), "Project.toml")
+    
+    if VERSION < v"1.7"
+        project = joinpath(pkgdir(XsdToStruct), "Project.toml")
+    else
+        project = pkgdir(XsdToStruct, "Project.toml")
+    end
     version = TOML.parsefile(project)["version"]
     VersionNumber(version)
 end
