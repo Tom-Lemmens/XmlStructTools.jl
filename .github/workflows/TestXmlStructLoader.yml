@@ -25,9 +25,9 @@ jobs:
           arch: ${{ inputs.arch }}
       - uses: julia-actions/cache@v2
       - name: Install local AbstractXsdTypes
-        run: julia --project=XmlStructLoader.jl -e 'using Pkg; Pkg.add(path=".", subdir="AbstractXsdTypes.jl");'
+        run: julia --project=XmlStructLoader.jl -e 'using Pkg; Pkg.develop(path="AbstractXsdTypes.jl");'
       - name: Install local XsdToStruct
-        run: julia --project=XmlStructLoader.jl/test -e 'using Pkg; Pkg.add(path=".", subdir="XsdToStruct.jl");'
+        run: julia --project=XmlStructLoader.jl/test -e 'using Pkg; Pkg.develop(path="XsdToStruct.jl");'
       - uses: julia-actions/julia-buildpkg@v1
         with:
           project: XmlStructLoader.jl

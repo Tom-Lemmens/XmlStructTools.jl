@@ -25,11 +25,11 @@ jobs:
           arch: ${{ inputs.arch }}
       - uses: julia-actions/cache@v2
       - name: Install local AbstractXsdTypes
-        run: julia --project=XmlStructWriter.jl -e 'using Pkg; Pkg.add(path=".", subdir="AbstractXsdTypes.jl");'
+        run: julia --project=XmlStructWriter.jl -e 'using Pkg; Pkg.develop(path="AbstractXsdTypes.jl");'
       - name: Install local XsdToStruct
-        run: julia --project=XmlStructWriter.jl/test -e 'using Pkg; Pkg.add(path=".", subdir="XsdToStruct.jl");'
+        run: julia --project=XmlStructWriter.jl/test -e 'using Pkg; Pkg.develop(path="XsdToStruct.jl");'
       - name: Install local XmlStructLoader
-        run: julia --project=XmlStructWriter.jl/test -e 'using Pkg; Pkg.add(path=".", subdir="XmlStructLoader.jl");'
+        run: julia --project=XmlStructWriter.jl/test -e 'using Pkg; Pkg.develop(path="XmlStructLoader.jl");'
       - uses: julia-actions/julia-buildpkg@v1
         with:
           project: XmlStructWriter.jl
