@@ -1,0 +1,56 @@
+name: TestAll
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+      os:
+        required: true
+        type: string
+      arch:
+        required: true
+        type: string
+
+jobs:
+  test-AbstractXsdTypes:
+    permissions:
+      contents: read
+      pull-requests: read
+      statuses: read
+    uses: ./.github/workflows/TestAbstractXsdTypes.yml
+    with:
+      version: ${{ inputs.version }}
+      os: ${{ inputs.os }}
+      arch: ${{ inputs.arch }}
+  test-TestXsdToStruct:
+    permissions:
+      contents: read
+      pull-requests: read
+      statuses: read
+    uses: ./.github/workflows/TestXsdToStruct.yml
+    with:
+      version: ${{ inputs.version }}
+      os: ${{ inputs.os }}
+      arch: ${{ inputs.arch }}
+  test-TestXmlStructLoader:
+    permissions:
+      contents: read
+      pull-requests: read
+      statuses: read
+    uses: ./.github/workflows/TestXmlStructLoader.yml
+    with:
+      version: ${{ inputs.version }}
+      os: ${{ inputs.os }}
+      arch: ${{ inputs.arch }}
+  test-TestXmlStructWriter:
+    permissions:
+      contents: read
+      pull-requests: read
+      statuses: read
+    uses: ./.github/workflows/TestXmlStructWriter.yml
+    with:
+      version: ${{ inputs.version }}
+      os: ${{ inputs.os }}
+      arch: ${{ inputs.arch }}
