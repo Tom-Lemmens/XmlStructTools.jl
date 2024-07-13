@@ -48,7 +48,7 @@ jobs:
           directories: AbstractXsdTypes.jl/src
       # Test XsdToStruct.jl
       - name: Install local dependencies
-        run: julia --project=XsdToStruct.jl -e 'using Pkg; Pkg.add("../AbstractXsdTypes.jl");'
+        run: julia --project=XsdToStruct.jl -e 'using Pkg; Pkg.add(path="../AbstractXsdTypes.jl");'
       - uses: julia-actions/julia-buildpkg@v1
         with:
           project: XsdToStruct.jl
