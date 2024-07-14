@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:TestSimpleUnion="TestSimpleUnion" targetNamespace="TestSimpleUnion">
+
+    <element name="document" type="TestSimpleUnion:documentType"/>
+
+    <simpleType name="TestDoubleRestrictedDouble">
+        <annotation>
+            <documentation>An example of a union of the same base types.</documentation>
+        </annotation>
+        <union>
+            <simpleType>
+                <restriction base="double">
+                <minInclusive value="0.0"/>
+                <maxInclusive value="1.0"/>
+                </restriction>
+            </simpleType>
+            <simpleType>
+                <restriction base="double">
+                <enumeration value="NaN"/>
+                </restriction>
+            </simpleType>
+        </union>
+    </simpleType>
+
+    <simpleType name="UnionType">
+        <annotation>
+            <documentation>An example of a union of two different types.</documentation>
+        </annotation>
+        <union>
+            <simpleType>
+                <restriction base="double">
+                <minInclusive value="0.0"/>
+                <maxInclusive value="1.0"/>
+                </restriction>
+            </simpleType>
+            <simpleType>
+                <restriction base="integer">
+                </restriction>
+            </simpleType>
+        </union>
+    </simpleType>
+
+    <complexType name="documentType">
+        <sequence>
+            <element name="TestDoubleRestrictedDouble" type="TestSimpleUnion:TestDoubleRestrictedDouble"/>
+            <element name="UnionType" type="TestSimpleUnion:UnionType"/>
+        </sequence>
+    </complexType>
+
+</schema>

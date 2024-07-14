@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TestStackedSimple:document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="TestStackedSimple stacked_simple_types.xsd" xmlns:TestStackedSimple="TestStackedSimple">
+    <TestElement1>A0A0</TestElement1>
+    <TestElement2>150</TestElement2>
+</TestStackedSimple:document>

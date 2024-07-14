@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestOutOfOrder:document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="TestOutOfOrder type_ordering.xsd" xmlns:TestOutOfOrder="TestOutOfOrder">
+    <TestElement1>
+        <Element_order>AAAA</Element_order>
+    </TestElement1>
+    <TestElement2>AA</TestElement2>
+</TestOutOfOrder:document>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<OptionalElements:document xsi:schemaLocation="OptionalElements optional_elements.xsd" xmlns:OptionalElements="OptionalElements" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <TestElement1>
+    <Element_double>100.22</Element_double>
+  </TestElement1>
+  <TestElement2>
+    <Element_string>aaa</Element_string>
+    <Element_double>55.2</Element_double>
+  </TestElement2>
+  <TestElement3/>
+  <TestElement4/>
+  <TestElement5/>
+  <TestElement6>
+    <Element_simple3>0001-02-03T04:05:06.666</Element_simple3>
+</TestElement6>
+</OptionalElements:document>
