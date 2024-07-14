@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:TestChoice="TestChoice" targetNamespace="TestChoice">
+
+    <element name="document" type="TestChoice:documentType"/>
+
+    <complexType name="TestComplexType1">
+        <annotation>
+            <documentation>Example of a complex XSD type that uses a choice.</documentation>
+        </annotation>
+        <sequence>
+            <element name="element1" type="string"/>
+            <choice>
+                <element name="choice1" type="string"/>
+                <element name="choice2" type="decimal"/>
+            </choice>
+            <element name="element2" type="string" default="default"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="TestComplexType2">
+        <annotation>
+            <documentation>Example of a complex XSD type that uses a choice.</documentation>
+        </annotation>
+        <sequence>
+            <choice>
+                <element name="choice1" type="string"/>
+                <element name="choice2" type="decimal"/>
+                <element name="choice3">
+                    <simpleType>
+                        <annotation>
+                            <documentation>An example of a simple xsd type.</documentation>
+                        </annotation>
+                        <restriction base="string">
+                            <maxLength value="4"/>
+                            <pattern value="([0-9A-Z]{4})?"/>
+                        </restriction>
+                    </simpleType>
+                </element>
+            </choice>
+        </sequence>
+    </complexType>
+
+    <!-- <complexType name="TestComplexType3">
+        <annotation>
+            <documentation>Example of a complex XSD type that uses a choice with a group.</documentation>
+        </annotation>
+        <sequence>
+            <choice>
+                <element name="choice1" type="string"/>
+                <element name="choice2" type="decimal"/>
+                <group ref="TestChoice:TestGroup"></group>
+            </choice>
+        </sequence>
+    </complexType>
+
+    <group name="TestGroup">
+        <sequence>
+            <element name="groupchoice1" type="string"/>
+            <element name="groupchoice2" type="decimal"/>
+        </sequence>
+    </group> -->
+
+    <complexType name="TestComplexType5">
+        <annotation>
+            <documentation>Example of a complex XSD type that uses a choice.</documentation>
+        </annotation>
+        <sequence>
+            <choice>
+                <element name="choice1" type="string"/>
+                <element name="choice2" type="decimal"/>
+            </choice>
+            <choice>
+                <element name="choice3" type="string"/>
+                <element name="choice4" type="decimal"/>
+            </choice>
+        </sequence>
+    </complexType>
+
+    <complexType name="documentType">
+        <sequence>
+            <element name="TestElement1" type="TestChoice:TestComplexType1"/>
+            <element name="TestElement2" type="TestChoice:TestComplexType2"/>
+            <!-- <element name="TestElement3" type="TestChoice:TestComplexType3"/> -->
+            <!-- <element name="TestElement4" type="TestChoice:TestComplexType4"/> -->
+            <element name="TestElement5" type="TestChoice:TestComplexType5"/>
+        </sequence>
+    </complexType>
+
+</schema>

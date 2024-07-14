@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:TestSimpleTyping="TestSimpleTyping" targetNamespace="TestSimpleTyping">
+
+    <element name="document" type="TestSimpleTyping:documentType"/>
+
+    <simpleType name="TestSimpleType1">
+        <annotation>
+            <documentation>An example of a simple xsd type.</documentation>
+        </annotation>
+        <restriction base="string">
+            <maxLength value="4"/>
+            <pattern value="([0-9A-Z]{4})?"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="TestSimpleType2">
+        <annotation>
+            <documentation>An example of a simple xsd type.</documentation>
+        </annotation>
+        <restriction base="integer">
+            <minInclusive value="100"/>
+            <maxInclusive value="500"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="TestSimpleType3">
+        <annotation>
+            <documentation>An example of a redundant simple xsd type.</documentation>
+        </annotation>
+        <restriction base="boolean"/>
+    </simpleType>
+
+    <simpleType name="TestSimpleType4">
+        <annotation>
+            <documentation>An example of a simple xsd type.</documentation>
+        </annotation>
+        <restriction base="positiveInteger">
+            <minInclusive value="10"/>
+            <maxInclusive value="50"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="TestSimpleType5">
+        <annotation>
+            <documentation>An example of a simple xsd type.</documentation>
+        </annotation>
+        <restriction base="decimal">
+            <minInclusive value="-200"/>
+            <maxInclusive value="200"/>
+        </restriction>
+    </simpleType>
+
+
+    <complexType name="TestComplexType1">
+        <sequence>
+            <element name="TestElement1" type="TestSimpleTyping:TestSimpleType1"/>
+            <element name="TestElement2" type="TestSimpleTyping:TestSimpleType2"/>
+            <element name="TestElement3" type="TestSimpleTyping:TestSimpleType3"/>
+            <element name="TestElement4" type="TestSimpleTyping:TestSimpleType4"/>
+            <element name="TestElement5" type="TestSimpleTyping:TestSimpleType5"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="TestComplexType2">
+        <annotation>
+            <documentation>An example of a type with string based elements both with and without default values.</documentation>
+        </annotation>
+        <sequence>
+            <element name="TestElement11" type="TestSimpleTyping:TestSimpleType1" default="DEFA"/>
+            <element name="TestElement12" type="TestSimpleTyping:TestSimpleType1"/>
+            <element name="TestElement21" type="TestSimpleTyping:TestSimpleType2" default="100"/>
+            <element name="TestElement22" type="TestSimpleTyping:TestSimpleType2"/>
+        </sequence>
+    </complexType>
+
+
+    <complexType name="documentType">
+        <sequence>
+            <element name="TestElement1" type="TestSimpleTyping:TestComplexType1"/>
+            <element name="TestElement2" type="TestSimpleTyping:TestComplexType2"/>
+        </sequence>
+    </complexType>
+
+</schema>

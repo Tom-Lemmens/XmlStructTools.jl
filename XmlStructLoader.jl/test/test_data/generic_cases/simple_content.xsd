@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:TestSimpleContent="TestSimpleContent" targetNamespace="TestSimpleContent">
+
+    <element name="document" type="TestSimpleContent:documentType"/>
+
+    <simpleType name="TestSimpleType1">
+        <annotation>
+            <documentation>An example of a simple xsd type.</documentation>
+        </annotation>
+        <restriction base="string">
+            <maxLength value="4"/>
+            <pattern value="([0-9A-Z]{4})?"/>
+        </restriction>
+    </simpleType>
+
+    <complexType name="TestComplexType1">
+        <annotation>
+            <documentation>Example of a complex XSD type that uses an extended simple type.</documentation>
+        </annotation>
+        <simpleContent>
+            <extension base="TestSimpleContent:TestSimpleType1">
+                <attribute name="extended_simple1" type="integer"/>
+                <attribute name="extended_simple2" type="integer"/>
+                <attribute name="extended_simple3" type="string"/>
+            </extension>
+        </simpleContent>
+    </complexType>
+
+    <complexType name="documentType">
+        <sequence>
+            <element name="TestElement1" type="TestSimpleContent:TestComplexType1"/>
+        </sequence>
+    </complexType>
+
+</schema>

@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:TestDecimalRestrictions="TestDecimalRestrictions" targetNamespace="TestDecimalRestrictions">
+
+<element name="document" type="TestDecimalRestrictions:documentType"/>
+
+<simpleType name="TestSimpleType1">
+    <annotation>
+        <documentation>An example of a totalDigits restricted decimal type.</documentation>
+    </annotation>
+    <restriction base="decimal">
+        <totalDigits value="4"/>
+    </restriction>
+</simpleType>
+
+<simpleType name="TestSimpleType2">
+    <annotation>
+        <documentation>An example of a fractionDigits restricted decimal type.</documentation>
+    </annotation>
+    <restriction base="decimal">
+        <fractionDigits value="3"/>
+    </restriction>
+</simpleType>
+
+<simpleType name="TestSimpleType3">
+    <annotation>
+        <documentation>An example of a maxInclusive restricted decimal type.</documentation>
+    </annotation>
+    <restriction base="decimal">
+        <maxInclusive value="10.1"/>
+    </restriction>
+</simpleType>
+
+<simpleType name="TestSimpleType4">
+    <annotation>
+        <documentation>An example of a maxExclusive restricted decimal type.</documentation>
+    </annotation>
+    <restriction base="decimal">
+        <maxExclusive value="15.22"/>
+    </restriction>
+</simpleType>
+
+<simpleType name="TestSimpleType5">
+    <annotation>
+        <documentation>An example of a minInclusive restricted decimal type.</documentation>
+    </annotation>
+    <restriction base="decimal">
+        <minInclusive value="-11.6"/>
+    </restriction>
+</simpleType>
+
+<simpleType name="TestSimpleType6">
+    <annotation>
+        <documentation>An example of a minExclusive restricted decimal type.</documentation>
+    </annotation>
+    <restriction base="decimal">
+        <minExclusive value="-77.8"/>
+    </restriction>
+</simpleType>
+
+<complexType name="documentType">
+    <sequence>
+        <element name="TestElement1" type="TestDecimalRestrictions:TestSimpleType1"/>
+        <element name="TestElement2" type="TestDecimalRestrictions:TestSimpleType2"/>
+        <element name="TestElement3" type="TestDecimalRestrictions:TestSimpleType3"/>
+        <element name="TestElement4" type="TestDecimalRestrictions:TestSimpleType4"/>
+        <element name="TestElement5" type="TestDecimalRestrictions:TestSimpleType5"/>
+        <element name="TestElement6" type="TestDecimalRestrictions:TestSimpleType6"/>
+    </sequence>
+</complexType>
+
+</schema>
