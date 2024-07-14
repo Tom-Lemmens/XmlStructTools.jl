@@ -8,6 +8,9 @@
 !*.jl
 !*.md
 
+# Allow specific directories
+!test/test_data/**
+
 # Allow specific files
 !.gitignore
 !Project.toml

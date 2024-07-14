@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<OptionalElements:document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="OptionalElements optional_elements.xsd" xmlns:OptionalElements="OptionalElements">
+    <TestElement1>
+        <Element_string>yuyuyuyu</Element_string>
+        <Element_double>100.22</Element_double>
+        <Element_simple1>10</Element_simple1>
+        <Element_simple2>TTTT</Element_simple2>
+    </TestElement1>
+
+    <TestElement2>
+        <Element_string>yiiiiiu</Element_string>
+        <Element_double>550.22</Element_double>
+        <Element_simple1>70</Element_simple1>
+        <Element_simple2>YUYU</Element_simple2>
+    </TestElement2>
+
+    <TestElement3>
+        <Element_simple1>70</Element_simple1>
+        <Element_simple1>70</Element_simple1>
+        <Element_simple1>78</Element_simple1>
+        <Element_simple1>77</Element_simple1>
+        <Element_simple2>YUII</Element_simple2>
+        <Element_simple2_or_nothing>YUI1</Element_simple2_or_nothing>
+        <Element_simple2_or_nothing>YUI2</Element_simple2_or_nothing>
+        <Element_simple2_or_nothing>YUI3</Element_simple2_or_nothing>
+    </TestElement3>
+
+    <TestElement4>
+        <Element_complex4>
+            <Element_simple1_1>51</Element_simple1_1>
+            <Element_simple1_2>14</Element_simple1_2>
+            <Element_simple2_1>ERER</Element_simple2_1>
+            <Element_simple2_2>UYUY</Element_simple2_2>
+        </Element_complex4>
+        <Element_complex4>
+            <Element_simple1_1>74</Element_simple1_1>
+            <Element_simple1_2>25</Element_simple1_2>
+            <Element_simple2_1>U555</Element_simple2_1>
+            <Element_simple2_2>A5A5</Element_simple2_2>
+        </Element_complex4>
+        <Element_complex4></Element_complex4>
+    </TestElement4>
+
+    <TestElement5>
+        <Element_simple1>aaa</Element_simple1>
+        <Element_simple2>"aaaaa"</Element_simple2>
+    </TestElement5>
+
+    <TestElement6>
+        <Element_simple1></Element_simple1>
+        <Element_simple2>2002-10-30T10:22:49-02:00</Element_simple2>
+        <Element_simple3>0001-10-10T10:22:49.152</Element_simple3>
+        <Element_simple4>2002-10-10T10:22:49.152Z</Element_simple4>
+        <Element_simple5></Element_simple5>
+    </TestElement6>
+</OptionalElements:document>

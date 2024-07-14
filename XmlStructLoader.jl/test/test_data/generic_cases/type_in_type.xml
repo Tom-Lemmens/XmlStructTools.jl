@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestTypeInType:document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="TestTypeInType type_in_type.xsd" xmlns:TestTypeInType="TestTypeInType">
+    <TestElement1>
+        <A>
+            <Element_string>oo</Element_string>
+            <Element_double>1578.659</Element_double>
+            <Element_boolean>false</Element_boolean>
+            <Element_dateTime>2022-05-10T10:22:49.152+01:00</Element_dateTime>
+        </A>
+        <B extended_b="b">CCCC</B>
+        <C>
+            <Element_string>eyggi</Element_string>
+            <Element_double>5457.48789</Element_double>
+            <Element_boolean>true</Element_boolean>
+            <Element_dateTime>2022-05-10T10:22:49Z</Element_dateTime>
+        </C>
+    </TestElement1>
+    <TestElement2>
+        <A>AAAA</A>
+        <B>BBBB</B>
+    </TestElement2>
+    <TestElement3>
+        <A>A9A9</A>
+        <S1>B44B</S1>
+        <B>2D7D</B>
+        <S2>FGHK</S2>
+    </TestElement3>
+</TestTypeInType:document>

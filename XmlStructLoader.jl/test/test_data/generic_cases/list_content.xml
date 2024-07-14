@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TestList:document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="TestList list_content.xsd" xmlns:TestList="TestList">
+    <TestElement1>
+        <Element_list_double>55</Element_list_double>
+        <Element_list_double>78787</Element_list_double>
+    </TestElement1>
+    <TestElement2>
+        <Element_list_string>55</Element_list_string>
+        <Element_list_string>78787</Element_list_string>
+        <Element_list_string>78787</Element_list_string>
+        <Element_list_string>78787</Element_list_string>
+        <Element_list_string>78787</Element_list_string>
+    </TestElement2>
+    <TestElement3>
+        <Element_type4_list><Element_string>aaaaa</Element_string></Element_type4_list>
+        <Element_type4_list><Element_string>bbbbb</Element_string></Element_type4_list>
+        <Element_type4_list><Element_string>ccccc</Element_string></Element_type4_list>
+        <Element_type4_list><Element_string>ddddd</Element_string></Element_type4_list>
+        <Element_type4_list><Element_string>eeeee</Element_string></Element_type4_list>
+    </TestElement3>
+    <TestElement5>
+        <Element_string>ueueueue</Element_string>
+    </TestElement5>
+</TestList:document>

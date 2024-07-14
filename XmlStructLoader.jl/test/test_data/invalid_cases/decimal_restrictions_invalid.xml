@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TestDecimalRestrictions:document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="TestDecimalRestrictions ../generic_cases/decimal_restrictions.xsd" xmlns:TestDecimalRestrictions="TestDecimalRestrictions">
+    <TestElement1>
+        1.123013
+    </TestElement1>
+    <TestElement2>
+        4.75897
+    </TestElement2>
+    <TestElement3>
+        12.1
+    </TestElement3>
+    <TestElement4>
+        150.1
+    </TestElement4>
+    <TestElement5>
+        -1189.6
+    </TestElement5>
+    <TestElement6>
+        -78
+    </TestElement6>
+</TestDecimalRestrictions:document>

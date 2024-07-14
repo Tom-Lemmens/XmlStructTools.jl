@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TestDateFormats:document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="TestDateFormats date_formats.xsd" xmlns:TestDateFormats="TestDateFormats">
+    <TestElement1>
+        <Element_dateTime>2022-05-10T10:22:49.152+01:00</Element_dateTime>
+        <Element_dateTime>2022-05-10T10:22:49.152-01:00</Element_dateTime>
+        <Element_dateTime>2022-05-10T10:22:49.152Z</Element_dateTime>
+        <Element_dateTime>2022-05-10T10:22:49.152</Element_dateTime>
+        <Element_dateTime>2022-05-10T10:22:49.152555</Element_dateTime>
+        <Element_dateTime>2022-05-10T10:22:49.15255</Element_dateTime>
+        <Element_dateTime>2022-05-10T10:22:49.1525575</Element_dateTime>
+        <Element_dateTime>2022-05-10T10:22:49.1+01:00</Element_dateTime>
+        <Element_dateTime>2022-05-10T10:22:49.1-01:00</Element_dateTime>
+        <Element_dateTime>2022-05-10T10:22:49.1Z</Element_dateTime>
+        <Element_dateTime>2022-05-10T10:22:49+01:00</Element_dateTime>
+        <Element_dateTime>2022-05-10T10:22:49-01:00</Element_dateTime>
+        <Element_dateTime>2022-05-10T10:22:49Z</Element_dateTime>
+        <Element_dateTime>2022-05-10T10:22:49</Element_dateTime>
+        <Element_dateTime>2022-05-10T10:22:49.1525575+01:00</Element_dateTime>
+        <Element_dateTime>2022-05-10T10:22:49.1525575-01:00</Element_dateTime>
+        <Element_dateTime>2022-05-10T10:22:49.1525575Z</Element_dateTime>
+    </TestElement1>
+
+</TestDateFormats:document>

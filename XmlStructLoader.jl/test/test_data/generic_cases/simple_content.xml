@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TestSimpleContent:document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="TestSimpleContent simple_content.xsd" xmlns:TestSimpleContent="TestSimpleContent">
+    <TestElement1 extended_simple1="6" extended_simple2="99" extended_simple3="ou">RR6R</TestElement1>
+</TestSimpleContent:document>

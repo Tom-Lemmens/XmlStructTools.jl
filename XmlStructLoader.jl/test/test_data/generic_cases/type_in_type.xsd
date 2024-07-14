@@ -1,0 +1,146 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:TestTypeInType="TestTypeInType" targetNamespace="TestTypeInType">
+
+    <element name="document" type="TestTypeInType:documentType"/>
+
+    <simpleType name="TestSimpleType1">
+        <annotation>
+            <documentation>An example of a simple xsd type.</documentation>
+        </annotation>
+        <restriction base="string">
+            <maxLength value="4"/>
+            <pattern value="([0-9A-Z]{4})?"/>
+        </restriction>
+    </simpleType>
+
+    <complexType name="TestComplexType1">
+        <annotation>
+            <documentation>Example of a complex XSD type that uses types defined under it's elements.</documentation>
+        </annotation>
+        <sequence>
+            <element name="A">
+                <complexType>
+                    <annotation>
+                        <documentation>An example of a complex xsd type.</documentation>
+                    </annotation>
+                    <sequence>
+                        <element name="Element_string" type="string"/>
+                        <element name="Element_double" type="double"/>
+                        <element name="Element_boolean" type="boolean"/>
+                        <element name="Element_dateTime" type="dateTime"/>
+                    </sequence>
+                </complexType>
+            </element>
+            <element name="B">
+                <complexType>
+                    <annotation>
+                        <documentation>An example of an extended simple xsd type.</documentation>
+                    </annotation>
+                    <simpleContent>
+                        <extension base="TestTypeInType:TestSimpleType1">
+                            <attribute name="extended_b" fixed="b"/>
+                        </extension>
+                    </simpleContent>
+                </complexType>
+            </element>
+            <element name="C">
+                <complexType>
+                    <annotation>
+                        <documentation>An example of a complex xsd type.</documentation>
+                    </annotation>
+                    <sequence>
+                        <element name="Element_string" type="string"/>
+                        <element name="Element_double" type="double"/>
+                        <element name="Element_boolean" type="boolean"/>
+                        <element name="Element_dateTime" type="dateTime"/>
+                    </sequence>
+                </complexType>
+            </element>
+        </sequence>
+    </complexType>
+
+    <complexType name="TestComplexType2">
+        <annotation>
+            <documentation>Example of a complex XSD type that uses types defined under it's elements and depends on a type defined later in the xsd.</documentation>
+        </annotation>
+        <sequence>
+            <element name="A">
+                <complexType>
+                    <annotation>
+                        <documentation>An example of an extended simple xsd type.</documentation>
+                    </annotation>
+                    <simpleContent>
+                        <extension base="TestTypeInType:TestSimpleType1">
+                            <attribute name="extended_b" fixed="b"/>
+                        </extension>
+                    </simpleContent>
+                </complexType>
+            </element>
+            <element name="B">
+                <complexType>
+                    <annotation>
+                        <documentation>An example of an extended simple xsd type.</documentation>
+                    </annotation>
+                    <simpleContent>
+                        <extension base="TestTypeInType:TestSimpleType2">
+                            <attribute name="extended_b" fixed="b"/>
+                        </extension>
+                    </simpleContent>
+                </complexType>
+            </element>
+        </sequence>
+    </complexType>
+
+    <simpleType name="TestSimpleType2">
+        <annotation>
+            <documentation>An example of a simple xsd type.</documentation>
+        </annotation>
+        <restriction base="string">
+            <maxLength value="4"/>
+            <pattern value="([0-9A-Z]{4})?"/>
+        </restriction>
+    </simpleType>
+
+    <complexType name="TestComplexType3">
+        <annotation>
+            <documentation>Example of a complex XSD type that uses a mix of types defined under it's elements and normal types in a particular order.</documentation>
+        </annotation>
+        <sequence>
+            <element name="A">
+                <complexType>
+                    <annotation>
+                        <documentation>An example of an extended simple xsd type.</documentation>
+                    </annotation>
+                    <simpleContent>
+                        <extension base="TestTypeInType:TestSimpleType1">
+                            <attribute name="extended_b" fixed="b"/>
+                        </extension>
+                    </simpleContent>
+                </complexType>
+            </element>
+            <element name="S1" type="TestTypeInType:TestSimpleType2"/>
+            <element name="B">
+                <complexType>
+                    <annotation>
+                        <documentation>An example of an extended simple xsd type.</documentation>
+                    </annotation>
+                    <simpleContent>
+                        <extension base="TestTypeInType:TestSimpleType2">
+                            <attribute name="extended_b" fixed="b"/>
+                        </extension>
+                    </simpleContent>
+                </complexType>
+            </element>
+            <element name="S2" type="TestTypeInType:TestSimpleType2"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="documentType">
+        <sequence>
+            <element name="TestElement1" type="TestTypeInType:TestComplexType1"/>
+            <element name="TestElement2" type="TestTypeInType:TestComplexType2"/>
+            <element name="TestElement3" type="TestTypeInType:TestComplexType3"/>
+        </sequence>
+    </complexType>
+
+</schema>

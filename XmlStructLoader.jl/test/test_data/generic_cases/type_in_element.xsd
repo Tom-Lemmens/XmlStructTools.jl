@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:TestTypeInElement="TestTypeInElement" targetNamespace="TestTypeInElement">
+
+    <element name="document" type="TestTypeInElement:documentType"/>
+
+    <simpleType name="TestSimpleType1">
+        <annotation>
+            <documentation>An example of a simple xsd type.</documentation>
+        </annotation>
+        <restriction base="string">
+            <maxLength value="4"/>
+            <pattern value="([0-9A-Z]{4})?"/>
+        </restriction>
+    </simpleType>
+
+    <simpleType name="TestSimpleType2">
+        <annotation>
+            <documentation>An example of a simple xsd type.</documentation>
+        </annotation>
+        <restriction base="decimal">
+            <fractionDigits value="4"/>
+        </restriction>
+    </simpleType>
+
+    <complexType name="documentType">
+        <sequence>
+            <element name="TestSimple2">
+                <simpleType>
+                    <annotation>
+                        <documentation>An example of a simple xsd type.</documentation>
+                    </annotation>
+                    <restriction base="string">
+                        <maxLength value="4"/>
+                        <pattern value="([0-9A-Z]{4})?"/>
+                    </restriction>
+                </simpleType>
+            </element>
+        
+            <element name="TestComplex1">
+                <annotation>
+                    <documentation>Example of a complex XSD type that has a locally defined type.</documentation>
+                </annotation>
+                <complexType>
+                    <annotation>
+                        <documentation>An example of a complex xsd type.</documentation>
+                    </annotation>
+                    <sequence>
+                        <element name="Element_string" type="string"/>
+                        <element name="Element_double" type="double"/>
+                        <element name="Element_boolean" type="boolean"/>
+                    </sequence>
+                </complexType>
+            </element>
+        
+            <element name="TestComplex2">
+                <annotation>
+                    <documentation>Example of a complex XSD type that uses types defined under it's elements.</documentation>
+                </annotation>
+                <complexType>
+                    <annotation>
+                        <documentation>An example of an extended simple xsd type.</documentation>
+                    </annotation>
+                    <simpleContent>
+                        <extension base="TestTypeInElement:TestSimpleType1">
+                            <attribute name="extended_simple" fixed="extend"/>
+                        </extension>
+                    </simpleContent>
+                </complexType>
+            </element>
+
+            <element name="TestComplex3">
+                <annotation>
+                    <documentation>An example of an restricted simple xsd type.</documentation>
+                </annotation>
+                <simpleType>
+                    <restriction base="TestTypeInElement:TestSimpleType2">
+                        <minInclusive value="0.00"/>
+                    </restriction>
+                </simpleType>
+            </element>
+        </sequence>
+    </complexType>
+
+</schema>
