@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TestChoice:document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="TestChoice choice_element.xsd" xmlns:TestChoice="TestChoice">
+    <TestElement1>
+        <element1>etre</element1>
+        <choice2>9.0</choice2>
+        <element2>aaa</element2>
+    </TestElement1>
+    <TestElement2>
+        <choice2>14.5</choice2>
+    </TestElement2>
+    <TestElement5>
+        <choice1>rrr</choice1>
+        <choice4>55.6</choice4>
+    </TestElement5>
+</TestChoice:document>
