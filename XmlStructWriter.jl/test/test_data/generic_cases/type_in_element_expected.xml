@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TestTypeInElement:document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="TestTypeInElement type_in_element.xsd" xmlns:TestTypeInElement="TestTypeInElement">
+    <TestSimple2>Z2ZZ</TestSimple2>
+    <TestComplex1>
+        <Element_string>OOO</Element_string>
+        <Element_double>548</Element_double>
+        <Element_boolean>true</Element_boolean>
+    </TestComplex1>
+    <TestComplex2 extended_simple="extend">UYTY</TestComplex2>
+    <TestComplex3>5.5</TestComplex3>
+</TestTypeInElement:document>

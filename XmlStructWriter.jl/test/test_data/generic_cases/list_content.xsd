@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:TestList="TestList" targetNamespace="TestList">
+
+<element name="document" type="TestList:documentType"/>
+
+<complexType name="TestComplexType1">
+    <annotation>
+        <documentation>An example of a complex xsd type with an unbounded list.</documentation>
+    </annotation>
+    <sequence>
+        <element name="Element_list_double" maxOccurs="unbounded" type="double"/>
+    </sequence>
+</complexType>
+
+<complexType name="TestComplexType2">
+    <annotation>
+        <documentation>An example of a complex xsd type with a bounded list.</documentation>
+    </annotation>
+    <sequence>
+        <element name="Element_list_string" maxOccurs="5" type="string"/>
+    </sequence>
+</complexType>
+
+<complexType name="TestComplexType3">
+    <annotation>
+        <documentation>An example of a complex xsd type with no list.</documentation>
+    </annotation>
+    <sequence>
+        <element name="Element_type4_list" maxOccurs="unbounded" type="TestList:TestComplexType4"/>
+    </sequence>
+</complexType>
+
+<complexType name="TestComplexType4">
+    <annotation>
+        <documentation>An example of a complex xsd type with no list.</documentation>
+    </annotation>
+    <sequence>
+        <element name="Element_string" maxOccurs="1" type="string"/>
+    </sequence>
+</complexType>
+
+<complexType name="TestComplexType5">
+    <annotation>
+        <documentation>An example of a complex xsd type with no list.</documentation>
+    </annotation>
+    <sequence>
+        <element name="Element_string" maxOccurs="1" type="string"/>
+    </sequence>
+</complexType>
+
+<complexType name="documentType">
+    <sequence>
+        <element name="TestElement1" type="TestList:TestComplexType1"/>
+        <element name="TestElement2" type="TestList:TestComplexType2"/>
+        <element name="TestElement3" type="TestList:TestComplexType3"/>
+        <element name="TestElement5" type="TestList:TestComplexType5"/>
+    </sequence>
+</complexType>
+
+</schema>
