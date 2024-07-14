@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:OptionalElements="OptionalElements" targetNamespace="OptionalElements">
+
+<element name="document" type="OptionalElements:documentType"/>
+
+<complexType name="TestComplexType1">
+    <annotation>
+        <documentation>An example of a complex xsd type with an optional element without default value.</documentation>
+    </annotation>
+    <sequence>
+        <element name="Element_string" type="string" minOccurs="0"/>
+        <element name="Element_double" type="double"/>
+        <element name="Element_simple1" type="OptionalElements:TestSimpleType1" minOccurs="0"/>
+        <element name="Element_simple2" type="OptionalElements:TestSimpleType2" minOccurs="0"/>
+    </sequence>
+</complexType>
+
+<complexType name="TestComplexType2">
+    <annotation>
+        <documentation>An example of a complex xsd type with an optional elements with default values.</documentation>
+    </annotation>
+    <sequence>
+        <element name="Element_string" type="string" default="aaa"/>
+        <element name="Element_double" type="double" default="55.2"/>
+        <element name="Element_simple1" type="OptionalElements:TestSimpleType1" minOccurs="0" default="0"/>
+        <element name="Element_simple2" type="OptionalElements:TestSimpleType2" minOccurs="0" default="AAAA"/>
+    </sequence>
+</complexType>
+
+<complexType name="TestComplexType3">
+    <annotation>
+        <documentation>An example of a complex xsd type with vector optional elements and default values.</documentation>
+    </annotation>
+    <sequence>
+        <element name="Element_simple1" type="OptionalElements:TestSimpleType1" minOccurs="0" maxOccurs="unbounded" default="0"/>
+        <element name="Element_simple2" type="OptionalElements:TestSimpleType2" minOccurs="0" maxOccurs="unbounded" default="AAAA"/>
+        <element name="Element_simple2_or_nothing" type="OptionalElements:TestSimpleType2" minOccurs="0" maxOccurs="unbounded"/>
+    </sequence>
+</complexType>
+
+<complexType name="TestComplexType4">
+    <annotation>
+        <documentation>An example of a complex xsd type with complex optional values.</documentation>
+    </annotation>
+    <sequence>
+        <element name="Element_complex4" type="OptionalElements:TestComplexType4_element" minOccurs="0" maxOccurs="unbounded"/>
+    </sequence>
+</complexType>
+
+<complexType name="TestComplexType4_element">
+    <annotation>
+        <documentation>An example of a complex xsd type with optional simple elements.</documentation>
+    </annotation>
+    <sequence>
+        <element name="Element_simple1_1" type="OptionalElements:TestSimpleType1" minOccurs="0"/>
+        <element name="Element_simple1_2" type="OptionalElements:TestSimpleType1" minOccurs="0" default="50"/>
+        <element name="Element_simple2_1" type="OptionalElements:TestSimpleType2" minOccurs="0"/>
+        <element name="Element_simple2_2" type="OptionalElements:TestSimpleType2" minOccurs="0" default="A4A4"/>
+    </sequence>
+</complexType>
+
+<simpleType name="TestSimpleType1">
+    <annotation>
+        <documentation>An example of a simple xsd type.</documentation>
+    </annotation>
+    <restriction base="double">
+        <maxInclusive value = "100"/>
+    </restriction>
+</simpleType>
+
+<simpleType name="TestSimpleType2">
+    <annotation>
+        <documentation>An example of a simple xsd type.</documentation>
+    </annotation>
+    <restriction base="string">
+        <maxLength value="4"/>
+        <pattern value="([0-9A-Z]{4})?"/>
+    </restriction>
+</simpleType>
+
+<complexType name="TestComplexType5">
+    <annotation>
+        <documentation>An example of a complex xsd type with an optional element with a type defined inside.</documentation>
+    </annotation>
+    <sequence>
+        <element name="Element_simple1" minOccurs="0">
+            <simpleType>
+                <annotation>
+                    <documentation>An example of a simple xsd type.</documentation>
+                </annotation>
+                <restriction base="string">
+                    <maxLength value="10"/>
+                </restriction>
+            </simpleType>
+        </element>
+        <element name="Element_simple2" minOccurs="0" default="file.ext">
+            <simpleType>
+                <annotation>
+                    <documentation>An example of a simple xsd type.</documentation>
+                </annotation>
+                <restriction base="string">
+                    <maxLength value="10"/>
+                </restriction>
+            </simpleType>
+        </element>
+    </sequence>
+</complexType>
+
+<complexType name="TestComplexType6">
+    <annotation>
+        <documentation>An example of a complex xsd type with optional dateTime elements.</documentation>
+    </annotation>
+    <sequence>
+        <element name="Element_simple1" type="dateTime" minOccurs="0" default="0001-01-01T00:00:00+00:00" />
+        <element name="Element_simple2" type="dateTime" minOccurs="0"/>
+        <element name="Element_simple3" type="dateTime" default="0001-02-03T04:05:06.666"/>
+        <element name="Element_simple4" type="dateTime" minOccurs="0" default="0999-08-07T06:55:44-03:22" />
+        <element name="Element_simple5" type="dateTime" minOccurs="0" default="0004-05-06T07:08:09Z" />
+    </sequence>
+</complexType>
+
+<complexType name="documentType">
+    <sequence>
+        <element name="TestElement1" type="OptionalElements:TestComplexType1"/>
+        <element name="TestElement2" type="OptionalElements:TestComplexType2"/>
+        <element name="TestElement3" type="OptionalElements:TestComplexType3"/>
+        <element name="TestElement4" type="OptionalElements:TestComplexType4"/>
+        <element name="TestElement5" type="OptionalElements:TestComplexType5"/>
+        <element name="TestElement6" type="OptionalElements:TestComplexType6"/>
+    </sequence>
+</complexType>
+
+</schema>

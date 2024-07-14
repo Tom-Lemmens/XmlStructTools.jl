@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TestSimpleTyping:document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="TestSimpleTyping simple_types.xsd" xmlns:TestSimpleTyping="TestSimpleTyping">
+    <TestElement1>
+        <TestElement1>AAAA</TestElement1>
+        <TestElement2>125</TestElement2>
+        <TestElement3>true</TestElement3>
+        <TestElement4>25</TestElement4>
+        <TestElement5>5.55</TestElement5>
+    </TestElement1>
+    <TestElement2>
+        <TestElement11>AAAA</TestElement11>
+        <TestElement12></TestElement12>
+        <TestElement21>250</TestElement21>
+        <TestElement22>100</TestElement22>
+    </TestElement2>
+</TestSimpleTyping:document>

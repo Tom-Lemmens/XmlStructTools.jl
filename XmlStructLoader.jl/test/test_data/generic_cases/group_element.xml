@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<TestGroup:document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="TestGroup group_element.xsd" xmlns:TestGroup="TestGroup">
+    <TestElement1>
+        <Element_string>wwww</Element_string>
+        <Element_double>52.65</Element_double>
+        <Element_boolean>true</Element_boolean>
+    </TestElement1>
+    <TestElement2>
+        <Element_string>wwww</Element_string>
+        <Element_double>52.65</Element_double>
+        <Element_boolean>true</Element_boolean>
+        <Element_boolean_second>false</Element_boolean_second>
+        <Element_string_2>uuiu</Element_string_2>
+        <Element_double_2>10</Element_double_2>
+        <Element_boolean_2>true</Element_boolean_2>
+    </TestElement2>
+    <TestElement3>
+        <Element_string>ttt</Element_string>
+        <Element_double>77.99</Element_double>
+        <Element_boolean>false</Element_boolean>
+        <Element_boolean2>true</Element_boolean2>
+    </TestElement3>
+</TestGroup:document>
