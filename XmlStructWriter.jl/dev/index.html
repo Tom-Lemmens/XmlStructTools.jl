@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Home · XmlStructWriter.jl</title><meta name="title" content="Home · XmlStructWriter.jl"/><meta property="og:title" content="Home · XmlStructWriter.jl"/><meta property="twitter:title" content="Home · XmlStructWriter.jl"/><meta name="description" content="Documentation for XmlStructWriter.jl."/><meta property="og:description" content="Documentation for XmlStructWriter.jl."/><meta property="twitter:description" content="Documentation for XmlStructWriter.jl."/><script data-outdated-warner src="assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="assets/documenter.js"></script><script src="search_index.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href>XmlStructWriter.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li class="is-active"><a class="tocitem" href>Home</a><ul class="internal"><li><a class="tocitem" href="#Getting-the-required-files"><span>Getting the required files</span></a></li><li><a class="tocitem" href="#Creating-an-xml-file-from-scratch"><span>Creating an xml file from scratch</span></a></li><li><a class="tocitem" href="#Editing-an-xml-file"><span>Editing an xml file</span></a></li></ul></li><li><a class="tocitem" href="docstrings/">Docstrings</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Home</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Home</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/Tom-Lemmens/XmlStructTools.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/Tom-Lemmens/XmlStructTools.jl/blob/main/XmlStructWriter.jl/docs/src/index.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="XmlStructWriter"><a class="docs-heading-anchor" href="#XmlStructWriter">XmlStructWriter</a><a id="XmlStructWriter-1"></a><a class="docs-heading-anchor-permalink" href="#XmlStructWriter" title="Permalink"></a></h1><h2 id="Getting-the-required-files"><a class="docs-heading-anchor" href="#Getting-the-required-files">Getting the required files</a><a id="Getting-the-required-files-1"></a><a class="docs-heading-anchor-permalink" href="#Getting-the-required-files" title="Permalink"></a></h2><p>In order to get the required *.jl files follow the instructions of <code>XsdToStruct</code>.</p><h2 id="Creating-an-xml-file-from-scratch"><a class="docs-heading-anchor" href="#Creating-an-xml-file-from-scratch">Creating an xml file from scratch</a><a id="Creating-an-xml-file-from-scratch-1"></a><a class="docs-heading-anchor-permalink" href="#Creating-an-xml-file-from-scratch" title="Permalink"></a></h2><p>In this example we create an XML file called &quot;example.xml&quot; that follows the schema &quot;example.xsd&quot; which defines the &quot;ExampleSchema&quot; namespace.</p><p>Let&#39;s assume that &quot;example.xsd&quot; looks as follows:</p><pre><code class="language-xml hljs">&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;schema xmlns=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:ExampleSchema=&quot;ExampleSchema&quot; targetNamespace=&quot;ExampleSchema&quot;&gt;
+
+&lt;element name=&quot;document&quot; type=&quot;ExampleSchema:documentType&quot;/&gt;
+
+&lt;complexType name=&quot;ExampleComplexType&quot;&gt;
+    &lt;annotation&gt;
+        &lt;documentation&gt;An example of a complex xsd type.&lt;/documentation&gt;
+    &lt;/annotation&gt;
+    &lt;sequence&gt;
+        &lt;element name=&quot;Element_double&quot; type=&quot;double&quot;/&gt;
+        &lt;element name=&quot;Element_boolean&quot; type=&quot;boolean&quot;/&gt;
+        &lt;element name=&quot;Element_integer&quot; type=&quot;integer&quot;/&gt;
+    &lt;/sequence&gt;
+&lt;/complexType&gt;
+
+&lt;simpleType name=&quot;ExampleSimpleType&quot;&gt;
+    &lt;annotation&gt;
+        &lt;documentation&gt;An example of a simple xsd type.&lt;/documentation&gt;
+    &lt;/annotation&gt;
+    &lt;restriction base=&quot;string&quot;&gt;
+        &lt;maxLength value=&quot;4&quot;/&gt;
+    &lt;/restriction&gt;
+&lt;/simpleType&gt;
+
+&lt;complexType name=&quot;documentType&quot;&gt;
+    &lt;sequence&gt;
+        &lt;element name=&quot;Example1&quot; type=&quot;ExampleSchema:ExampleComplexType&quot;/&gt;
+        &lt;element name=&quot;Example2&quot; type=&quot;ExampleSchema:ExampleSimpleType&quot;/&gt;
+    &lt;/sequence&gt;
+&lt;/complexType&gt;
+
+&lt;/schema&gt;</code></pre><p>And we want to make the following file called &quot;example.xml&quot;:</p><pre><code class="language-xml hljs">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+
+&lt;ExampleSchema:document xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;ExampleSchema Example.xsd&quot; xmlns:ExampleSchema=&quot;ExampleSchema&quot;&gt;
+    &lt;Example1&gt;
+        &lt;Element_double&gt;100.22&lt;/Element_double&gt;
+        &lt;Element_boolean&gt;true&lt;/Element_boolean&gt;
+        &lt;Element_integer&gt;-778&lt;/Element_integer&gt;
+    &lt;/Example1&gt;
+
+    &lt;TestElement2&gt;AA99&lt;/TestElement2&gt;
+&lt;/ExampleSchema:document&gt;</code></pre><p>The procedure consists of three steps:</p><ol><li>We load the struct definitions generated by <code>XsdToStruct</code>.</li><li>We construct an instance of the struct representing the xml file with the required data.</li><li>We write the struct instance to a file.</li></ol><h3 id="Loading-the-struct-definitions"><a class="docs-heading-anchor" href="#Loading-the-struct-definitions">Loading the struct definitions</a><a id="Loading-the-struct-definitions-1"></a><a class="docs-heading-anchor-permalink" href="#Loading-the-struct-definitions" title="Permalink"></a></h3><p>If we put the *.jl files generated by <code>XsdToStruct</code> in the folder &quot;Example&quot; we can load the struct definitions as follows:</p><pre><code class="language-julia hljs">include(joinpath(&quot;Example&quot;, &quot;Example.jl&quot;))
+using .ExampleSchema</code></pre><h3 id="Creating-the-struct-instance"><a class="docs-heading-anchor" href="#Creating-the-struct-instance">Creating the struct instance</a><a id="Creating-the-struct-instance-1"></a><a class="docs-heading-anchor-permalink" href="#Creating-the-struct-instance" title="Permalink"></a></h3><p>Next we create struct instances with the data that we want to put into the xml.</p><pre><code class="language-julia hljs">Example1 = ExampleComplexType(
+    Element_double=100.22,
+    Element_boolean=true,
+    Element_integer=-778
+)
+
+xml_attributes = Dict(
+    &quot;xmlns:xsi&quot;=&gt;&quot;http://www.w3.org/2001/XMLSchema-instance&quot;,
+    &quot;xsi:schemaLocation&quot;=&gt;&quot;ExampleSchema Example.xsd&quot;,
+    &quot;xmlns:ExampleSchema&quot;=&gt;&quot;ExampleSchema&quot;,
+    &quot;__root_name&quot;=&gt;&quot;document&quot;
+)
+
+document = documentType(
+    Example1=Example1,
+    Example2=&quot;AA99&quot;,
+    __xml_attributes=xml_attributes
+)</code></pre><h3 id="Writing-the-xml-file"><a class="docs-heading-anchor" href="#Writing-the-xml-file">Writing the xml file</a><a id="Writing-the-xml-file-1"></a><a class="docs-heading-anchor-permalink" href="#Writing-the-xml-file" title="Permalink"></a></h3><p>Finally we write the xml struct to a file:</p><pre><code class="language-julia hljs">using XmlStructWriter
+
+write_xml(document, &quot;example.xml&quot;)</code></pre><h2 id="Editing-an-xml-file"><a class="docs-heading-anchor" href="#Editing-an-xml-file">Editing an xml file</a><a id="Editing-an-xml-file-1"></a><a class="docs-heading-anchor-permalink" href="#Editing-an-xml-file" title="Permalink"></a></h2><p>In this example we will edit the xml file from the previous example. We want to change the value of the &quot;Example1/Element_double&quot; to &quot;-789.123&quot;.</p><p>The procedure is very similar to before:</p><ol><li>We load the struct definitions generated by <code>XsdToStruct.jl</code>.</li><li>We load the xml file with <code>XmlStructLoader.jl</code></li><li>We construct an new instance of the struct representing the xml file with the appropriate data copied from the loaded xml file and new data inserted as required.</li><li>We write the struct instance to a file.</li></ol><p>This procedure can be simplified by using <code>Accessors.jl</code> but this is currently not yet completly supported by the structs generated by <code>XsdToStruct.jl</code>.</p><h3 id="Loading-the-struct-definitions-2"><a class="docs-heading-anchor" href="#Loading-the-struct-definitions-2">Loading the struct definitions</a><a class="docs-heading-anchor-permalink" href="#Loading-the-struct-definitions-2" title="Permalink"></a></h3><p>If we put the *.jl files generated by <code>XsdToStruct.jl</code> in the folder &quot;Example&quot; we can load the struct definitions as follows:</p><pre><code class="language-julia hljs">include(joinpath(&quot;Example&quot;, &quot;Example.jl&quot;))
+using .ExampleSchema</code></pre><h3 id="Loading-the-xml-file"><a class="docs-heading-anchor" href="#Loading-the-xml-file">Loading the xml file</a><a id="Loading-the-xml-file-1"></a><a class="docs-heading-anchor-permalink" href="#Loading-the-xml-file" title="Permalink"></a></h3><p>We can load the existing xml file with <code>XmlStructLoader</code>:</p><pre><code class="language-julia hljs">using XmlStructLoader
+
+xml = load(&quot;example.xml&quot;, ExampleSchema)</code></pre><h3 id="Editing-the-data"><a class="docs-heading-anchor" href="#Editing-the-data">Editing the data</a><a id="Editing-the-data-1"></a><a class="docs-heading-anchor-permalink" href="#Editing-the-data" title="Permalink"></a></h3><p>Next we create a new struct instance with the edited data:</p><pre><code class="language-julia hljs">Example1 = ExampleComplexType(
+    Element_double=-789.123,
+    Element_boolean=xml.Example1.Element_boolean,
+    Element_integer=xml.Example1.Element_integer
+)
+
+document = documentType(
+    Example1=Example1,
+    Example2=xml.Example2,
+    __xml_attributes=xml.__xml_attributes
+)</code></pre><h3 id="Writing-the-xml-file-2"><a class="docs-heading-anchor" href="#Writing-the-xml-file-2">Writing the xml file</a><a class="docs-heading-anchor-permalink" href="#Writing-the-xml-file-2" title="Permalink"></a></h3><p>Finally we write the new xml struct to a file:</p><pre><code class="language-julia hljs">using XmlStructWriter
+
+write_xml(document, &quot;example_2.xml&quot;)</code></pre></article><nav class="docs-footer"><a class="docs-footer-nextpage" href="docstrings/">Docstrings »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.5.0 on <span class="colophon-date" title="Wednesday 17 July 2024 12:19">Wednesday 17 July 2024</span>. Using Julia version 1.10.4.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
