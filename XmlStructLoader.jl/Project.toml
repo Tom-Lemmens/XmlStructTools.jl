@@ -1,11 +1,11 @@
 name = "XmlStructLoader"
-uuid = "cf16c1b9-7aca-41f8-b1b0-aa4a2e359951"
+uuid = "1bf1c528-19f0-4e43-b24f-ad91d84ffbf7"
 authors = ["Tom Lemmens"]
 version = "0.1.0"
 
 [deps]
 AbstractTrees = "1520ce14-60c1-5f80-bbc7-55ef81b5835c"
-AbstractXsdTypes = "1d4aff4b-e088-40cb-b713-ffe4caf1580b"
+AbstractXsdTypes = "894546dd-dc3f-42e8-9b69-a7785ccf72be"
 ConcreteStructs = "2569d6c7-a4a2-43d3-a901-331e8e4be471"
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 EzXML = "8f5d6c58-4d21-5cfd-889c-e3ad7ee6a615"
@@ -16,4 +16,6 @@ TimeZones = "f269a46b-ccf7-5d73-abea-4c690281aa53"
 URIs = "5c2747f8-b7ea-4ff2-ba2e-563bfd36b1d4"
 
 [compat]
+AbstractXsdTypes = "0.1"
 Reexport = "1"
+julia = "1.6"
