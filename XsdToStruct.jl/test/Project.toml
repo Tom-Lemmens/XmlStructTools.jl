@@ -1,5 +1,5 @@
 [deps]
-AbstractXsdTypes = "1d4aff4b-e088-40cb-b713-ffe4caf1580b"
+AbstractXsdTypes = "894546dd-dc3f-42e8-9b69-a7785ccf72be"
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 LightXML = "9c8b4983-aa76-5018-a973-4c85ecc9e179"
 Logging = "56ddb016-857b-54e1-b83d-db4d58db5568"
