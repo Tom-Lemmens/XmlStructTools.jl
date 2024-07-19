@@ -11,8 +11,8 @@ The functionality is split up into four packages:
 generated struct definitions.
 - XmlStructWriter.jl can write XSD struct instances to valid XML files.
 
-For a quick introduction you can watch [XML Data and Julian Types](https://www.youtube.com/watch?v=Z7qgOBNk-to)
-from JuliaCon Local Eindhoven 2023 to get a quick introduction to these packages.
+For a quick introduction to these packages you can watch [XML Data and Julian Types](https://www.youtube.com/watch?v=Z7qgOBNk-to)
+from JuliaCon Local Eindhoven 2023.
 
 **Warning**
 These packages are still a work in progress.
