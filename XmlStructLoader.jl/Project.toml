@@ -18,6 +18,7 @@ URIs = "5c2747f8-b7ea-4ff2-ba2e-563bfd36b1d4"
 [compat]
 AbstractTrees = "0.4"
 AbstractXsdTypes = "0.1"
+ConcreteStructs = "0.2"
 EzXML = "1"
 Parsers = "2"
 Reexport = "1"
