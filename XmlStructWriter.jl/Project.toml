@@ -1,11 +1,18 @@
 name = "XmlStructWriter"
-uuid = "21e59797-a7c6-4d09-a473-68ce4806eb3f"
+uuid = "1f6e99ea-5afe-4254-a342-0998356893f5"
 authors = ["Tom Lemmens"]
 version = "0.1.0"
 
 [deps]
-AbstractXsdTypes = "1d4aff4b-e088-40cb-b713-ffe4caf1580b"
+AbstractXsdTypes = "894546dd-dc3f-42e8-9b69-a7785ccf72be"
 Format = "1fa38f19-a742-5d3f-a2b9-30dd87b9d5f8"
 LightXML = "9c8b4983-aa76-5018-a973-4c85ecc9e179"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 TimeZones = "f269a46b-ccf7-5d73-abea-4c690281aa53"
+
+[compat]
+AbstractXsdTypes = "0.1"
+Format = "1"
+LightXML = "0.9"
+TimeZones = "1"
+julia = "1.6"
