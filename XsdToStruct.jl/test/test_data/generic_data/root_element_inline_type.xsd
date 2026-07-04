@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:TestRootElementInlineType="TestRootElementInlineType" targetNamespace="TestRootElementInlineType">
+
+    <element name="document">
+        <annotation>
+            <documentation>The root element defines its type inline instead of referencing a named complexType.</documentation>
+        </annotation>
+        <complexType>
+            <sequence>
+                <element name="Element_string" type="string"/>
+                <element name="Element_double" type="double"/>
+            </sequence>
+        </complexType>
+    </element>
+
+</schema>

@@ -42,7 +42,7 @@ function create_xsd_tree(xsd_root::XMLElement)::SchemaTreeNode
             child_name = LightXML.name(xsd_child_element)
 
             if child_name == "element"
-                root_field, child_node = parse_xsd_element_child(xsd_child_element, tree_name)
+                root_field, child_node = parse_xsd_element_child(xsd_child_element, xml_namespace)
                 push!(child_nodes, child_node)
             elseif child_name == "complexType"
                 child_node = parse_xsd_complex_type(xsd_child_element)
