@@ -106,6 +106,7 @@ Base.@kwdef struct SchemaTreeNode <: AbstractTreeNode
     has_simple_nodes::Bool
     has_complex_nodes::Bool
     requires_TimeZones::Bool
+    requires_Dates::Bool
     group_nodes::Vector{ComplexTreeNode} = Vector{ComplexTreeNode}()
     child_nodes::Vector{AbstractTreeNode} = Vector{AbstractTreeNode}()
 end

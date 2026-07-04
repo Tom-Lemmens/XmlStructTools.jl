@@ -1,7 +1,7 @@
 
 abstract type AbstractFieldData end
 
-has_datetime(field::AbstractFieldData)::Bool = false
+has_xsd_type(field::AbstractFieldData, xsd_type_name::AbstractString)::Bool = false
 
 const OptionalDictStringString = Union{Nothing,Dict{<:AbstractString,<:AbstractString}}
 
@@ -16,7 +16,8 @@ Base.@kwdef mutable struct FieldData <: AbstractFieldData
     can_be_missing = can_be_missing(xsd_attributes)
 end
 
-has_datetime(field::FieldData)::Bool = field.xsd_type == "dateTime"
+has_xsd_type(field::FieldData, xsd_type_name::AbstractString)::Bool =
+    strip_xsd_namespace(field.xsd_type) == xsd_type_name
 
 Base.@kwdef mutable struct ChoiceFieldData <: AbstractFieldData
     name::String
@@ -34,19 +35,8 @@ Base.@kwdef mutable struct GroupFieldData <: AbstractFieldData
     xsd_attributes::OptionalDictStringString = nothing
 end
 
-function has_datetime(field::ChoiceFieldData)::Bool
-    has_datetime = false
-
-    for choice in field.choice_options
-        has_datetime = choice.xsd_type == "dateTime"
-
-        if has_datetime
-            # we already found a matching node stop looking
-            break
-        end
-    end
-
-    return has_datetime
+function has_xsd_type(field::ChoiceFieldData, xsd_type_name::AbstractString)::Bool
+    return any(choice -> strip_xsd_namespace(choice.xsd_type) == xsd_type_name, field.choice_options)
 end
 
 """

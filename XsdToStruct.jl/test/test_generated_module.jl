@@ -220,6 +220,20 @@
         @test doc_type isa TestTypeInType.documentType
     end
 
+    @testset "test generated namespaced_datetime_restriction" begin
+        include(joinpath(generic_data_dir, "namespaced_datetime_restriction", "namespaced_datetime_restriction.jl"))
+        import .TestNamespacedDateTimeRestriction
+
+        date_value = TestNamespacedDateTimeRestriction.ISODate(Date(2024, 1, 1))
+        @test date_value isa TestNamespacedDateTimeRestriction.ISODate
+
+        datetime_value = TestNamespacedDateTimeRestriction.ISODateTime(DateTime(2024, 1, 1))
+        @test datetime_value isa TestNamespacedDateTimeRestriction.ISODateTime
+
+        doc_type = TestNamespacedDateTimeRestriction.documentType(date_value, datetime_value)
+        @test doc_type isa TestNamespacedDateTimeRestriction.documentType
+    end
+
     @testset "test generated union" begin
         include(joinpath(generic_data_dir, "union_types", "union_types.jl"))
         import .TestSimpleUnion

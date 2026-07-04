@@ -36,73 +36,73 @@ function has_node_of_type(children::Vector{<:AbstractTreeNode}, ::Type{T})::Bool
     return has_nodes_of_type
 end
 
-function has_datetime_field(complex_node::ComplexTreeNode)::Bool
+function has_xsd_type_field(complex_node::ComplexTreeNode, xsd_type_name::AbstractString)::Bool
     # check if any child nodes match
-    has_datetime_field = has_dateTime(complex_node.child_nodes)
-    if has_datetime_field
+    found = has_xsd_type_node(complex_node.child_nodes, xsd_type_name)
+    if found
         # we already found a matching node stop looking
-        return has_datetime_field
+        return found
     end
 
     # check if any fields match
     for field in get_all_fields(complex_node)
-        has_datetime_field = has_datetime(field)
+        found = has_xsd_type(field, xsd_type_name)
 
-        if has_datetime_field
+        if found
             # we already found a matching node stop looking
-            return has_datetime_field
+            return found
         end
     end
 
-    return has_datetime_field
+    return found
 end
 
-function has_datetime_field(extension_node::ExtensionTreeNode)::Bool
+function has_xsd_type_field(extension_node::ExtensionTreeNode, xsd_type_name::AbstractString)::Bool
     # check if own content matches
-    has_datetime_field = has_dateTime(extension_node.node_content)
-    if has_datetime_field
+    found = has_xsd_type_node(extension_node.node_content, xsd_type_name)
+    if found
         # we already found a matching node stop looking
-        return has_datetime_field
+        return found
     end
 
     # check if any child nodes match
-    has_datetime_field = has_dateTime(extension_node.base_children)
-    if has_datetime_field
+    found = has_xsd_type_node(extension_node.base_children, xsd_type_name)
+    if found
         # we already found a matching node stop looking
-        return has_datetime_field
+        return found
     end
 
     # check if any fields match
     for field in extension_node.base_fields
-        has_datetime_field = has_datetime(field)
+        found = has_xsd_type(field, xsd_type_name)
 
-        if has_datetime_field
+        if found
             # we already found a matching node stop looking
-            return has_datetime
+            return found
         end
     end
 
-    return has_datetime_field
+    return found
 end
 
-function has_dateTime(children::Vector{AbstractTreeNode})::Bool
-    has_datetime_node = false
+function has_xsd_type_node(children::Vector{AbstractTreeNode}, xsd_type_name::AbstractString)::Bool
+    found = false
 
     for child in children
         if typeof(child) == SimpleTreeNode
-            # check if node base type matches dateTime
-            has_datetime_node = child.field.xsd_type == "dateTime"
+            # check if node base type matches
+            found = strip_xsd_namespace(child.field.xsd_type) == xsd_type_name
         elseif typeof(child) == ComplexTreeNode || typeof(child) == ExtensionTreeNode
-            has_datetime_node = has_datetime_field(child)
+            found = has_xsd_type_field(child, xsd_type_name)
         end
 
-        if has_datetime_node
+        if found
             # we already found a matching note stop looking
             break
         end
     end
 
-    return has_datetime_node
+    return found
 end
 
 function create_SchemaTreeNode(;
@@ -116,7 +116,8 @@ function create_SchemaTreeNode(;
     has_complex_nodes =
         (has_node_of_type(child_nodes, ComplexTreeNode) || has_node_of_type(group_nodes, ComplexTreeNode))
 
-    requires_TimeZones = has_dateTime(child_nodes)
+    requires_TimeZones = has_xsd_type_node(child_nodes, "dateTime")
+    requires_Dates = requires_TimeZones || has_xsd_type_node(child_nodes, "date")
 
     return SchemaTreeNode(
         common_data = CommonNodeData(name = name, attributes = attributes),
@@ -126,6 +127,7 @@ function create_SchemaTreeNode(;
         has_simple_nodes = has_simple_nodes,
         has_complex_nodes = has_complex_nodes,
         requires_TimeZones = requires_TimeZones,
+        requires_Dates = requires_Dates,
     )
 end
 

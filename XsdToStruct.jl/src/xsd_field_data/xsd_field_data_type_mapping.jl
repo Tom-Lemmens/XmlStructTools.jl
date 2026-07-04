@@ -19,6 +19,7 @@ const built_in_data_type_dict = Dict([
     ("double", "Float64"),
     ("boolean", "Bool"),
     ("dateTime", "Union{ZonedDateTime, DateTime}"),
+    ("date", "Date"),
     ("integer", "Int64"),
     ("int", "Int64"),
     ("nonNegativeInteger", "UInt64"),
@@ -28,7 +29,9 @@ const built_in_data_type_dict = Dict([
 get_julia_type(type_name::AbstractString)::String = get(built_in_data_type_dict, type_name, type_name)
 
 # TODO:for now ignore namespace stuff
-parse_xsd_type_to_julia_type(type_string::AbstractString)::String = get_julia_type(split(type_string, ":")[end])
+strip_xsd_namespace(type_string::AbstractString)::AbstractString = split(type_string, ":")[end]
+
+parse_xsd_type_to_julia_type(type_string::AbstractString)::String = get_julia_type(strip_xsd_namespace(type_string))
 
 # determine type properties from the given xsd attribute dictionary
 function is_vector(xsd_attributes::OptionalDictStringString)::Bool

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:TestDateRestriction="TestDateRestriction" targetNamespace="TestDateRestriction">
+
+<element name="document" type="TestDateRestriction:documentType"/>
+
+<simpleType name="TestSimpleType1">
+    <annotation>
+        <documentation>An example of a date based simple type without restriction facets.</documentation>
+    </annotation>
+    <restriction base="date"/>
+</simpleType>
+
+<complexType name="documentType">
+    <sequence>
+        <element name="TestElement1" type="TestDateRestriction:TestSimpleType1"/>
+    </sequence>
+</complexType>
+
+</schema>

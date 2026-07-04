@@ -5,10 +5,12 @@ include("xsd_module_builder_union.jl")
 function write_struct_module_to_io(xsd_module_builder::XSDStructModuleBuilderType)::Nothing
     print(xsd_module_builder.io_struct, "module $(xsd_module_builder.module_name_struct)\n\n")
 
-    if xsd_module_builder.xsd_tree.requires_TimeZones
+    if xsd_module_builder.xsd_tree.requires_Dates
         print(xsd_module_builder.io_struct, "using Reexport\n")
         print(xsd_module_builder.io_struct, "@reexport using Dates\n")
-        print(xsd_module_builder.io_struct, "@reexport using TimeZones\n")
+        if xsd_module_builder.xsd_tree.requires_TimeZones
+            print(xsd_module_builder.io_struct, "@reexport using TimeZones\n")
+        end
     end
 
     writeln(xsd_module_builder, IOStruct, "import $ABSTRACT_TYPE_PACKAGE")

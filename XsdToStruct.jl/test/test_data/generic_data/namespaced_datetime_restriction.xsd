@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:TestNamespacedDateTimeRestriction="TestNamespacedDateTimeRestriction" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="TestNamespacedDateTimeRestriction">
+
+<element name="document" type="TestNamespacedDateTimeRestriction:documentType"/>
+
+<simpleType name="ISODate">
+    <annotation>
+        <documentation>A date based simple type with a namespace-prefixed restriction base, as commonly seen in real-world XSDs (e.g. ISO 20022).</documentation>
+    </annotation>
+    <restriction base="xs:date"/>
+</simpleType>
+
+<simpleType name="ISODateTime">
+    <annotation>
+        <documentation>A dateTime based simple type with a namespace-prefixed restriction base.</documentation>
+    </annotation>
+    <restriction base="xs:dateTime"/>
+</simpleType>
+
+<complexType name="documentType">
+    <sequence>
+        <element name="TestElement1" type="TestNamespacedDateTimeRestriction:ISODate"/>
+        <element name="TestElement2" type="TestNamespacedDateTimeRestriction:ISODateTime"/>
+    </sequence>
+</complexType>
+
+</schema>

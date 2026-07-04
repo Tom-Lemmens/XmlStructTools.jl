@@ -49,8 +49,10 @@ function write_docstring_part(xsd_module_builder::XSDStructModuleBuilderType)::N
     writeln(xsd_module_builder, IOTop, "In order to use this module the following dependencies need to be installed:")
     writeln(xsd_module_builder, IOTop, "AbstractXsdTypes", indent_level = 1)
     writeln(xsd_module_builder, IOTop, "Reexport", indent_level = 1)
-    if xsd_module_builder.xsd_tree.requires_TimeZones
+    if xsd_module_builder.xsd_tree.requires_Dates
         writeln(xsd_module_builder, IOTop, "Dates", indent_level = 1)
+    end
+    if xsd_module_builder.xsd_tree.requires_TimeZones
         writeln(xsd_module_builder, IOTop, "TimeZones", indent_level = 1)
     end
     writeln(xsd_module_builder, IOTop)
