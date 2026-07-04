@@ -104,12 +104,18 @@ function parse_xsd_complex_content_choice!(complex_node::ComplexTreeNode, xsd_ch
         parse_complex_content!(tmp_complex_node, child_element)
     end
 
+    choice_options = get_all_fields(tmp_complex_node)
+    group_option_index = findfirst(field -> field isa GroupFieldData, choice_options)
+    if !isnothing(group_option_index)
+        error(
+            "Xsd group refs inside a <choice> element are not supported (choice \"$choice_name\" references group " *
+            "\"$(choice_options[group_option_index].name)\"). Expand the group's contents inline in the xsd as a " *
+            "workaround.",
+        )
+    end
+
     # create choice field object
-    field = ChoiceFieldData(
-        name = field_name,
-        choice_options = get_all_fields(tmp_complex_node),
-        xsd_attributes = attributes_dict(xsd_choice),
-    )
+    field = ChoiceFieldData(name = field_name, choice_options = choice_options, xsd_attributes = attributes_dict(xsd_choice))
 
     # update parent node
     push!(complex_node.fields, field)

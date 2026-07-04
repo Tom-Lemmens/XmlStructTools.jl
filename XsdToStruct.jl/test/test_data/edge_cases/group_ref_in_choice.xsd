@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:TestChoiceGroup="TestChoiceGroup" targetNamespace="TestChoiceGroup">
+
+<element name="document" type="TestChoiceGroup:documentType"/>
+
+<group name="TestGroup1">
+    <sequence>
+        <element name="Element_string" type="string"/>
+        <element name="Element_double" type="double"/>
+    </sequence>
+</group>
+
+<complexType name="documentType">
+    <choice>
+        <group ref="TestChoiceGroup:TestGroup1"/>
+        <element name="Element_boolean" type="boolean"/>
+    </choice>
+</complexType>
+
+</schema>
