@@ -133,6 +133,33 @@ Base.iterate(s::AbstractXSDString) = iterate(s.value)
 Base.isvalid(s::AbstractXSDString, i::Integer) = isvalid(s.value, i)
 
 """
+    AbstractXSDDateTime <: Dates.AbstractDateTime
+
+Must have a `value` field, an `__xml_attributes` field, and a __validated field.
+
+```jldoctest datetimetype
+import AbstractXsdTypes: AbstractXSDDateTime
+using Dates
+
+struct DateTimeType <: AbstractXSDDateTime
+    value::DateTime
+    __xml_attributes::Union{Nothing,Dict{String,String}}
+    __validated::Bool
+end
+
+xsd_datetime = DateTimeType(DateTime(2024, 1, 1), Dict("x" => "y"), true)
+show(xsd_datetime)
+
+# output
+
+Dates.DateTime("2024-01-01T00:00:00")
+```
+"""
+abstract type AbstractXSDDateTime <: Dates.AbstractDateTime end
+
+can_be_converted(from::Type{<:Dates.AbstractDateTime}, to::Type{<:AbstractXSDDateTime}) = true
+
+"""
     AbstractXSDComplex
 
 Abstract type used for complex XSD structs.
@@ -238,7 +265,7 @@ end
 
 # Collections of XSD types
 const AbstractXSDNumericTypes = Union{AbstractXSDFloat,AbstractXSDUnsigned,AbstractXSDSigned}
-const AbstractXSDSimpleTypes = Union{AbstractXSDNumericTypes,AbstractXSDString}
+const AbstractXSDSimpleTypes = Union{AbstractXSDNumericTypes,AbstractXSDString,AbstractXSDDateTime}
 const AbstractXSDSimpleUnionTypes = Union{AbstractXSDSimpleTypes,AbstractXSDUnion}
 const AbstractXSDAllTypes = Union{AbstractXSDSimpleTypes,AbstractXSDComplex,AbstractXSDUnion}
 

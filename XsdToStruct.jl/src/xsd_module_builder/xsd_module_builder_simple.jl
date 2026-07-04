@@ -58,7 +58,8 @@ const xsd_abstract_type_map = Dict((
 	AbstractFloat => "$ABSTRACT_TYPE_PACKAGE.AbstractXSDFloat",
 	Signed => "$ABSTRACT_TYPE_PACKAGE.AbstractXSDSigned",
 	Unsigned => "$ABSTRACT_TYPE_PACKAGE.AbstractXSDUnsigned",
-	AbstractString => "$ABSTRACT_TYPE_PACKAGE.AbstractXSDString"))
+	AbstractString => "$ABSTRACT_TYPE_PACKAGE.AbstractXSDString",
+	Dates.AbstractDateTime => "$ABSTRACT_TYPE_PACKAGE.AbstractXSDDateTime"))
 
 function get_supertype(type_string::AbstractString)
 	if type_string == "Union{ZonedDateTime, DateTime}"

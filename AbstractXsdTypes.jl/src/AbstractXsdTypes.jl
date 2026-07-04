@@ -2,6 +2,7 @@ module AbstractXsdTypes
 
 using Memoization
 using Format
+using Dates
 
 include("type_definitions.jl")
 include("construction_and_conversion_functions.jl")
