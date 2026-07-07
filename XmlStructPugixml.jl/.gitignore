@@ -1,0 +1,17 @@
+
+# Ignore everything
+*
+# But descend into directories
+!*/
+
+# Allow specific extensions
+!*.jl
+!*.md
+!*.cpp
+!*.hpp
+
+# Allow specific files
+!.gitignore
+!Project.toml
+!.JuliaFormatter.toml
+!LICENSE

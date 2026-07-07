@@ -1,0 +1,98 @@
+{
+  "basic_types/basic_types.xml": {
+    "median_s": 4.4143e-5,
+    "n": 35651,
+    "relsigma": 0.015200598056316988
+  },
+  "choice_element/choice_element_1.xml": {
+    "median_s": 2.5608000000000003e-5,
+    "n": 66355,
+    "relsigma": 0.013101374570446751
+  },
+  "choice_element/choice_element_2.xml": {
+    "median_s": 2.5258e-5,
+    "n": 63917,
+    "relsigma": 0.015262491091931266
+  },
+  "complex_content/complex_content.xml": {
+    "median_s": 6.5985e-5,
+    "n": 24735,
+    "relsigma": 0.01191937561567028
+  },
+  "date_formats/date_formats.xml": {
+    "median_s": 0.00010089,
+    "n": 17526,
+    "relsigma": 0.010630389533154923
+  },
+  "decimal_restrictions/decimal_restrictions.xml": {
+    "median_s": 2.2372000000000002e-5,
+    "n": 76762,
+    "relsigma": 0.015242267119613755
+  },
+  "group_element/group_element.xml": {
+    "median_s": 4.4974e-5,
+    "n": 36340,
+    "relsigma": 0.013919153288566737
+  },
+  "large_synthetic": {
+    "median_s": 0.456029823,
+    "n": 33,
+    "n_entries": 20000,
+    "relsigma": 0.1020593317643614
+  },
+  "list_content/list_content.xml": {
+    "median_s": 6.5313e-5,
+    "n": 27170,
+    "relsigma": 0.009584615620167455
+  },
+  "optional_elements/optional_elements_1.xml": {
+    "median_s": 3.9735000000000005e-5,
+    "n": 43201,
+    "relsigma": 0.011853529633824068
+  },
+  "optional_elements/optional_elements_2.xml": {
+    "median_s": 0.00018433700000000002,
+    "n": 9253,
+    "relsigma": 0.009105605494284928
+  },
+  "simple_content/simple_content.xml": {
+    "median_s": 8.76e-6,
+    "n": 64918,
+    "relsigma": 0.016038812785388098
+  },
+  "simple_types/simple_types_1.xml": {
+    "median_s": 3.4445e-5,
+    "n": 50600,
+    "relsigma": 0.011641747713746603
+  },
+  "simple_types/simple_types_2.xml": {
+    "median_s": 3.5868e-5,
+    "n": 44849,
+    "relsigma": 0.015515222482435611
+  },
+  "simple_types/simple_types_3.xml": {
+    "median_s": 3.6418e-5,
+    "n": 47966,
+    "relsigma": 0.01114833324180348
+  },
+  "stacked_simple_types/stacked_simple_types.xml": {
+    "median_s": 1.1276e-5,
+    "n": 75607,
+    "relsigma": 0.016206988293721185
+  },
+  "type_in_element/type_in_element.xml": {
+    "median_s": 2.5458000000000003e-5,
+    "n": 68186,
+    "relsigma": 0.01710660696048391
+  },
+  "type_in_type/type_in_type.xml": {
+    "median_s": 7.038300000000001e-5,
+    "n": 23953,
+    "relsigma": 0.010961453760140908
+  },
+  "type_ordering/type_ordering.xml": {
+    "median_s": 1.4031500000000001e-5,
+    "n": 61724,
+    "relsigma": 0.019456223497131497
+  }
+}

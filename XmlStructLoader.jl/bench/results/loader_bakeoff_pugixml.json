@@ -1,0 +1,98 @@
+{
+  "basic_types/basic_types.xml": {
+    "median_s": 3.9915e-5,
+    "n": 39763,
+    "relsigma": 0.013315796066641612
+  },
+  "choice_element/choice_element_1.xml": {
+    "median_s": 2.2593000000000002e-5,
+    "n": 69462,
+    "relsigma": 0.013079272340990532
+  },
+  "choice_element/choice_element_2.xml": {
+    "median_s": 2.2392000000000002e-5,
+    "n": 76238,
+    "relsigma": 0.01587620578778136
+  },
+  "complex_content/complex_content.xml": {
+    "median_s": 5.8671e-5,
+    "n": 30614,
+    "relsigma": 0.010499224489100217
+  },
+  "date_formats/date_formats.xml": {
+    "median_s": 9.6131e-5,
+    "n": 17406,
+    "relsigma": 0.010215227137967964
+  },
+  "decimal_restrictions/decimal_restrictions.xml": {
+    "median_s": 2.0138000000000003e-5,
+    "n": 85083,
+    "relsigma": 0.014425464296355148
+  },
+  "group_element/group_element.xml": {
+    "median_s": 3.8162000000000005e-5,
+    "n": 42731,
+    "relsigma": 0.011162936952989857
+  },
+  "large_synthetic": {
+    "median_s": 0.40059189500000003,
+    "n": 38,
+    "n_entries": 20000,
+    "relsigma": 0.08958264214257253
+  },
+  "list_content/list_content.xml": {
+    "median_s": 5.7498000000000004e-5,
+    "n": 30330,
+    "relsigma": 0.010887335211659544
+  },
+  "optional_elements/optional_elements_1.xml": {
+    "median_s": 3.6709000000000004e-5,
+    "n": 46510,
+    "relsigma": 0.011996376910294431
+  },
+  "optional_elements/optional_elements_2.xml": {
+    "median_s": 0.000170981,
+    "n": 10650,
+    "relsigma": 0.00817342277796945
+  },
+  "simple_content/simple_content.xml": {
+    "median_s": 7.524333333333334e-6,
+    "n": 68052,
+    "relsigma": 0.01685642138838433
+  },
+  "simple_types/simple_types_1.xml": {
+    "median_s": 3.0908e-5,
+    "n": 56258,
+    "relsigma": 0.012148958198524655
+  },
+  "simple_types/simple_types_2.xml": {
+    "median_s": 3.2131e-5,
+    "n": 50549,
+    "relsigma": 0.015141140954218651
+  },
+  "simple_types/simple_types_3.xml": {
+    "median_s": 3.2652000000000005e-5,
+    "n": 53162,
+    "relsigma": 0.011515374249663044
+  },
+  "stacked_simple_types/stacked_simple_types.xml": {
+    "median_s": 1.03245e-5,
+    "n": 77402,
+    "relsigma": 0.01479490532229167
+  },
+  "type_in_element/type_in_element.xml": {
+    "median_s": 2.2602e-5,
+    "n": 73872,
+    "relsigma": 0.01948942571453847
+  },
+  "type_in_type/type_in_type.xml": {
+    "median_s": 6.2377e-5,
+    "n": 27851,
+    "relsigma": 0.012448498645333936
+  },
+  "type_ordering/type_ordering.xml": {
+    "median_s": 1.2348000000000001e-5,
+    "n": 61492,
+    "relsigma": 0.01949708454810497
+  }
+}

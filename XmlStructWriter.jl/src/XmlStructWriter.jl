@@ -1,6 +1,6 @@
 module XmlStructWriter
 
-using LightXML
+import XmlStructPugixml
 using TimeZones
 using Printf
 using Format
@@ -74,18 +74,20 @@ function write_xml(xml_object, xml_path::AbstractString)::Nothing
     if !isdir(dirname(xml_path))
         mkpath(dirname(xml_path))
     end
-    xdoc = XMLDocument()
+    xdoc = XmlStructPugixml.new_doc()
 
     root_name = pop!(xml_object.__xml_attributes, "__root_name")
-    name_space_string = first((
-        key for
-        key in keys(xml_object.__xml_attributes) if occursin("xmlns", key) && !occursin(r"xmlns:xsi|xmlns:xsd", key)
-    ))
+    name_space_string = first(
+        (
+            key for
+                key in keys(xml_object.__xml_attributes) if occursin("xmlns", key) && !occursin(r"xmlns:xsi|xmlns:xsd", key)
+        )
+    )
     name_space = last(split(name_space_string, ":"))
-    root_element = create_xml_element(xml_object, "$name_space:$root_name")
+    create_xml_element(xml_object, "$name_space:$root_name", XmlStructPugixml.doc_as_node(xdoc))
 
-    set_root(xdoc, root_element)
-    save_file(xdoc, xml_path)
+    XmlStructPugixml.save_file(xdoc, xml_path)
+    XmlStructPugixml.free_doc(xdoc)
     xml_object.__xml_attributes["__root_name"] = root_name  # restore popped value
 
     return nothing
@@ -93,9 +95,17 @@ end
 
 const excluded_names = [:__xml_attributes, :__validated]
 
-function create_xml_element(xml_object::AbstractXsdTypes.AbstractXSDComplex, name::AbstractString)
+# pugixml only supports "append a child to an already-attached parent and get its handle back"
+# (unlike LightXML, which lets you build a detached xml_element and attach it to its parent
+# afterwards) - so every create_xml_element now takes the parent node handle and attaches to it
+# immediately, rather than returning a standalone element for the caller to attach.
+function create_xml_element(
+        xml_object::AbstractXsdTypes.AbstractXSDComplex,
+        name::AbstractString,
+        parent::Ptr{Cvoid},
+    )::Ptr{Cvoid}
     @debug "Creating XML element from complex struct $name"
-    xml_element = new_element(name)
+    xml_element = XmlStructPugixml.append_child_element(parent, name)
     xml_property_names = filter(name -> name ∉ excluded_names, Base.invokelatest(propertynames, xml_object))
     for property in xml_property_names
         property_value = Base.invokelatest(getproperty, xml_object, property)
@@ -105,13 +115,12 @@ function create_xml_element(xml_object::AbstractXsdTypes.AbstractXSDComplex, nam
     return xml_element
 end
 
-function add_child_element!(xml_element, property, value::Any)::Nothing
-    property_element = create_xml_element(value, string(property))
-    add_child(xml_element, property_element)
+function add_child_element!(xml_element::Ptr{Cvoid}, property, value::Any)::Nothing
+    create_xml_element(value, string(property), xml_element)
     return nothing
 end
 
-function add_child_element!(xml_element, property, value::AbstractVector)::Nothing
+function add_child_element!(xml_element::Ptr{Cvoid}, property, value::AbstractVector)::Nothing
     for sub_value in value
         add_child_element!(xml_element, property, sub_value)
     end
@@ -119,23 +128,25 @@ function add_child_element!(xml_element, property, value::AbstractVector)::Nothi
 end
 
 # nothing to do in this case
-add_child_element!(_, _, _::Nothing)::Nothing = nothing
+add_child_element!(::Ptr{Cvoid}, _, _::Nothing)::Nothing = nothing
 
-function create_xml_element(xml_object, name::AbstractString)
+function create_xml_element(xml_object, name::AbstractString, parent::Ptr{Cvoid})::Ptr{Cvoid}
     @debug "Creating XML element from $xml_object"
-    xml_element = new_element(name)
-    set_content(xml_element, generate_xml_string(xml_object))
+    xml_element = XmlStructPugixml.append_child_element(parent, name)
+    XmlStructPugixml.set_node_text(xml_element, generate_xml_string(xml_object))
     add_attributes!(xml_element, xml_object)
     return xml_element
 end
 
-function add_attributes!(xml_element, xml_object)::Nothing
+function add_attributes!(xml_element::Ptr{Cvoid}, xml_object)::Nothing
     if (
-        hasfield(typeof(xml_object), :__xml_attributes) &&
-        !isnothing(xml_object.__xml_attributes) &&
-        !isempty(xml_object.__xml_attributes)
-    )
-        set_attributes(xml_element, xml_object.__xml_attributes)
+            hasfield(typeof(xml_object), :__xml_attributes) &&
+                !isnothing(xml_object.__xml_attributes) &&
+                !isempty(xml_object.__xml_attributes)
+        )
+        for (key, value) in xml_object.__xml_attributes
+            XmlStructPugixml.append_attribute(xml_element, key, value)
+        end
     end
     return nothing
 end
@@ -149,11 +160,10 @@ function generate_xml_string(xml_object::AbstractXsdTypes.AbstractXSDFloat)::Str
     @debug "Generating XML string from $xml_object"
     if AbstractXsdTypes.fraction_digits_check in AbstractXsdTypes.get_restriction_checks(typeof(xml_object))
         max_fraction_digits = AbstractXsdTypes.get_max_fraction_digits(typeof(xml_object))
-        xml_object = cfmt("%.$(max_fraction_digits)f", xml_object)
+        return cfmt("%.$(max_fraction_digits)f", xml_object)
     else
-        xml_object = @sprintf("%f", xml_object)
+        return string(xml_object.value)
     end
-    return xml_object
 end
 
 @inline function generate_xml_string(xml_object::AbstractXsdTypes.AbstractXSDString)::String

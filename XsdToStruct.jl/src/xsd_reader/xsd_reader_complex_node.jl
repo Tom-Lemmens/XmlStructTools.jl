@@ -1,12 +1,11 @@
-
-function parse_extension(xsd_extension::XMLElement)::Tuple{String,Dict{String,String}}
-    extension_base_type = attribute(xsd_extension, "base")
-    extension_attributes = Dict{String,String}()
+function parse_extension(xsd_extension::XMLElement)::Tuple{String, Dict{String, String}}
+    extension_base_type = xsd_attribute(xsd_extension, "base")
+    extension_attributes = Dict{String, String}()
 
     # get added attributes
-    extension_attributes = Dict{String,String}()
-    for attribute_element in xsd_extension["attribute"]
-        merge!(extension_attributes, attributes_dict(attribute_element))
+    extension_attributes = Dict{String, String}()
+    for attribute_element in xsd_find_all_elements(xsd_extension, "attribute")
+        merge!(extension_attributes, xsd_attributes_dict(attribute_element))
     end
 
     return extension_base_type, extension_attributes
@@ -15,12 +14,12 @@ end
 function parse_simple_content(xsd_simple_content::XMLElement)::FieldData
 
     # We are either restricting or extending an existing simpleType
-    restriction_element = find_element(xsd_simple_content, "restriction")
+    restriction_element = xsd_find_element(xsd_simple_content, "restriction")
     if !isnothing(restriction_element)
         restrictions_dict = parse_restriction(restriction_element)
         @warn "parse_simple_content restriction is not yet fully implemented."
     else
-        extension_element = find_element(xsd_simple_content, "extension")
+        extension_element = xsd_find_element(xsd_simple_content, "extension")
         extension_base_type, attributes = parse_extension(extension_element)
         field = FieldData(name = "value", xsd_type = extension_base_type, xsd_attributes = attributes)
     end
@@ -29,7 +28,7 @@ function parse_simple_content(xsd_simple_content::XMLElement)::FieldData
 end
 
 function parse_complex_content!(complex_node::ComplexTreeNode, xsd_complex_content::XMLElement)::Nothing
-    xsd_content_name = LightXML.name(xsd_complex_content)
+    xsd_content_name = xsd_element_name(xsd_complex_content)
     @debug "Parsing complexContent element:\n$(xsd_content_name)"
 
     if xsd_content_name == "sequence"
@@ -40,6 +39,8 @@ function parse_complex_content!(complex_node::ComplexTreeNode, xsd_complex_conte
         parse_xsd_complex_content_group!(complex_node, xsd_complex_content)
     elseif xsd_content_name == "choice"
         parse_xsd_complex_content_choice!(complex_node, xsd_complex_content)
+    elseif xsd_content_name == "any"
+        parse_xsd_complex_content_any!(complex_node, xsd_complex_content)
     else
         @warn "Unhandled child:\n$(xsd_complex_content)"
     end
@@ -48,7 +49,7 @@ function parse_complex_content!(complex_node::ComplexTreeNode, xsd_complex_conte
 end
 
 function parse_xsd_complex_content_sequence!(complex_node::ComplexTreeNode, xsd_sequence::XMLElement)::Nothing
-    for child_element in child_elements(xsd_sequence)
+    for child_element in xsd_child_elements(xsd_sequence)
         parse_complex_content!(complex_node, child_element)
     end
 
@@ -56,7 +57,7 @@ function parse_xsd_complex_content_sequence!(complex_node::ComplexTreeNode, xsd_
 end
 
 function parse_xsd_complex_content_element!(complex_node::ComplexTreeNode, xsd_element::XMLElement)::Nothing
-    type_attribute = attribute(xsd_element, "type", required = false)
+    type_attribute = xsd_attribute(xsd_element, "type", required = false)
 
     if isnothing(type_attribute)
         # type defined locally inside element
@@ -74,8 +75,25 @@ function parse_xsd_complex_content_element!(complex_node::ComplexTreeNode, xsd_e
     return nothing
 end
 
+"""
+	parse_xsd_complex_content_any!(complex_node, xsd_any)
+
+xs:any is an XML Schema wildcard ("arbitrary content from any/other namespace goes here" -
+extensibility points like ISO 20022's SupplementaryData envelope use this). It has no name
+attribute and no fixed type, so there's no principled Julia type to generate for it - represented
+as a plain String field (raw, unvalidated) named "AnyContent" rather than left as a silently
+unhandled child, which used to leave the containing complexType (and anything depending on it)
+permanently unresolvable by the module builder's dependency loop.
+"""
+function parse_xsd_complex_content_any!(complex_node::ComplexTreeNode, ::XMLElement)::Nothing
+    field_data = FieldData(name = "AnyContent", xsd_type = "string")
+    push!(complex_node.fields, field_data)
+    push!(complex_node.field_ordering, field_data.name)
+    return nothing
+end
+
 function parse_xsd_complex_content_group!(complex_node::ComplexTreeNode, xsd_group::XMLElement)::Nothing
-    node_attributes = attributes_dict(xsd_group)
+    node_attributes = xsd_attributes_dict(xsd_group)
 
     group_name = pop!(node_attributes, "ref")
     group_name = last(split(group_name, ":"))  # group name without namespace
@@ -95,12 +113,12 @@ function parse_xsd_complex_content_choice!(complex_node::ComplexTreeNode, xsd_ch
 
     # create conflict free name for choice field
     n_choices = length(get_all_fields_of_type(complex_node, ChoiceFieldData))
-    field_name = "__$(choice_name)_choice_$(n_choices+1)"
+    field_name = "__$(choice_name)_choice_$(n_choices + 1)"
 
     # parse content of choice with a temporary complex node
     tmp_complex_node =
         ComplexTreeNode(common_data = CommonNodeData(name = choice_name, sub_module = sub_module_name(choice_name)))
-    for child_element in child_elements(xsd_choice)
+    for child_element in xsd_child_elements(xsd_choice)
         parse_complex_content!(tmp_complex_node, child_element)
     end
 
@@ -108,7 +126,7 @@ function parse_xsd_complex_content_choice!(complex_node::ComplexTreeNode, xsd_ch
     field = ChoiceFieldData(
         name = field_name,
         choice_options = get_all_fields(tmp_complex_node),
-        xsd_attributes = attributes_dict(xsd_choice),
+        xsd_attributes = xsd_attributes_dict(xsd_choice),
     )
 
     # update parent node
@@ -122,13 +140,13 @@ end
 
 function parse_complex_content_extension(common_data::CommonNodeData, xsd_extension::XMLElement)::ExtensionTreeNode
     extension_node = ComplexTreeNode(common_data = CommonNodeData(name = common_data.name * "_extension"))
-    complex_content = (child for child in child_elements(xsd_extension) if LightXML.name(child) != "annotation")
+    complex_content = (child for child in xsd_child_elements(xsd_extension) if xsd_element_name(child) != "annotation")
 
     if !isempty(complex_content)
         parse_complex_content!(extension_node, first(complex_content))  # complex_content should be unique
     end
 
-    xsd_attributes = attributes_dict(xsd_extension)
+    xsd_attributes = xsd_attributes_dict(xsd_extension)
     base_name = last(split(pop!(xsd_attributes, "base"), ":"))
     merge!(common_data.attributes, xsd_attributes)
 
@@ -136,11 +154,11 @@ function parse_complex_content_extension(common_data::CommonNodeData, xsd_extens
 end
 
 function parse_xsd_complex_type(
-    xsd_complex::XMLElement,
-    type_name::Union{Nothing,AbstractString} = nothing,
-    sub_module::Union{Nothing,AbstractString} = nothing,
-)::Union{ComplexTreeNode,SimpleTreeNode,ExtensionTreeNode}
-    node_attributes = attributes_dict(xsd_complex)
+        xsd_complex::XMLElement,
+        type_name::Union{Nothing, AbstractString} = nothing,
+        sub_module::Union{Nothing, AbstractString} = nothing,
+    )::Union{ComplexTreeNode, SimpleTreeNode, ExtensionTreeNode}
+    node_attributes = xsd_attributes_dict(xsd_complex)
     xsd_docstring = get_xsd_docstring(xsd_complex)
 
     # default to name attribute of the given xsd element
@@ -149,7 +167,7 @@ function parse_xsd_complex_type(
     end
 
     # Either we have simpleContent or complexContent, complexContent can be implicit
-    simple_content = find_element(xsd_complex, "simpleContent")
+    simple_content = xsd_find_element(xsd_complex, "simpleContent")
     if !isnothing(simple_content)
         field = parse_simple_content(simple_content)
         merge!(node_attributes, field.xsd_attributes)
@@ -173,12 +191,12 @@ function parse_xsd_complex_type(
         )
 
         # complexContent can be explicit or abbreviated
-        complex_content = find_element(xsd_complex, "complexContent")
+        complex_content = xsd_find_element(xsd_complex, "complexContent")
         if !isnothing(complex_content)
-            child_element = first(child_elements(complex_content))  # should only be one
-            if LightXML.name(child_element) == "extension"
+            child_element = first(xsd_child_elements(complex_content))  # should only be one
+            if xsd_element_name(child_element) == "extension"
                 parsed_node = parse_complex_content_extension(common_data, child_element)
-            elseif LightXML.name(child_element) == "restriction"
+            elseif xsd_element_name(child_element) == "restriction"
                 @warn "Parsing complexContent restrictions is not yet implemented"
                 parsed_node = ComplexTreeNode(common_data = common_data)
             end
@@ -187,7 +205,7 @@ function parse_xsd_complex_type(
             parsed_node = ComplexTreeNode(common_data = common_data)
 
             xsd_complex_children =
-                (child for child in child_elements(xsd_complex) if LightXML.name(child) != "annotation")
+                (child for child in xsd_child_elements(xsd_complex) if xsd_element_name(child) != "annotation")
             if !isempty(xsd_complex_children)
                 xsd_complex_content = first(xsd_complex_children)
                 parse_complex_content!(parsed_node, xsd_complex_content)

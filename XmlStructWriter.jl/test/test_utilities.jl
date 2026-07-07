@@ -1,4 +1,3 @@
-
 get_xsd_files(directory::AbstractString)::Vector{String} =
     [file_path for file_path in readdir(directory; join = true) if splitext(file_path) |> last == ".xsd"]
 
@@ -20,74 +19,78 @@ basename_startswith(file_path::AbstractString, start_string::AbstractString) =
 
 get_matching_xml_files(module_folder_path::AbstractString) = [
     file_path_i for file_path_i in readdir(dirname(module_folder_path); join = true) if (
-        endswith(file_path_i, ".xml") &&
-        basename_startswith(file_path_i, basename(module_folder_path)) &&
-        !occursin("_expected", basename(file_path_i))
-    )
+            endswith(file_path_i, ".xml") &&
+            basename_startswith(file_path_i, basename(module_folder_path)) &&
+            !occursin("_expected", basename(file_path_i))
+        )
 ]
 
 get_matching_expected_files(module_folder_path::AbstractString) = [
     file_path_i for file_path_i in readdir(dirname(module_folder_path); join = true) if (
-        endswith(file_path_i, ".xml") &&
-        basename_startswith(file_path_i, basename(module_folder_path)) &&
-        occursin("_expected", basename(file_path_i))
-    )
+            endswith(file_path_i, ".xml") &&
+            basename_startswith(file_path_i, basename(module_folder_path)) &&
+            occursin("_expected", basename(file_path_i))
+        )
 ]
 
 get_base_name_without_extension(file_path::AbstractString) = join(split(basename(file_path), ".")[1:(end - 1)], ".")
 
 get_test_files(data_dir) = [
     (file_path, zip(get_matching_xml_files(file_path), get_matching_expected_files(file_path))) for
-    file_path in readdir(data_dir; join = true) if isdir(file_path)
+        file_path in readdir(data_dir; join = true) if isdir(file_path)
 ]
 
 function compare_xml_files(file_path_1::AbstractString, file_path_2::AbstractString)::Bool
-    xml_doc_1 = parse_file(file_path_1)
-    root_1 = root(xml_doc_1)
+    xml_doc_1 = XmlStructPugixml.parse_file(file_path_1)
+    root_1 = XmlStructPugixml.root(xml_doc_1)
 
-    xml_doc_2 = parse_file(file_path_2)
-    root_2 = root(xml_doc_2)
+    xml_doc_2 = XmlStructPugixml.parse_file(file_path_2)
+    root_2 = XmlStructPugixml.root(xml_doc_2)
 
-    return compare_xml_elements(root_1, root_2)
+    result = compare_xml_elements(root_1, root_2)
+    XmlStructPugixml.free_doc(xml_doc_1)
+    XmlStructPugixml.free_doc(xml_doc_2)
+    return result
 end
 
-function compare_xml_elements(element_1::XMLElement, element_2::XMLElement)::Bool
-    if has_children(element_1)
+function compare_xml_elements(element_1::Ptr{Cvoid}, element_2::Ptr{Cvoid})::Bool
+    if XmlStructPugixml.has_element_children(element_1)
         # compare all children
-        child_iterator_1 = collect(child_elements(element_1))
+        child_iterator_1 = XmlStructPugixml.element_children(element_1)
         n_children_1 = length(child_iterator_1)
-        child_iterator_2 = collect(child_elements(element_2))
+        child_iterator_2 = XmlStructPugixml.element_children(element_2)
         n_children_2 = length(child_iterator_2)
 
         if n_children_1 != n_children_2
             if n_children_1 < n_children_2
-                @info "Amount of children of $(name(element_1)) are different, first file has less children"
+                @info "Amount of children of $(XmlStructPugixml.node_name(element_1)) are different, first file has less children"
                 return false
             else
-                @info "Amount of children of $(name(element_1)) are different, second file has less children"
+                @info "Amount of children of $(XmlStructPugixml.node_name(element_1)) are different, second file has less children"
                 return false
             end
         end
 
         for (child_1, child_2) in zip(child_iterator_1, child_iterator_2)
             if !compare_xml_elements(child_1, child_2)
-                @info "Children of $(name(element_1)) are different"
+                @info "Children of $(XmlStructPugixml.node_name(element_1)) are different"
                 return false
             end
         end
     else
-        # compare content
-        if content(element_1) != content(element_2)
-            @info "Content of $(name(element_1)) is different"
+        # compare content (stripped: indentation whitespace around a leaf value is not
+        # semantically significant, and the writer never emits any)
+        if strip(XmlStructPugixml.node_text(element_1)) != strip(XmlStructPugixml.node_text(element_2))
+            @info "Content of $(XmlStructPugixml.node_name(element_1)) is different"
             return false
         end
     end
 
     # compare all attributes
-    attributes_1 = attributes_dict(element_1)
-    attributes_2 = attributes_dict(element_2)
+    attributes_1 = XmlStructPugixml.each_attribute(element_1)
+    attributes_2 = XmlStructPugixml.each_attribute(element_2)
     if attributes_1 != attributes_2
-        @info "Attributes of $(name(element_1)) are different"
+        @info "Attributes of $(XmlStructPugixml.node_name(element_1)) are different"
         return false
     end
 

@@ -1,4 +1,4 @@
-module xsd_struct
+module DocumentationExample_struct
 
 import AbstractXsdTypes
 

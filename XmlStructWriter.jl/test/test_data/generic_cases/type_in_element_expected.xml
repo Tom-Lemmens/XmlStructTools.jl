@@ -4,7 +4,7 @@
     <TestSimple2>Z2ZZ</TestSimple2>
     <TestComplex1>
         <Element_string>OOO</Element_string>
-        <Element_double>548</Element_double>
+        <Element_double>548.0</Element_double>
         <Element_boolean>true</Element_boolean>
     </TestComplex1>
     <TestComplex2 extended_simple="extend">UYTY</TestComplex2>

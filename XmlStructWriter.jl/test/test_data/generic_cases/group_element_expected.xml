@@ -12,7 +12,7 @@
         <Element_boolean>true</Element_boolean>
         <Element_boolean_second>false</Element_boolean_second>
         <Element_string_2>uuiu</Element_string_2>
-        <Element_double_2>10</Element_double_2>
+        <Element_double_2>10.0</Element_double_2>
         <Element_boolean_2>true</Element_boolean_2>
     </TestElement2>
     <TestElement3>

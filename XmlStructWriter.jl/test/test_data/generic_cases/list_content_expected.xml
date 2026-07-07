@@ -2,8 +2,8 @@
 
 <TestList:document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="TestList list_content.xsd" xmlns:TestList="TestList">
     <TestElement1>
-        <Element_list_double>55</Element_list_double>
-        <Element_list_double>78787</Element_list_double>
+        <Element_list_double>55.0</Element_list_double>
+        <Element_list_double>78787.0</Element_list_double>
     </TestElement1>
     <TestElement2>
         <Element_list_string>55</Element_list_string>

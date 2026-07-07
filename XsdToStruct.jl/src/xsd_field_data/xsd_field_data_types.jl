@@ -1,29 +1,28 @@
-
 abstract type AbstractFieldData end
 
 has_datetime(field::AbstractFieldData)::Bool = false
 
-const OptionalDictStringString = Union{Nothing,Dict{<:AbstractString,<:AbstractString}}
+const OptionalDictStringString = Union{Nothing, Dict{<:AbstractString, <:AbstractString}}
 
 Base.@kwdef mutable struct FieldData <: AbstractFieldData
     name::String
     xsd_type::String
     julia_type::String = parse_xsd_type_to_julia_type(xsd_type)
     xsd_attributes::OptionalDictStringString = nothing
-    sub_module::Union{Nothing,AbstractString} = nothing
+    sub_module::Union{Nothing, AbstractString} = nothing
     is_vector::Bool = is_vector(xsd_attributes)
     base_default_value = get_default_value(xsd_attributes)
     can_be_missing = can_be_missing(xsd_attributes)
 end
 
-has_datetime(field::FieldData)::Bool = field.xsd_type == "dateTime"
+has_datetime(field::FieldData)::Bool = last(split(field.xsd_type, ":")) == "dateTime"
 
 Base.@kwdef mutable struct ChoiceFieldData <: AbstractFieldData
     name::String
     choice_options::Vector{FieldData}
     julia_type::String = choice_julia_type(choice_options)
     xsd_attributes::OptionalDictStringString = nothing
-    sub_module::Union{Nothing,AbstractString} = nothing
+    sub_module::Union{Nothing, AbstractString} = nothing
     is_vector::Bool = is_vector(xsd_attributes)
     base_default_value = get_default_value(xsd_attributes)
     can_be_missing = can_be_missing(xsd_attributes)
@@ -59,7 +58,7 @@ This will include the xsd namespace explicitly if it was given in the xsd.
 If the qualified name relative to the xsd namespace is needed add the xsd namespace as a string as the second
 argument.
 """
-function qualified_type(field_data::Union{FieldData,ChoiceFieldData})::String
+function qualified_type(field_data::Union{FieldData, ChoiceFieldData})::String
 
     # not specified or edge case
     if isnothing(field_data.sub_module)
@@ -80,7 +79,7 @@ end
 Return the qualified type name for the given field_data relative to the namespace defined by the xsd.
 Hence if any leading xsd namespace part is present in the qualified type name it will be removed.
 """
-function qualified_type(field_data::Union{FieldData,ChoiceFieldData}, xsd_namespace::AbstractString)::String
+function qualified_type(field_data::Union{FieldData, ChoiceFieldData}, xsd_namespace::AbstractString)::String
 
     # not specified or edge case
     if isnothing(field_data.sub_module) || endswith(field_data.sub_module, xsd_namespace)

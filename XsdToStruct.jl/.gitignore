@@ -10,6 +10,8 @@
 
 # Allow specific directories
 !test/test_data/**
+!bench/fixtures/**
+!bench/results/**
 
 # Allow specific files
 !.gitignore

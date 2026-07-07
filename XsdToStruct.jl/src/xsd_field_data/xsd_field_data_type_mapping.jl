@@ -1,4 +1,3 @@
-
 optional_type_string(type_string::AbstractString)::String = "Union{$type_string, Nothing}"
 
 named_tuple_field_names(field_data_vector::Vector{AbstractFieldData})::String =
@@ -14,17 +13,25 @@ function choice_julia_type(field_data_vector::Vector{AbstractFieldData})::String
 end
 
 # TODO: Better match for decimal?
-const built_in_data_type_dict = Dict([
-    ("string", "String"),
-    ("double", "Float64"),
-    ("boolean", "Bool"),
-    ("dateTime", "Union{ZonedDateTime, DateTime}"),
-    ("integer", "Int64"),
-    ("int", "Int64"),
-    ("nonNegativeInteger", "UInt64"),
-    ("positiveInteger", "UInt64"),
-    ("decimal", "Float64"),
-])
+const built_in_data_type_dict = Dict(
+    [
+        ("string", "String"),
+        ("double", "Float64"),
+        ("boolean", "Bool"),
+        ("dateTime", "Union{ZonedDateTime, DateTime}"),
+        ("date", "Date"),
+        ("time", "Time"),
+        ("integer", "Int64"),
+        ("int", "Int64"),
+        ("nonNegativeInteger", "UInt64"),
+        ("positiveInteger", "UInt64"),
+        ("decimal", "Float64"),
+        # Raw, undecoded: this package does no base64 codec work anywhere else either (matches the
+        # same pragmatic choice already made for xs:any wildcard content - see
+        # parse_xsd_complex_content_any!).
+        ("base64Binary", "String"),
+    ]
+)
 get_julia_type(type_name::AbstractString)::String = get(built_in_data_type_dict, type_name, type_name)
 
 # TODO:for now ignore namespace stuff
@@ -43,7 +50,7 @@ function is_vector(xsd_attributes::OptionalDictStringString)::Bool
 end
 
 (
-    get_default_value(xsd_attributes::OptionalDictStringString)::Union{Nothing,Any} =
+    get_default_value(xsd_attributes::OptionalDictStringString)::Union{Nothing, Any} =
         return !isnothing(xsd_attributes) && haskey(xsd_attributes, "default") ? xsd_attributes["default"] : nothing
 )
 

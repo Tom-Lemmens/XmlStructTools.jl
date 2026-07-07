@@ -1,0 +1,36 @@
+{
+  "basic_types": {
+    "load_by_path": {
+      "median_s": 0.000820568,
+      "n": 2216,
+      "relsigma": 0.020849734574099887
+    },
+    "load_by_ref": {
+      "median_s": 0.000776023,
+      "n": 2315,
+      "relsigma": 0.019262315678787844
+    },
+    "peek": {
+      "median_s": 2.4887e-5,
+      "n": 65373,
+      "relsigma": 0.046891951621328434
+    }
+  },
+  "large_synthetic": {
+    "load_by_path": {
+      "median_s": 0.735176538,
+      "n": 3,
+      "relsigma": 0.005679680368145804
+    },
+    "load_by_ref": {
+      "median_s": 0.729689444,
+      "n": 3,
+      "relsigma": 0.006204510065517745
+    },
+    "peek": {
+      "median_s": 2.621e-5,
+      "n": 65411,
+      "relsigma": 0.04471575734452499
+    }
+  }
+}

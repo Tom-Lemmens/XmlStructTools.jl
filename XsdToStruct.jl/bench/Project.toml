@@ -1,0 +1,8 @@
+[deps]
+AbstractXsdTypes = "894546dd-dc3f-42e8-9b69-a7785ccf72be"
+Chairmarks = "0ca39b1e-fe0b-4e98-acfc-b1656634c4de"
+JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
+XsdToStruct = "3ae7ce5f-3138-4ab9-addd-ceedf56009da"
+
+[compat]
+JSON = "1.6"

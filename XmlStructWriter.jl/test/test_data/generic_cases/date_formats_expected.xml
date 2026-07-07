@@ -4,21 +4,21 @@
     <TestElement1>
         <Element_dateTime>2022-05-10T10:22:49.152+01:00</Element_dateTime>
         <Element_dateTime>2022-05-10T10:22:49.152-01:00</Element_dateTime>
-        <Element_dateTime>2022-05-10T10:22:49.152Z</Element_dateTime>
+        <Element_dateTime>2022-05-10T10:22:49.152+00:00</Element_dateTime>
         <Element_dateTime>2022-05-10T10:22:49.152</Element_dateTime>
-        <Element_dateTime>2022-05-10T10:22:49.152555</Element_dateTime>
-        <Element_dateTime>2022-05-10T10:22:49.15255</Element_dateTime>
-        <Element_dateTime>2022-05-10T10:22:49.1525575</Element_dateTime>
-        <Element_dateTime>2022-05-10T10:22:49.1+01:00</Element_dateTime>
-        <Element_dateTime>2022-05-10T10:22:49.1-01:00</Element_dateTime>
-        <Element_dateTime>2022-05-10T10:22:49.1Z</Element_dateTime>
+        <Element_dateTime>2022-05-10T10:22:49.152</Element_dateTime>
+        <Element_dateTime>2022-05-10T10:22:49.152</Element_dateTime>
+        <Element_dateTime>2022-05-10T10:22:49.152</Element_dateTime>
+        <Element_dateTime>2022-05-10T10:22:49.100+01:00</Element_dateTime>
+        <Element_dateTime>2022-05-10T10:22:49.100-01:00</Element_dateTime>
+        <Element_dateTime>2022-05-10T10:22:49.100+00:00</Element_dateTime>
         <Element_dateTime>2022-05-10T10:22:49+01:00</Element_dateTime>
         <Element_dateTime>2022-05-10T10:22:49-01:00</Element_dateTime>
-        <Element_dateTime>2022-05-10T10:22:49Z</Element_dateTime>
+        <Element_dateTime>2022-05-10T10:22:49+00:00</Element_dateTime>
         <Element_dateTime>2022-05-10T10:22:49</Element_dateTime>
-        <Element_dateTime>2022-05-10T10:22:49.1525575+01:00</Element_dateTime>
-        <Element_dateTime>2022-05-10T10:22:49.1525575-01:00</Element_dateTime>
-        <Element_dateTime>2022-05-10T10:22:49.1525575Z</Element_dateTime>
+        <Element_dateTime>2022-05-10T10:22:49.152+01:00</Element_dateTime>
+        <Element_dateTime>2022-05-10T10:22:49.152-01:00</Element_dateTime>
+        <Element_dateTime>2022-05-10T10:22:49.152+00:00</Element_dateTime>
     </TestElement1>
 
 </TestDateFormats:document>

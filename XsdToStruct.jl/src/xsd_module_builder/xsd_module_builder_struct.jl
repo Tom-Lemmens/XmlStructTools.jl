@@ -1,4 +1,3 @@
-
 include("xsd_module_builder_simple.jl")
 include("xsd_module_builder_union.jl")
 
@@ -34,7 +33,7 @@ function write_struct_module_to_io(xsd_module_builder::XSDStructModuleBuilderTyp
 
         loops += 1
         missing_nodes = length(xsd_module_builder.skipped_nodes)
-        @info "Loops over skipped nodes =  $loops, $missing_nodes nodes still missing."
+        @debug "Loops over skipped nodes =  $loops, $missing_nodes nodes still missing."
 
         @debug "Defined node names:\n$(defined_node_names(xsd_module_builder))"
         @debug "Skipped node names:\n$(skipped_node_names(xsd_module_builder))"
@@ -46,7 +45,7 @@ function write_struct_module_to_io(xsd_module_builder::XSDStructModuleBuilderTyp
         elseif missing_nodes > previous_missing_nodes
             error(
                 "Amount of missing nodes has increased from $previous_missing_nodes to $missing_nodes;" *
-                "something is wrong, stopping here.",
+                    "something is wrong, stopping here.",
             )
         end
 
@@ -59,10 +58,10 @@ function write_struct_module_to_io(xsd_module_builder::XSDStructModuleBuilderTyp
 end
 
 function write_node_specific(
-    xsd_node::ComplexTreeNode,
-    xsd_module_builder::XSDStructModuleBuilderType,
-    indent_level::Int,
-)::Bool
+        xsd_node::ComplexTreeNode,
+        xsd_module_builder::XSDStructModuleBuilderType,
+        indent_level::Int,
+    )::Bool
     @debug "Writing as $(ComplexTreeNode)"
 
     undefined_child_nodes =
@@ -92,11 +91,11 @@ function write_node_specific(
 end
 
 function write_child_submodule(
-    sub_module_name::AbstractString,
-    sub_module_nodes::Vector{AbstractTreeNode},
-    xsd_module_builder::XSDStructModuleBuilderType;
-    indent_level::Int,
-)::Nothing
+        sub_module_name::AbstractString,
+        sub_module_nodes::Vector{AbstractTreeNode},
+        xsd_module_builder::XSDStructModuleBuilderType;
+        indent_level::Int,
+    )::Nothing
     @debug "Writing submodule $(sub_module_name) for nodes:\n$(name.(sub_module_nodes))"
 
     writeln(xsd_module_builder, IOStruct, "module $(sub_module_name)", indent_level = indent_level)
@@ -132,10 +131,10 @@ function write_child_submodule(
 end
 
 function write_node_no_choice(
-    xsd_node::ComplexTreeNode,
-    xsd_module_builder::XSDStructModuleBuilderType,
-    indent_level::Int,
-)
+        xsd_node::ComplexTreeNode,
+        xsd_module_builder::XSDStructModuleBuilderType,
+        indent_level::Int,
+    )
     @debug "writing with no choice fields"
 
     writeln(
@@ -167,11 +166,11 @@ function write_node_no_choice(
 end
 
 function write_node_with_choice(
-    xsd_node::ComplexTreeNode,
-    choice_fields::Vector{ChoiceFieldData},
-    xsd_module_builder::XSDStructModuleBuilderType,
-    indent_level::Int,
-)::Nothing
+        xsd_node::ComplexTreeNode,
+        choice_fields::Vector{ChoiceFieldData},
+        xsd_module_builder::XSDStructModuleBuilderType,
+        indent_level::Int,
+    )::Nothing
     @debug "writing with choice fields"
 
     field_strings = Vector{String}()
@@ -206,18 +205,18 @@ function write_node_with_choice(
     # Write additional method overrides for choice fields
     write_choice_outer_constructor(xsd_node, field_strings, choice_fields, xsd_module_builder, indent_level)
     writeln(xsd_module_builder, IOStruct)
-    write_choice_properties(name(xsd_node), choice_fields, xsd_module_builder, indent_level)
+    write_choice_properties(name(xsd_node), all_fields, choice_fields, xsd_module_builder, indent_level)
 
     return nothing
 end
 
 function write_choice_outer_constructor(
-    xsd_node::ComplexTreeNode,
-    field_strings::Vector{String},
-    choice_fields::Vector{ChoiceFieldData},
-    xsd_module_builder::XSDStructModuleBuilderType,
-    indent_level::Int,
-)::Nothing
+        xsd_node::ComplexTreeNode,
+        field_strings::Vector{String},
+        choice_fields::Vector{ChoiceFieldData},
+        xsd_module_builder::XSDStructModuleBuilderType,
+        indent_level::Int,
+    )::Nothing
 
     # print function signature
     writeln(xsd_module_builder, IOStruct, "function $(name(xsd_node))(;", indent_level = indent_level)
@@ -274,10 +273,10 @@ function inner_constructor_arguments(fields::Vector{AbstractFieldData}, field_st
 end
 
 function write_choice_checks(
-    choice_fields::Vector{ChoiceFieldData},
-    xsd_module_builder::XSDStructModuleBuilderType,
-    indent_level::Int,
-)::Nothing
+        choice_fields::Vector{ChoiceFieldData},
+        xsd_module_builder::XSDStructModuleBuilderType,
+        indent_level::Int,
+    )::Nothing
     choice_fields_copy = deepcopy(choice_fields)
     choice_field = popfirst!(choice_fields_copy)
     choice_names = [choice.name for choice in choice_field.choice_options]
@@ -342,27 +341,34 @@ function constructor_arguments_string(fields::Vector{AbstractFieldData})::String
 end
 
 function write_choice_properties(
-    parent_name::AbstractString,
-    choice_fields::Vector{ChoiceFieldData},
-    xsd_module_builder::XSDStructModuleBuilderType,
-    indent_level::Int,
-)
-    full_field_names_list =
-        [":" * field.name for choice_field in choice_fields for field in choice_field.choice_options]
+        parent_name::AbstractString,
+        all_fields::Vector{<:AbstractFieldData},
+        choice_fields::Vector{ChoiceFieldData},
+        xsd_module_builder::XSDStructModuleBuilderType,
+        indent_level::Int,
+    )
+    # Build the property list in true document order: a plain field contributes its own name, a
+    # choice field is expanded in-place into its options' names - not filtered out then appended
+    # at the end, which would silently reorder every field that followed a choice in the schema.
+    full_field_names_list = String[]
+    for field in all_fields
+        if field isa ChoiceFieldData
+            for choice in field.choice_options
+                push!(full_field_names_list, ":" * choice.name)
+            end
+        else
+            push!(full_field_names_list, ":" * field.name)
+        end
+    end
+    push!(full_field_names_list, ":__xml_attributes")
+    push!(full_field_names_list, ":__validated")
 
     writeln(
         xsd_module_builder,
         IOStruct,
-        "Base.propertynames(x::$parent_name, private::Bool=false) = Tuple(append!(",
+        "Base.propertynames(x::$parent_name, private::Bool=false) = ($(join(full_field_names_list, ", ")),)",
         indent_level = indent_level,
     )
-    writeln(
-        xsd_module_builder,
-        IOStruct,
-        "filter(s->!startswith(String(s), \"__$parent_name\"), collect(fieldnames($parent_name))),",
-        indent_level = indent_level + 1,
-    )
-    writeln(xsd_module_builder, IOStruct, "[$(join(full_field_names_list, ", "))]))", indent_level = indent_level + 1)
 
     choice_fields_tmp = deepcopy(choice_fields)
 
@@ -435,9 +441,9 @@ function generate_field_string(field_data::AbstractFieldData)::String
 end
 
 function generate_defaults_string(
-    field_data::AbstractFieldData,
-    xsd_module_builder::XSDStructModuleBuilderType,
-)::Union{Nothing,String}
+        field_data::AbstractFieldData,
+        xsd_module_builder::XSDStructModuleBuilderType,
+    )::Union{Nothing, String}
     full_field_type = qualified_type(field_data)
 
     # handle default values
@@ -469,7 +475,7 @@ const timezone_regex = r"((\+|-)\d\d:\d\d)|Z"
 function construct_time_default_value(default_value::AbstractString)::String
     timezone_match = match(timezone_regex, default_value)
     is_not_timezone_string = isnothing(timezone_match)
-    if is_not_timezone_string
+    return if is_not_timezone_string
         defaults_value = "DateTime(\"$default_value\")"
     else
         defaults_value = "ZonedDateTime(\"$default_value\", \"yyyy-mm-ddTHH:MM:SSzzzzzz\")"
@@ -477,11 +483,11 @@ function construct_time_default_value(default_value::AbstractString)::String
 end
 
 function write_defaults_function(
-    xsd_module_builder::XSDStructModuleBuilderType,
-    struct_name::AbstractString,
-    all_fields::Vector{AbstractFieldData};
-    indent_level::Int,
-)::Nothing
+        xsd_module_builder::XSDStructModuleBuilderType,
+        struct_name::AbstractString,
+        all_fields::Vector{AbstractFieldData};
+        indent_level::Int,
+    )::Nothing
     function_signature = "AbstractXsdTypes.defaults(::Type{$struct_name})"
 
     default_strings = String[]
@@ -506,10 +512,10 @@ function write_defaults_function(
 end
 
 function write_node_specific(
-    xsd_node::ExtensionTreeNode,
-    xsd_module_builder::XSDStructModuleBuilderType,
-    indent_level::Int = 1,
-)::Bool
+        xsd_node::ExtensionTreeNode,
+        xsd_module_builder::XSDStructModuleBuilderType,
+        indent_level::Int = 1,
+    )::Bool
     @debug "Writing as $(ExtensionTreeNode)"
 
     xsd_own_node = xsd_node.node_content
@@ -555,11 +561,11 @@ function write_node_specific(
 end
 
 function write_node(
-    xsd_node::AbstractTreeNode,
-    xsd_module_builder::XSDStructModuleBuilderType;
-    export_line::Bool = true,
-    indent_level::Int = 0,
-)::Nothing
+        xsd_node::AbstractTreeNode,
+        xsd_module_builder::XSDStructModuleBuilderType;
+        export_line::Bool = true,
+        indent_level::Int = 0,
+    )::Nothing
 
     # nothing to do if already defined
     if qualified_name(xsd_node) in defined_node_names(xsd_module_builder)
@@ -591,10 +597,10 @@ function write_export(xsd_node::AbstractTreeNode, xsd_module_builder::XSDStructM
 end
 
 function write_docstring(
-    xsd_node::AbstractTreeNode,
-    xsd_module_builder::XSDStructModuleBuilderType,
-    indent_level::Int,
-)::Nothing
+        xsd_node::AbstractTreeNode,
+        xsd_module_builder::XSDStructModuleBuilderType,
+        indent_level::Int,
+    )::Nothing
     docstring = xsd_docstring(xsd_node)
     if !isnothing(docstring)
         writeln(xsd_module_builder, IOStruct, "\"\"\"", indent_level = indent_level)

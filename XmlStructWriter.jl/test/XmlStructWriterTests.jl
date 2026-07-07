@@ -5,7 +5,7 @@ using Logging
 using XmlStructLoader
 using XmlStructWriter
 using XsdToStruct
-using LightXML
+import XmlStructPugixml
 
 include("test_utilities.jl")
 include("test_xml_writing.jl")

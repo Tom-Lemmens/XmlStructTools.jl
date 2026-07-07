@@ -4,14 +4,14 @@
     <TestElement1>
         <Element_string>yuyuyuyu</Element_string>
         <Element_double>100.22</Element_double>
-        <Element_simple1>10</Element_simple1>
+        <Element_simple1>10.0</Element_simple1>
         <Element_simple2>TTTT</Element_simple2>
     </TestElement1>
 
     <TestElement2>
         <Element_string>yiiiiiu</Element_string>
         <Element_double>550.22</Element_double>
-        <Element_simple1>70</Element_simple1>
+        <Element_simple1>70.0</Element_simple1>
         <Element_simple2>YUYU</Element_simple2>
     </TestElement2>
 

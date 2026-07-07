@@ -30,9 +30,7 @@ function TestComplexType1(;
     end
 end
 
-Base.propertynames(x::TestComplexType1, private::Bool=false) = Tuple(append!(
-    filter(s->!startswith(String(s), "__TestComplexType1"), collect(fieldnames(TestComplexType1))),
-    [:choice1, :choice2]))
+Base.propertynames(x::TestComplexType1, private::Bool=false) = (:element1, :choice1, :choice2, :element2, :__xml_attributes, :__validated,)
 function Base.getproperty(x::TestComplexType1, s::Symbol)
     if s in [:choice1, :choice2]
         return getfield(getfield(x, Symbol("__TestComplexType1_choice_1")), s)
@@ -95,9 +93,7 @@ function TestComplexType2(;
     end
 end
 
-Base.propertynames(x::TestComplexType2, private::Bool=false) = Tuple(append!(
-    filter(s->!startswith(String(s), "__TestComplexType2"), collect(fieldnames(TestComplexType2))),
-    [:choice1, :choice2, :choice3]))
+Base.propertynames(x::TestComplexType2, private::Bool=false) = (:choice1, :choice2, :choice3, :__xml_attributes, :__validated,)
 function Base.getproperty(x::TestComplexType2, s::Symbol)
     if s in [:choice1, :choice2, :choice3]
         return getfield(getfield(x, Symbol("__TestComplexType2_choice_1")), s)
@@ -135,9 +131,7 @@ function TestComplexType5(;
     end
 end
 
-Base.propertynames(x::TestComplexType5, private::Bool=false) = Tuple(append!(
-    filter(s->!startswith(String(s), "__TestComplexType5"), collect(fieldnames(TestComplexType5))),
-    [:choice1, :choice2, :choice3, :choice4]))
+Base.propertynames(x::TestComplexType5, private::Bool=false) = (:choice1, :choice2, :choice3, :choice4, :__xml_attributes, :__validated,)
 function Base.getproperty(x::TestComplexType5, s::Symbol)
     if s in [:choice1, :choice2]
         return getfield(getfield(x, Symbol("__TestComplexType5_choice_1")), s)

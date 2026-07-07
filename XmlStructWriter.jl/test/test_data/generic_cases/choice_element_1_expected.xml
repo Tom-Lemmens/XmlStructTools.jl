@@ -10,7 +10,7 @@
         <choice3>E2R3</choice3>
     </TestElement2>
     <TestElement5>
-        <choice2>20</choice2>
+        <choice2>20.0</choice2>
         <choice4>55.6</choice4>
     </TestElement5>
 </TestChoice:document>

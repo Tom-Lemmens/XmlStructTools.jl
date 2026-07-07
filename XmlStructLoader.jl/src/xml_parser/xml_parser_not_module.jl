@@ -7,12 +7,12 @@ function _parse_xml_node_not_module(node::XmlStructLoaderNode, module_ref::Modul
 end
 
 function parse_xml_node_not_module(
-    @nospecialize(xml_node::UnifiedXMLElement),
-    ::Type{T},
-    module_ref::Module,
-    validate::Bool,
-    default_value::Union{Nothing,S},
-)::Union{Nothing,T} where {T<:Number,S<:Number}
+        @nospecialize(xml_node::UnifiedXMLElement),
+        ::Type{T},
+        module_ref::Module,
+        validate::Bool,
+        default_value::Union{Nothing, S},
+    )::Union{Nothing, T} where {T <: Number, S <: Number}
     content_string = content(xml_node)
 
     if content_string == ""
@@ -23,12 +23,12 @@ function parse_xml_node_not_module(
 end
 
 function parse_xml_node_not_module(
-    xml_node::UnifiedXMLElement,
-    ::Type{T},
-    module_ref::Module,
-    validate::Bool,
-    default_value,
-)::T where {T<:AbstractString}
+        xml_node::UnifiedXMLElement,
+        ::Type{T},
+        module_ref::Module,
+        validate::Bool,
+        default_value,
+    )::T where {T <: AbstractString}
     content_string = content(xml_node) # for strings we need the raw content
     if !isnothing(default_value) && isempty(content_string)
         return T(default_value)
@@ -38,12 +38,12 @@ function parse_xml_node_not_module(
 end
 
 function parse_xml_node_not_module(
-    xml_node::UnifiedXMLElement,
-    ::Type{<:Union{DateTime,ZonedDateTime}},
-    module_ref::Module,
-    validate::Bool,
-    default_value::Union{Nothing,DateTime,ZonedDateTime},
-)::Union{Nothing,DateTime,ZonedDateTime}
+        xml_node::UnifiedXMLElement,
+        ::Type{<:Union{DateTime, ZonedDateTime}},
+        module_ref::Module,
+        validate::Bool,
+        default_value::Union{Nothing, DateTime, ZonedDateTime},
+    )::Union{Nothing, DateTime, ZonedDateTime}
     content_string = get_node_content(xml_node)
 
     if isempty(content_string)
@@ -53,11 +53,31 @@ function parse_xml_node_not_module(
     end
 end
 
+# xs:date/xs:time (e.g. ISO 20022's own "ISODate"/"ISOTime" simpleTypes) - unlike dateTime,
+# Julia's Date/Time have no timezone-aware counterpart to choose between, so this is simpler than
+# parse_xml_date: strip an optional trailing timezone suffix (same lexical form dateTime allows)
+# and parse directly, since Date/Time can't represent an offset anyway.
+function parse_xml_node_not_module(
+        xml_node::UnifiedXMLElement,
+        ::Type{T},
+        module_ref::Module,
+        validate::Bool,
+        default_value::Union{Nothing, T},
+    )::Union{Nothing, T} where {T <: Union{Date, Time}}
+    content_string = get_node_content(xml_node)
+
+    if isempty(content_string)
+        return default_value
+    else
+        return T(replace(content_string, timezone_regex => ""))
+    end
+end
+
 # Regex inspired by section 3.2.7.3 Timezones of
 # https://www.w3.org/TR/2004/REC-xmlschema-2-20041028/datatypes.html#dateTime
 const timezone_regex = r"((\+|-)\d\d:\d\d)|Z"
 const formatting_strings = map(s -> "yyyy-mm-ddTHH:MM:SS$(s)zzzzzz", ["", ".s", ".ss", ".sss"])
-function parse_xml_date(date_string::AbstractString)::Union{DateTime,ZonedDateTime}
+function parse_xml_date(date_string::AbstractString)::Union{DateTime, ZonedDateTime}
     timezone_match = match(timezone_regex, date_string)
     is_not_timezone_string = isnothing(timezone_match)
 
@@ -75,7 +95,7 @@ end
 # Regex inspired by section 3.2.7.1 Lexical representation of
 # https://www.w3.org/TR/2004/REC-xmlschema-2-20041028/datatypes.html#dateTime
 const seconds_after_period_regex = r"^(-?\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.?)(\d*)(.*)$"
-@inline function truncate_seconds(date_string::AbstractString)::Tuple{String,Int}
+@inline function truncate_seconds(date_string::AbstractString)::Tuple{String, Int}
     # Check the amount of seconds after the decimal point and truncate to three digits.
     # Also throw a warning if this occurs.
 
@@ -86,7 +106,7 @@ const seconds_after_period_regex = r"^(-?\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.?)
     if (n_seconds_digits > 5)
         @warn (
             "dateTime element with $n_seconds_digits > 5 second digits, " *
-            "anything below milliseconds will be cutoff."
+                "anything below milliseconds will be cutoff."
         ) maxlog = 1
         truncated_after_period = seconds_after_period_match.captures[2][1:3]
         truncated_string =

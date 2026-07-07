@@ -1,12 +1,13 @@
 module XsdToStruct
 
 using TOML
-using LightXML
+import XmlStructPugixml
 using Dates
 using Downloads: download
+using PrecompileTools: @setup_workload, @compile_workload
 
 const XsdToStruct_VERSION = let
-    
+
     if VERSION < v"1.7"
         project = joinpath(pkgdir(XsdToStruct), "Project.toml")
     else
@@ -112,9 +113,9 @@ julia> generate_modules(xsd_locations, xsd_modules_path)
 ```
 """
 function generate_modules(
-    xsd_locations::Dict{<:AbstractString,<:AbstractString},
-    xsd_modules_path::AbstractString,
-)::Nothing
+        xsd_locations::Dict{<:AbstractString, <:AbstractString},
+        xsd_modules_path::AbstractString,
+    )::Nothing
     @info "Getting xsds and generating corresponding Julia modules."
 
     temp_download_dir = mktempdir()
@@ -136,6 +137,24 @@ function generate_modules(
     end
 
     return nothing
+end
+
+# xsd_to_struct_module operates entirely over this package's own fixed internal types
+# (SchemaTreeNode, FieldData, ...) regardless of which XSD is fed in - only tree shape/size varies
+# per schema, so warming it against a handful of representative schemas at precompile time covers
+# the shape-independent parts of the pipeline for every user's schema, not just these ones. Uses
+# the existing small test fixtures rather than sourcing new ones; relies on this package's test/
+# directory being present (true for the Pkg.develop-based workflow this monorepo is used with
+# today - would need bundling into src/ instead if this package is ever Pkg.add-installed from a
+# registry, since a registry tarball is not guaranteed to include test/).
+@setup_workload begin
+    xsd_dir = joinpath(@__DIR__, "..", "test", "test_data", "generic_data")
+    xsds = filter(f -> endswith(f, ".xsd"), readdir(xsd_dir; join = true))
+    @compile_workload begin
+        for xsd in xsds
+            xsd_to_struct_module(xsd, mktempdir())
+        end
+    end
 end
 
 end

@@ -1,21 +1,20 @@
-
-(get_nodes_of_type(xsd_node::Union{ComplexTreeNode,SchemaTreeNode}, ::Type{T})::Vector{T}) where {T<:AbstractTreeNode} =
+(get_nodes_of_type(xsd_node::Union{ComplexTreeNode, SchemaTreeNode}, ::Type{T})::Vector{T}) where {T <: AbstractTreeNode} =
     get_nodes_of_type(xsd_node.child_nodes, T)
 
-(get_nodes_of_type(nodes::Vector{<:AbstractTreeNode}, ::Type{T})::Vector{T}) where {T<:AbstractTreeNode} =
+(get_nodes_of_type(nodes::Vector{<:AbstractTreeNode}, ::Type{T})::Vector{T}) where {T <: AbstractTreeNode} =
     filter(x -> typeof(x) == T, nodes)
 
 function get_node_indices_of_type(
-    xsd_node::Union{ComplexTreeNode,SchemaTreeNode},
-    ::Type{T},
-)::Vector{Int64} where {T<:AbstractTreeNode}
+        xsd_node::Union{ComplexTreeNode, SchemaTreeNode},
+        ::Type{T},
+    )::Vector{Int64} where {T <: AbstractTreeNode}
     return get_node_indices_of_type(xsd_node.child_nodes, T)
 end
 
-(get_node_indices_of_type(nodes::Vector{<:AbstractTreeNode}, ::Type{T})::Vector{Int64}) where {T<:AbstractTreeNode} =
+(get_node_indices_of_type(nodes::Vector{<:AbstractTreeNode}, ::Type{T})::Vector{Int64}) where {T <: AbstractTreeNode} =
     findall(x -> typeof(x) == T, nodes)
 
-function has_node_of_type(children::Vector{<:AbstractTreeNode}, ::Type{T})::Bool where {T<:AbstractTreeNode}
+function has_node_of_type(children::Vector{<:AbstractTreeNode}, ::Type{T})::Bool where {T <: AbstractTreeNode}
     has_nodes_of_type = false
 
     for child in children
@@ -90,8 +89,11 @@ function has_dateTime(children::Vector{AbstractTreeNode})::Bool
 
     for child in children
         if typeof(child) == SimpleTreeNode
-            # check if node base type matches dateTime
-            has_datetime_node = child.field.xsd_type == "dateTime"
+            # check if node base type matches dateTime - xsd_type carries whatever namespace
+            # prefix the schema used on the restriction's base attribute (e.g. "xs:dateTime" for
+            # schemas that bind the XMLSchema meta-namespace to an explicit prefix), so compare
+            # against the local name only.
+            has_datetime_node = last(split(child.field.xsd_type, ":")) == "dateTime"
         elseif typeof(child) == ComplexTreeNode || typeof(child) == ExtensionTreeNode
             has_datetime_node = has_datetime_field(child)
         end
@@ -106,12 +108,12 @@ function has_dateTime(children::Vector{AbstractTreeNode})::Bool
 end
 
 function create_SchemaTreeNode(;
-    name::AbstractString,
-    attributes::OptionalDictStringString,
-    root_field::FieldData,
-    group_nodes::Vector{ComplexTreeNode} = Vector{ComplexTreeNode}(),
-    child_nodes::Vector{AbstractTreeNode} = Vector{AbstractTreeNode}(),
-)::SchemaTreeNode
+        name::AbstractString,
+        attributes::OptionalDictStringString,
+        root_field::FieldData,
+        group_nodes::Vector{ComplexTreeNode} = Vector{ComplexTreeNode}(),
+        child_nodes::Vector{AbstractTreeNode} = Vector{AbstractTreeNode}(),
+    )::SchemaTreeNode
     has_simple_nodes = (has_node_of_type(child_nodes, SimpleTreeNode) || has_node_of_type(group_nodes, SimpleTreeNode))
     has_complex_nodes =
         (has_node_of_type(child_nodes, ComplexTreeNode) || has_node_of_type(group_nodes, ComplexTreeNode))
@@ -138,6 +140,6 @@ end
 Find indices for all elements in the fields attribute of the given node which are of the given FieldData type.
 Note that this does not include the child fields in the case of a ComplexTreeNode.
 """
-function get_field_indices_of_type(node::Union{ComplexTreeNode,SchemaTreeNode}, ::Type{T}) where {T<:AbstractFieldData}
+function get_field_indices_of_type(node::Union{ComplexTreeNode, SchemaTreeNode}, ::Type{T}) where {T <: AbstractFieldData}
     return findall(field -> field isa T, node.fields)
 end

@@ -1,0 +1,16 @@
+[deps]
+AbstractTrees = "1520ce14-60c1-5f80-bbc7-55ef81b5835c"
+AbstractXsdTypes = "894546dd-dc3f-42e8-9b69-a7785ccf72be"
+Chairmarks = "0ca39b1e-fe0b-4e98-acfc-b1656634c4de"
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
+Parsers = "69de0a69-1ddd-5017-9359-2bf0b02dc9f0"
+Reexport = "189a3867-3050-52da-a836-e630ba90ab69"
+TimeZones = "f269a46b-ccf7-5d73-abea-4c690281aa53"
+XML = "72c71f33-b9b6-44de-8c94-c961784809e2"
+XmlStructLoader = "1bf1c528-19f0-4e43-b24f-ad91d84ffbf7"
+XmlStructPugixml = "69c5dbe4-038b-4614-a603-8f259d1fd840"
+XsdToStruct = "3ae7ce5f-3138-4ab9-addd-ceedf56009da"
+
+[compat]
+JSON = "1.6"

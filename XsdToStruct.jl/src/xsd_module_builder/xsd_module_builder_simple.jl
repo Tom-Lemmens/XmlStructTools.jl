@@ -58,7 +58,15 @@ const xsd_abstract_type_map = Dict((
 	AbstractFloat => "$ABSTRACT_TYPE_PACKAGE.AbstractXSDFloat",
 	Signed => "$ABSTRACT_TYPE_PACKAGE.AbstractXSDSigned",
 	Unsigned => "$ABSTRACT_TYPE_PACKAGE.AbstractXSDUnsigned",
-	AbstractString => "$ABSTRACT_TYPE_PACKAGE.AbstractXSDString"))
+	AbstractString => "$ABSTRACT_TYPE_PACKAGE.AbstractXSDString",
+	# AbstractXsdTypes has no dateTime/date/time-family wrapper hierarchy (unlike Float/Signed/
+	# Unsigned/String), so a simpleType restricting xs:dateTime/date/time (e.g. ISO 20022's own
+	# "ISODateTime"/"ISODate" pattern - a restriction with no facets, just a rename) subtypes the
+	# relevant Dates.jl abstract type directly rather than an AbstractXsdTypes.AbstractXSD* type.
+	# DateTime/ZonedDateTime <: Dates.AbstractDateTime, but Date/Time <: Dates.TimeType instead
+	# (verified via supertype(Date)/supertype(Time) - Date is NOT an AbstractDateTime subtype).
+	Dates.AbstractDateTime => "Dates.AbstractDateTime",
+	Dates.TimeType => "Dates.TimeType"))
 
 function get_supertype(type_string::AbstractString)
 	if type_string == "Union{ZonedDateTime, DateTime}"

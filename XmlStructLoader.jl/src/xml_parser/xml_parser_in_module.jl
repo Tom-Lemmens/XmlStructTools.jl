@@ -43,13 +43,13 @@ function construct_xml_node_child_objects(
 )::Dict
     root_type = module_ref.__meta.root_type
     start_node = XmlStructLoaderNode(xml_node, root_type, nothing)
-    dfs = AbstractTrees.PostOrderDFS(start_node) |> collect
 
     fields = Dict{typeof(xml_node),Dict{Symbol,Any}}()
 
-    @inbounds for node in filter(!isroot, dfs)
+    for node in AbstractTrees.PostOrderDFS(start_node)
+        isroot(node) && continue
         xml_child = node.node
-        field_symbol = Symbol(name(xml_child))
+        field_symbol = tag_symbol(name(xml_child))
         field_type = get_base_field_type(node.parent.type, field_symbol)
         @debug "Parsing: node ->\n\t$xml_child,\ntype -> $field_type"
 
@@ -73,7 +73,7 @@ function construct_xml_node_child_objects(
         end
 
         parent_key = AbstractTrees.parent(xml_child)
-        working_dict = get(fields, parent_key, Dict{Symbol,Any}())
+        working_dict = get!(() -> Dict{Symbol,Any}(), fields, parent_key)
 
         if field_type <: Vector  # TODO:handle with dispatch in a minute
             if haskey(working_dict, field_symbol)
@@ -84,7 +84,6 @@ function construct_xml_node_child_objects(
         else
             push!(working_dict, field_symbol => element)
         end
-        fields[parent_key] = working_dict
     end
     return fields |> first |> last |> Dict
 end
