@@ -11,4 +11,4 @@ Memoization = "6fafb56a-5788-4b4e-91ca-c0cea6611c73"
 [compat]
 Format = "1"
 Memoization = "0.2"
-julia = "1.6"
+julia = "1.10"

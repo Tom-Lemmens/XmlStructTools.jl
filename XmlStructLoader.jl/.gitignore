@@ -14,5 +14,6 @@
 # Allow specific files
 !.gitignore
 !Project.toml
+!Manifest.toml
 !.JuliaFormatter.toml
 !LICENSE
