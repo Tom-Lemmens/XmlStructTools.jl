@@ -23,7 +23,7 @@ jobs:
         with:
           version: ${{ inputs.version }}
           arch: ${{ inputs.arch }}
-      - uses: julia-actions/cache@v2
+      - uses: julia-actions/cache@v3
       - name: Install local AbstractXsdTypes
         run: julia --project=XsdToStruct.jl -e 'using Pkg; Pkg.add(path=".", subdir="AbstractXsdTypes.jl");'
       - uses: julia-actions/julia-buildpkg@v1
