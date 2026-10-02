@@ -1,35 +1,24 @@
 
-XsdToStruct_SUBMODULE_SUFFIX = "Types"
-
-@memoize function unames(m::Module; all::Bool = false, imported::Bool = false)
-    return ccall(:jl_module_names, Array{Symbol,1}, (Any, Cint, Cint), m, all, imported)
-end
-
 """
 	(type_in_module(::Type{T}, module_ref::Module)::Bool) where T <: Any
 
-Determine if given type T is defined in the module specified by module_symbol.
+Determine if given type T is defined in the module specified by module_symbol, i.e. whether T is one
+of the schema-generated structs (possibly nested in a submodule, e.g. a choice/union "Types" submodule)
+rather than a base/stdlib type like String or Float64.
+
+Walks T's module ancestry looking for module_ref, rather than checking name membership via
+`ccall(:jl_module_names, ...)`: that approach returned every name reachable via the module's
+`@reexport using` statements (including Base/stdlib names like `String`) on modern Julia, not just the
+module's own defined types, misrouting base-typed fields into the custom-struct parsing path.
 """
 function type_in_module(@nospecialize(T::Type), module_ref::Module)::Bool
-    type_name = nameof(T)
-
-    # check if type is defined in the module
-    if type_name in unames(module_ref, all = true)
-        return true
+    m = parentmodule(T)
+    while true
+        m === module_ref && return true
+        parent = parentmodule(m)
+        parent === m && return false  # reached the top of the module hierarchy (Main/Base/Core)
+        m = parent
     end
-
-    # check if the parent module of the type is defined in the module
-    parent_module = parentmodule(T)
-    parent_name = nameof(parent_module)
-    # keep looking as long as submodule suffix matches suffix from XsdToStruct
-    while endswith(string(parent_name), XsdToStruct_SUBMODULE_SUFFIX)
-        if parent_name in unames(module_ref, all = true)
-            return true
-        end
-        parent_module = parentmodule(parent_module)
-        parent_name = nameof(parent_module)
-    end
-    return false
 end
 
 """
