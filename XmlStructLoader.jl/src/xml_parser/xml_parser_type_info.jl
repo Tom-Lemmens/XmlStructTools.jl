@@ -46,34 +46,37 @@ function get_base_field_type(@nospecialize(T::Type), field_index::Int)::DataType
     return field_type
 end
 
-const field_type_cache = Dict{Tuple{DataType,Symbol},DataType}()
-
-get_type_from_symbol(type_symbol::Tuple{DataType,Symbol}) = get(field_type_cache, type_symbol, Nothing)
+# Keyed by whatever struct types a user's schema generates, so a dict rather than dispatch.
+# Nested rather than keyed by the pair `(T, field_symbol)`: a tuple holding a type is not plain
+# data, so a single-level cache has to allocate its key on every lookup, hit or miss.
+const field_type_cache = IdDict{Type,Dict{Symbol,DataType}}()
 
 function get_base_field_type(@nospecialize(T::Type), field_symbol::Symbol)
-    field_type = get_type_from_symbol((T, field_symbol))
-
-    if field_type == Nothing
-        if isprimitivetype(T)
-            field_type = T
-        elseif hasfield(T, field_symbol)
-            field_type = fieldtype(T, field_symbol)
-        elseif T <: AbstractVector
-            field_type = fieldtype(eltype(T), field_symbol)
-        else
-            # field could be inside NamedTuple
-            named_tuples = filter(field_type -> field_type <: NamedTuple, fieldtypes(T))
-            matching_named_tuple = first(filter(named_tuple -> hasfield(named_tuple, field_symbol), named_tuples))
-            field_type = fieldtype(matching_named_tuple, field_symbol)
-        end
-
-        if typeof(field_type) == Union
-            # extract type from optional
-            field_type = first(filter(a -> a !== Nothing, Base.uniontypes(field_type)))
-        end
-
-        field_type_cache[(T, field_symbol)] = field_type
+    by_field = get(field_type_cache, T, nothing)
+    if by_field !== nothing
+        hit = get(by_field, field_symbol, nothing)
+        hit === nothing || return hit
     end
+
+    if isprimitivetype(T)
+        field_type = T
+    elseif hasfield(T, field_symbol)
+        field_type = fieldtype(T, field_symbol)
+    elseif T <: AbstractVector
+        field_type = fieldtype(eltype(T), field_symbol)
+    else
+        # field could be inside NamedTuple
+        named_tuples = filter(field_type -> field_type <: NamedTuple, fieldtypes(T))
+        matching_named_tuple = first(filter(named_tuple -> hasfield(named_tuple, field_symbol), named_tuples))
+        field_type = fieldtype(matching_named_tuple, field_symbol)
+    end
+
+    if typeof(field_type) == Union
+        # extract type from optional
+        field_type = first(filter(a -> a !== Nothing, Base.uniontypes(field_type)))
+    end
+
+    get!(() -> Dict{Symbol,DataType}(), field_type_cache, T)[field_symbol] = field_type
 
     return field_type
 end
