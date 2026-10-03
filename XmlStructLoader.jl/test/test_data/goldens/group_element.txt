@@ -1,0 +1,54 @@
+documentType
+  TestElement1:
+    TestComplexType1
+      Element_string:
+        "wwww"
+      Element_double:
+        52.65
+      Element_boolean:
+        true
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
+  TestElement2:
+    TestComplexType2
+      Element_string:
+        "wwww"
+      Element_double:
+        52.65
+      Element_boolean:
+        true
+      Element_boolean_second:
+        false
+      Element_string_2:
+        "uuiu"
+      Element_double_2:
+        10.0
+      Element_boolean_2:
+        true
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
+  TestElement3:
+    TestComplexType3
+      Element_string:
+        "ttt"
+      Element_double:
+        77.99
+      Element_boolean:
+        false
+      Element_boolean2:
+        true
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
+  __xml_attributes:
+    "__root_name" => "document"
+    "xmlns:TestGroup" => "TestGroup"
+    "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance"
+    "xsi:schemaLocation" => "TestGroup group_element.xsd"
+  __validated:
+    true
