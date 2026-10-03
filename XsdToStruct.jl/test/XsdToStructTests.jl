@@ -4,7 +4,6 @@ using ReTest
 using Logging
 using XsdToStruct
 using TimeZones
-using LightXML
 
 # test input data
 

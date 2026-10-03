@@ -1,0 +1,212 @@
+documentType
+  TestElement1:
+    TestComplexType1
+      A:
+        A
+          Element_string:
+            "oo"
+          Element_double:
+            1578.659
+          Element_boolean:
+            false
+          Element_dateTime:
+            ZonedDateTime
+              utc_datetime:
+                DateTime
+                  instant:
+                    UTInstant
+                      periods:
+                        Millisecond
+                          value:
+                            63787857769152
+              timezone:
+                FixedTimeZone
+                  name:
+                    InlineStrings.String15("UTC+01:00")
+                  offset:
+                    UTCOffset
+                      std:
+                        Second
+                          value:
+                            3600
+                      dst:
+                        Second
+                          value:
+                            0
+              zone:
+                FixedTimeZone
+                  name:
+                    InlineStrings.String15("UTC+01:00")
+                  offset:
+                    UTCOffset
+                      std:
+                        Second
+                          value:
+                            3600
+                      dst:
+                        Second
+                          value:
+                            0
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
+      B:
+        B
+          value:
+            TestSimpleType1
+              value:
+                "CCCC"
+              __xml_attributes:
+                "extended_b" => "b"
+              __validated:
+                true
+          __xml_attributes:
+            "extended_b" => "b"
+          __validated:
+            true
+      C:
+        C
+          Element_string:
+            "eyggi"
+          Element_double:
+            5457.48789
+          Element_boolean:
+            true
+          Element_dateTime:
+            ZonedDateTime
+              utc_datetime:
+                DateTime
+                  instant:
+                    UTInstant
+                      periods:
+                        Millisecond
+                          value:
+                            63787861369000
+              timezone:
+                FixedTimeZone
+                  name:
+                    InlineStrings.String15("Z")
+                  offset:
+                    UTCOffset
+                      std:
+                        Second
+                          value:
+                            0
+                      dst:
+                        Second
+                          value:
+                            0
+              zone:
+                FixedTimeZone
+                  name:
+                    InlineStrings.String15("Z")
+                  offset:
+                    UTCOffset
+                      std:
+                        Second
+                          value:
+                            0
+                      dst:
+                        Second
+                          value:
+                            0
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
+  TestElement2:
+    TestComplexType2
+      A:
+        A
+          value:
+            TestSimpleType1
+              value:
+                "AAAA"
+              __xml_attributes:
+                (no attributes)
+              __validated:
+                true
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
+      B:
+        B
+          value:
+            TestSimpleType2
+              value:
+                "BBBB"
+              __xml_attributes:
+                (no attributes)
+              __validated:
+                true
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
+  TestElement3:
+    TestComplexType3
+      A:
+        A
+          value:
+            TestSimpleType1
+              value:
+                "A9A9"
+              __xml_attributes:
+                (no attributes)
+              __validated:
+                true
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
+      S1:
+        TestSimpleType2
+          value:
+            "B44B"
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
+      B:
+        B
+          value:
+            TestSimpleType2
+              value:
+                "2D7D"
+              __xml_attributes:
+                (no attributes)
+              __validated:
+                true
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
+      S2:
+        TestSimpleType2
+          value:
+            "FGHK"
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
+  __xml_attributes:
+    "__root_name" => "document"
+    "xmlns:TestTypeInType" => "TestTypeInType"
+    "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance"
+    "xsi:schemaLocation" => "TestTypeInType type_in_type.xsd"
+  __validated:
+    true

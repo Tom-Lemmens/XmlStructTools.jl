@@ -1,0 +1,94 @@
+documentType
+  TestElement1:
+    TestComplexType1
+      Element_list_double:
+        Vector of 2 (Float64)
+          [1]
+            55.0
+          [2]
+            78787.0
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
+  TestElement2:
+    TestComplexType2
+      Element_list_string:
+        Vector of 5 (String)
+          [1]
+            "55"
+          [2]
+            "78787"
+          [3]
+            "78787"
+          [4]
+            "78787"
+          [5]
+            "78787"
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
+  TestElement3:
+    TestComplexType3
+      Element_type4_list:
+        Vector of 5 (XmlStructLoader.TestList.TestList_struct.TestComplexType4)
+          [1]
+            TestComplexType4
+              Element_string:
+                "aaaaa"
+              __xml_attributes:
+                (no attributes)
+              __validated:
+                true
+          [2]
+            TestComplexType4
+              Element_string:
+                "bbbbb"
+              __xml_attributes:
+                (no attributes)
+              __validated:
+                true
+          [3]
+            TestComplexType4
+              Element_string:
+                "ccccc"
+              __xml_attributes:
+                (no attributes)
+              __validated:
+                true
+          [4]
+            TestComplexType4
+              Element_string:
+                "ddddd"
+              __xml_attributes:
+                (no attributes)
+              __validated:
+                true
+          [5]
+            TestComplexType4
+              Element_string:
+                "eeeee"
+              __xml_attributes:
+                (no attributes)
+              __validated:
+                true
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
+  TestElement5:
+    TestComplexType5
+      Element_string:
+        "ueueueue"
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
+  __xml_attributes:
+    "__root_name" => "document"
+    "xmlns:TestList" => "TestList"
+    "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance"
+    "xsi:schemaLocation" => "TestList list_content.xsd"
+  __validated:
+    true

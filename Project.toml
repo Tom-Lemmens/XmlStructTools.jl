@@ -1,0 +1,11 @@
+# Workspace root: the five packages in this repository share one resolved dependency set, so a
+# sibling is found by path without a per-package [sources] entry or a Pkg.add(path=...) step.
+# `julia --project=XmlStructLoader.jl -e 'using Pkg; Pkg.test()'` works from a fresh clone.
+[workspace]
+projects = [
+    "AbstractXsdTypes.jl",
+    "XsdToStruct.jl",
+    "XmlStructLoader.jl",
+    "XmlStructWriter.jl",
+    "XmlStructPugixml.jl",
+]
