@@ -27,38 +27,16 @@ function construct_xml_root_object(
     @debug "Constructing root object of type $root_type from node $root_name with validate=$validate"
 
     # recurse through child nodes
-    child_object_dict = construct_xml_node_child_objects(xml_root, module_ref, validate)
+    child_object_dict = _child_fields(root_type, xml_root, module_ref, validate)
 
     # add xml_attributes and validate
     merge!(child_object_dict, Dict(:__xml_attributes => root_attributes, :__validated => validate))
     # construct object with child objects
-    child_string = join(["$key =>\n$value" for (key, value) in child_object_dict], "\n")
-    @debug "Constructing root element from children:\n$child_string"
-    constructed_object = root_type(; child_object_dict...)
-
-    return constructed_object
-end
-
-"""
-	construct_xml_node_object(xml_node::UnifiedXMLElement, struct_type::DataType, module_ref::Module, validate::Bool, default_value)
-
-Construct object of type "struct_type" with the data of "xml_node", the given module is used for the
-struct definitions. If the given type is not defined by the module we use content(xml_node) and parse it into
-struct_type, if needed with Base.parse. If validate is true and if the type has any associated restrictions in the
-module the data is checked with respect to these restrictions.
-"""
-
-function construct_xml_node_object(node::XmlStructLoaderNode, module_ref::Module, validate::Bool)
-    @debug "Constructing object of type $(node.type) from node $(name(node.node))"
-
-    # check if type is from module
-    if type_in_module(node.type, module_ref)
-        constructed_object = parse_xml_node_in_module(node, module_ref, validate)
-    elseif node.type <: AbstractVector
-        constructed_object = _parse_xml_node_not_module(node, module_ref, validate)
-    else
-        constructed_object = parse_xml_node_not_module(node.node, node.type, module_ref, validate, get_default(node))
+    @debug begin
+        child_string = join(["$key =>\n$value" for (key, value) in child_object_dict], "\n")
+        "Constructing root element from children:\n$child_string"
     end
+    constructed_object = root_type(; child_object_dict...)
 
     return constructed_object
 end

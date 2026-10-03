@@ -1,11 +1,3 @@
-# Vector{T} where T is in the module will get sent here
-function _parse_xml_node_not_module(node::XmlStructLoaderNode, module_ref::Module, validate::Bool)
-    T = node.type
-    new_node = XmlStructLoaderNode(node.node, eltype(T), node.parent)
-
-    return T([construct_xml_node_object(new_node, module_ref, validate)])
-end
-
 function parse_xml_node_not_module(
     @nospecialize(xml_node::UnifiedXMLElement),
     ::Type{T},

@@ -3,12 +3,9 @@ function precompilation_statements()
     Base.VERSION >= v"1.9" &&
         Base.precompile(Tuple{typeof(Core.kwcall),NamedTuple{(:validate,),Tuple{Bool}},typeof(load),String,Module})  
     Base.precompile(Tuple{typeof(parse_xml_node_not_module),Ptr{Cvoid},Type{ZonedDateTime},Module,Bool,Nothing})
-    Base.precompile(Tuple{typeof(children),XmlStructLoaderNode{Ptr{Cvoid}}})
     Base.precompile(Tuple{typeof(type_in_module),Type,Module})
     Base.precompile(Tuple{typeof(get_base_field_type),Type,Symbol})
-    Base.precompile(Tuple{typeof(_get_default),Type,Ptr{Cvoid}})
     Base.precompile(Tuple{typeof(parse_xml_node_not_module),Ptr{Cvoid},Type{Int64},Module,Bool,Nothing})
     Base.precompile(Tuple{typeof(parse_xml_node_not_module),Ptr{Cvoid},Type{Float64},Module,Bool,Nothing})
     Base.precompile(Tuple{typeof(parse_xml_node_not_module),Ptr{Cvoid},Type{Bool},Module,Bool,Bool})
-    return Base.precompile(Tuple{typeof(isroot),XmlStructLoaderNode{Ptr{Cvoid}}})
 end

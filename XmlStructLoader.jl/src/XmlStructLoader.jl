@@ -5,8 +5,6 @@ using Dates
 using TimeZones
 using Parsers
 using Memoization
-using AbstractTrees
-using AbstractTrees: parent, isroot
 import XmlStructPugixml
 using AbstractXsdTypes
 
