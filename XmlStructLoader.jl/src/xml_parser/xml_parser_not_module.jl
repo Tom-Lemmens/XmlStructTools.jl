@@ -1,11 +1,3 @@
-# Vector{T} where T is in the module will get sent here
-function _parse_xml_node_not_module(node::XmlStructLoaderNode, module_ref::Module, validate::Bool)
-    T = node.type
-    new_node = XmlStructLoaderNode(node.node, eltype(T), node.parent)
-
-    return T([construct_xml_node_object(new_node, module_ref, validate)])
-end
-
 function parse_xml_node_not_module(
     @nospecialize(xml_node::UnifiedXMLElement),
     ::Type{T},
@@ -35,6 +27,43 @@ function parse_xml_node_not_module(
     else
         return T(content_string)
     end
+end
+
+# `xs:base64Binary` carries its bytes as base64 text, and the value a caller wants is the bytes.
+function parse_xml_node_not_module(
+    xml_node::UnifiedXMLElement,
+    ::Type{T},
+    module_ref::Module,
+    validate::Bool,
+    default_value,
+)::Union{Nothing,T} where {T<:AbstractVector{UInt8}}
+    content_string = content(xml_node)
+    isempty(content_string) && return isnothing(default_value) ? nothing : T(default_value)
+    return T(Base64.base64decode(content_string))
+end
+
+# `xs:date` and `xs:time` parse to `Date` and `Time`. An element whose text carries a zone offset
+# is rejected rather than read as a local value: neither type has anywhere to keep the offset, and
+# `xs:dateTime` is the declaration that does.
+function parse_xml_node_not_module(
+    xml_node::UnifiedXMLElement,
+    ::Type{T},
+    module_ref::Module,
+    validate::Bool,
+    default_value::Union{Nothing,T},
+)::Union{Nothing,T} where {T<:Union{Date,Time}}
+    content_string = content(xml_node)
+    isempty(content_string) && return default_value
+
+    if occursin(r"(Z|[+-]\d{2}:\d{2})$", content_string)
+        throw(
+            ArgumentError(
+                "\"$content_string\" carries a time zone offset, which $T cannot represent; " *
+                "declare the element as xs:dateTime to keep the offset",
+            ),
+        )
+    end
+    return parse(T, content_string)
 end
 
 function parse_xml_node_not_module(

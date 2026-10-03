@@ -187,6 +187,59 @@ abstract type AbstractXSDDate <: Dates.TimeType end
 can_be_converted(from::Type{<:Dates.TimeType}, to::Type{<:AbstractXSDDate}) = true
 
 """
+	AbstractXSDTime <: Dates.TimeType
+
+Abstract type for XSD types whose value is a time of day, as `xs:time` is.
+
+```jldoctest
+import AbstractXsdTypes: AbstractXSDTime
+using Dates
+
+struct TimeOfDayType <: AbstractXSDTime
+    value::Time
+    __xml_attributes::Union{Nothing, Dict{String, String}}
+    __validated::Bool
+end
+TimeOfDayType(Time(13, 45), Dict("x" => "y"), true).value == Time(13, 45)
+
+# output
+
+true
+```
+"""
+abstract type AbstractXSDTime <: Dates.TimeType end
+
+can_be_converted(from::Type{<:Dates.TimeType}, to::Type{<:AbstractXSDTime}) = true
+
+"""
+	AbstractXSDBinary
+
+Abstract type for XSD types whose value is a sequence of bytes, as `xs:base64Binary` is.
+
+The `value` field holds the decoded bytes, not the text they were encoded as: an XSD length facet
+counts octets of the decoded value, and a caller asking for the contents of an embedded document
+wants the bytes. Encoding back to text belongs to whatever writes the XML.
+
+```jldoctest
+import AbstractXsdTypes: AbstractXSDBinary
+
+struct PayloadType <: AbstractXSDBinary
+    value::Vector{UInt8}
+    __xml_attributes::Union{Nothing, Dict{String, String}}
+    __validated::Bool
+end
+PayloadType(UInt8[0x68, 0x69], nothing, true).value == UInt8[0x68, 0x69]
+
+# output
+
+true
+```
+"""
+abstract type AbstractXSDBinary end
+
+can_be_converted(from::Type{<:AbstractVector{UInt8}}, to::Type{<:AbstractXSDBinary}) = true
+
+"""
     AbstractXSDComplex
 
 Abstract type used for complex XSD structs.
@@ -292,7 +345,8 @@ end
 
 # Collections of XSD types
 const AbstractXSDNumericTypes = Union{AbstractXSDFloat,AbstractXSDUnsigned,AbstractXSDSigned}
-const AbstractXSDSimpleTypes = Union{AbstractXSDNumericTypes,AbstractXSDString,AbstractXSDDateTime,AbstractXSDDate}
+const AbstractXSDSimpleTypes =
+    Union{AbstractXSDNumericTypes,AbstractXSDString,AbstractXSDDateTime,AbstractXSDDate,AbstractXSDTime,AbstractXSDBinary}
 const AbstractXSDSimpleUnionTypes = Union{AbstractXSDSimpleTypes,AbstractXSDUnion}
 const AbstractXSDAllTypes = Union{AbstractXSDSimpleTypes,AbstractXSDComplex,AbstractXSDUnion}
 

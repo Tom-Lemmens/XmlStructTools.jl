@@ -117,7 +117,10 @@ function create_SchemaTreeNode(;
         (has_node_of_type(child_nodes, ComplexTreeNode) || has_node_of_type(group_nodes, ComplexTreeNode))
 
     requires_TimeZones = has_xsd_type_node(child_nodes, "dateTime")
-    requires_Dates = requires_TimeZones || has_xsd_type_node(child_nodes, "date")
+    requires_Dates =
+        requires_TimeZones ||
+        has_xsd_type_node(child_nodes, "date") ||
+        has_xsd_type_node(child_nodes, "time")
 
     return SchemaTreeNode(
         common_data = CommonNodeData(name = name, attributes = attributes),
