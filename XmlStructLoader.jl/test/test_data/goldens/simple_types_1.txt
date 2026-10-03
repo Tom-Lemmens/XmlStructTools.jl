@@ -1,0 +1,86 @@
+documentType
+  TestElement1:
+    TestComplexType1
+      TestElement1:
+        TestSimpleType1
+          value:
+            "AAAA"
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
+      TestElement2:
+        TestSimpleType2
+          value:
+            125
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
+      TestElement3:
+        true
+      TestElement4:
+        TestSimpleType4
+          value:
+            0x0000000000000019
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
+      TestElement5:
+        TestSimpleType5
+          value:
+            5.55
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
+  TestElement2:
+    TestComplexType2
+      TestElement11:
+        TestSimpleType1
+          value:
+            "DEFA"
+          __xml_attributes:
+            nothing
+          __validated:
+            true
+      TestElement12:
+        TestSimpleType1
+          value:
+            ""
+          __xml_attributes:
+            nothing
+          __validated:
+            true
+      TestElement21:
+        TestSimpleType2
+          value:
+            100
+          __xml_attributes:
+            nothing
+          __validated:
+            true
+      TestElement22:
+        TestSimpleType2
+          value:
+            100
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
+  __xml_attributes:
+    "__root_name" => "document"
+    "xmlns:TestSimpleTyping" => "TestSimpleTyping"
+    "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance"
+    "xsi:schemaLocation" => "TestSimpleTyping simple_types.xsd"
+  __validated:
+    true

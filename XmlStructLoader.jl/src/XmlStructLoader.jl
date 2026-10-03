@@ -55,7 +55,7 @@ function load(xml_path::AbstractString, module_ref::Module; validate::Bool = tru
 end
 
 load(xml_io::IO, module_ref::Module; validate::Bool = true) =
-    construct_xml_object(xml_io, module_ref, validate = validate)
+    Base.@invokelatest construct_xml_object(xml_io, module_ref, validate = validate)
 
 """
 	load(xml_path::AbstractString, module_path::AbstractString; validate::Bool=true)

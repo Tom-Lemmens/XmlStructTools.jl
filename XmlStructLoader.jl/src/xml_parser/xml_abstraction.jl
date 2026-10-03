@@ -6,17 +6,33 @@ content(node::EzXML.Node) = EzXML.nodecontent(node) |> strip
 attributes(node::EzXML.Node) = EzXML.eachattribute(node)
 name(node::EzXML.Node) = EzXML.nodename(node)
 
+"""
+	name_symbol(node::EzXML.Node)::Symbol
+
+The node's tag name as a `Symbol`, interned directly from libxml2's own name pointer.
+
+A field lookup needs the `Symbol`, not the `String`, and this is called several times per node
+visited, so `Symbol(nodename(node))` builds a `String` per call only to hash and discard it.
+`jl_symbol` reads the C string straight into Julia's symbol table, which is itself the cache -
+and is thread-safe, unlike a `Dict` of our own.
+"""
+function name_symbol(node::EzXML.Node)::Symbol
+    ptr = unsafe_load(node.ptr).name
+    ptr == C_NULL && return Symbol("")
+    return ccall(:jl_symbol, Ref{Symbol}, (Cstring,), ptr)
+end
+
 hasattribute(node::EzXML.Node, attr::AbstractString) = findfirst(==(attr) ∘ name, eachattribute(node)) |> isnothing
 hasattributes(node::EzXML.Node) = !isempty(eachattribute(node))
 haschildren(node::EzXML.Node) = haselement(node)
 
 function readxmlfile(f::Function, filename::AbstractString)
-    @info "Loading with EzXML..."
+    @debug "Loading with EzXML..."
     return f(EzXML.readxml(filename))
 end
 
 function readxmlfile(f::Function, io::IO)
-    @info "Loading with EzXML..."
+    @debug "Loading with EzXML..."
     return f(EzXML.readxml(io))
 end
 
@@ -42,7 +58,7 @@ function AbstractTrees.children(node::L)::Vector{L} where {L<:XmlStructLoaderNod
     xml_children = children(node.node)
 
     r = map(xml_children) do child
-        type = get_base_field_type(node.type, Symbol(name(child)))
+        type = get_base_field_type(node.type, name_symbol(child))
         return XmlStructLoaderNode(child, type, node)
     end
     return r
@@ -58,7 +74,7 @@ AbstractTrees.SiblingLinks(::Type{<:XmlStructLoaderNode}) = AbstractTrees.Stored
 function AbstractTrees.nextsibling(node::XmlStructLoaderNode)
     if hasnextelement(node.node)
         sibling = nextelement(node.node)
-        sibling_type = get_base_field_type(node.parent.type, Symbol(name(sibling)))
+        sibling_type = get_base_field_type(node.parent.type, name_symbol(sibling))
         return XmlStructLoaderNode(sibling, sibling_type, node.parent)
     else
         return nothing
@@ -70,7 +86,7 @@ end
 
 function _get_default(@nospecialize(ParentType::Type), @nospecialize(child::UnifiedXMLElement))
     defaults = AbstractXsdTypes.defaults(ParentType)
-    field = name(child) |> Symbol
+    field = name_symbol(child)
     child_default = get(defaults, field, nothing)
     return child_default
 end

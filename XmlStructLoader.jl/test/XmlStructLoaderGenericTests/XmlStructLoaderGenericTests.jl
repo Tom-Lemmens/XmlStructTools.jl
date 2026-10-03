@@ -13,3 +13,4 @@ generate_modules(generic_data_dir)
 # run tests
 include("load_tests.jl")
 include("check_tests.jl")
+include("golden_tests.jl")
