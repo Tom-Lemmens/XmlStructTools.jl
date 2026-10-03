@@ -1,0 +1,52 @@
+documentType
+  TestElement1:
+    TestComplexType1
+      element1:
+        "eere"
+      __TestComplexType1_choice_1:
+        choice1:
+          "aaaa"
+        choice2:
+          nothing
+      element2:
+        "default"
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
+  TestElement2:
+    TestComplexType2
+      __TestComplexType2_choice_1:
+        choice1:
+          nothing
+        choice2:
+          nothing
+        choice3:
+          "E2R3"
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
+  TestElement5:
+    TestComplexType5
+      __TestComplexType5_choice_1:
+        choice1:
+          nothing
+        choice2:
+          20.0
+      __TestComplexType5_choice_2:
+        choice3:
+          nothing
+        choice4:
+          55.6
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
+  __xml_attributes:
+    "__root_name" => "document"
+    "xmlns:TestChoice" => "TestChoice"
+    "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance"
+    "xsi:schemaLocation" => "TestChoice choice_element.xsd"
+  __validated:
+    true

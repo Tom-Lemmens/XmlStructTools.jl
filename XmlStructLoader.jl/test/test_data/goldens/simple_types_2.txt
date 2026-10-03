@@ -1,0 +1,38 @@
+documentType
+  TestElement1:
+    TestComplexType1
+      TestElement1:
+        "AAAA"
+      TestElement2:
+        125
+      TestElement3:
+        true
+      TestElement4:
+        0x0000000000000019
+      TestElement5:
+        5.55
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
+  TestElement2:
+    TestComplexType2
+      TestElement11:
+        "AAAA"
+      TestElement12:
+        ""
+      TestElement21:
+        250
+      TestElement22:
+        100
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
+  __xml_attributes:
+    "__root_name" => "document"
+    "xmlns:TestSimpleTyping" => "TestSimpleTyping"
+    "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance"
+    "xsi:schemaLocation" => "TestSimpleTyping simple_types.xsd"
+  __validated:
+    true

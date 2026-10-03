@@ -1,0 +1,88 @@
+documentType
+  TestElement1:
+    TestComplexType1
+      Element_string:
+        nothing
+      Element_double:
+        100.22
+      Element_simple1:
+        nothing
+      Element_simple2:
+        nothing
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
+  TestElement2:
+    TestComplexType2
+      Element_string:
+        "aaa"
+      Element_double:
+        55.2
+      Element_simple1:
+        nothing
+      Element_simple2:
+        nothing
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
+  TestElement3:
+    TestComplexType3
+      Element_simple1:
+        nothing
+      Element_simple2:
+        nothing
+      Element_simple2_or_nothing:
+        nothing
+      __xml_attributes:
+        nothing
+      __validated:
+        true
+  TestElement4:
+    TestComplexType4
+      Element_complex4:
+        nothing
+      __xml_attributes:
+        nothing
+      __validated:
+        true
+  TestElement5:
+    TestComplexType5
+      Element_simple1:
+        nothing
+      Element_simple2:
+        nothing
+      __xml_attributes:
+        nothing
+      __validated:
+        true
+  TestElement6:
+    TestComplexType6
+      Element_simple1:
+        nothing
+      Element_simple2:
+        nothing
+      Element_simple3:
+        DateTime
+          instant:
+            UTInstant
+              periods:
+                Millisecond
+                  value:
+                    2952306666
+      Element_simple4:
+        nothing
+      Element_simple5:
+        nothing
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
+  __xml_attributes:
+    "__root_name" => "document"
+    "xmlns:OptionalElements" => "OptionalElements"
+    "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance"
+    "xsi:schemaLocation" => "OptionalElements optional_elements.xsd"
+  __validated:
+    true

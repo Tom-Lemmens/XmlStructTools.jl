@@ -1,0 +1,20 @@
+documentType
+  TestElement1:
+    1.123
+  TestElement2:
+    4.759
+  TestElement3:
+    10.1
+  TestElement4:
+    15.1
+  TestElement5:
+    -11.6
+  TestElement6:
+    -77.2
+  __xml_attributes:
+    "__root_name" => "document"
+    "xmlns:TestDecimalRestrictions" => "TestDecimalRestrictions"
+    "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance"
+    "xsi:schemaLocation" => "TestDecimalRestrictions decimal_restrictions.xsd"
+  __validated:
+    true

@@ -1,0 +1,26 @@
+documentType
+  TestSimple2:
+    "Z2ZZ"
+  TestComplex1:
+    TestComplex1
+      Element_string:
+        "OOO"
+      Element_double:
+        548.0
+      Element_boolean:
+        true
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
+  TestComplex2:
+    "UYTY"
+  TestComplex3:
+    5.5
+  __xml_attributes:
+    "__root_name" => "document"
+    "xmlns:TestTypeInElement" => "TestTypeInElement"
+    "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance"
+    "xsi:schemaLocation" => "TestTypeInElement type_in_element.xsd"
+  __validated:
+    true

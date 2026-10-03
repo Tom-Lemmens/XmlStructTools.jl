@@ -1,0 +1,18 @@
+documentType
+  TestElement1:
+    TestComplexType1
+      Element_order:
+        "AAAA"
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
+  TestElement2:
+    "AA"
+  __xml_attributes:
+    "__root_name" => "document"
+    "xmlns:TestOutOfOrder" => "TestOutOfOrder"
+    "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance"
+    "xsi:schemaLocation" => "TestOutOfOrder type_ordering.xsd"
+  __validated:
+    true

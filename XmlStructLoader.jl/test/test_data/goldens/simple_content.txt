@@ -1,0 +1,10 @@
+documentType
+  TestElement1:
+    "RR6R"
+  __xml_attributes:
+    "__root_name" => "document"
+    "xmlns:TestSimpleContent" => "TestSimpleContent"
+    "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance"
+    "xsi:schemaLocation" => "TestSimpleContent simple_content.xsd"
+  __validated:
+    true

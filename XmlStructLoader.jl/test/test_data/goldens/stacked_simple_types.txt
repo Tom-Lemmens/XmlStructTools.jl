@@ -1,0 +1,12 @@
+documentType
+  TestElement1:
+    "A0A0"
+  TestElement2:
+    150
+  __xml_attributes:
+    "__root_name" => "document"
+    "xmlns:TestStackedSimple" => "TestStackedSimple"
+    "xmlns:xsi" => "http://www.w3.org/2001/XMLSchema-instance"
+    "xsi:schemaLocation" => "TestStackedSimple stacked_simple_types.xsd"
+  __validated:
+    true
