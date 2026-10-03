@@ -1,12 +1,12 @@
 module XsdToStruct
 
 using TOML
-using LightXML
+import XmlStructPugixml
 using Dates
 using Downloads: download
 
 const XsdToStruct_VERSION = let
-    
+
     if VERSION < v"1.7"
         project = joinpath(pkgdir(XsdToStruct), "Project.toml")
     else
@@ -112,9 +112,9 @@ julia> generate_modules(xsd_locations, xsd_modules_path)
 ```
 """
 function generate_modules(
-    xsd_locations::Dict{<:AbstractString,<:AbstractString},
-    xsd_modules_path::AbstractString,
-)::Nothing
+        xsd_locations::Dict{<:AbstractString, <:AbstractString},
+        xsd_modules_path::AbstractString,
+    )::Nothing
     @info "Getting xsds and generating corresponding Julia modules."
 
     temp_download_dir = mktempdir()
