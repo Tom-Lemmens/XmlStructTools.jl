@@ -2,6 +2,7 @@ include("xml_abstraction.jl")
 include("xml_parser_type_info.jl")
 include("xml_parser_in_module.jl")
 include("xml_parser_not_module.jl")
+include("lazy_document.jl")
 
 PathOrIO = Union{IO, AbstractString}
 
