@@ -1,43 +1,38 @@
 
-XsdToStruct_SUBMODULE_SUFFIX = "Types"
-
-@memoize function unames(m::Module; all::Bool = false, imported::Bool = false)
-    return ccall(:jl_module_names, Array{Symbol,1}, (Any, Cint, Cint), m, all, imported)
-end
-
 """
 	(type_in_module(::Type{T}, module_ref::Module)::Bool) where T <: Any
 
-Determine if given type T is defined in the module specified by module_symbol.
+Determine if given type T is defined in the module specified by module_symbol, i.e. whether T is one
+of the schema-generated structs (possibly nested in a submodule, e.g. a choice/union "Types" submodule)
+rather than a base/stdlib type like String or Float64.
+
+Walks T's module ancestry looking for module_ref, rather than checking name membership via
+`ccall(:jl_module_names, ...)`: that approach returned every name reachable via the module's
+`@reexport using` statements (including Base/stdlib names like `String`) on modern Julia, not just the
+module's own defined types, misrouting base-typed fields into the custom-struct parsing path.
 """
 function type_in_module(@nospecialize(T::Type), module_ref::Module)::Bool
-    type_name = nameof(T)
-
-    # check if type is defined in the module
-    if type_name in unames(module_ref, all = true)
-        return true
+    m = parentmodule(T)
+    while true
+        m === module_ref && return true
+        parent = parentmodule(m)
+        parent === m && return false  # reached the top of the module hierarchy (Main/Base/Core)
+        m = parent
     end
-
-    # check if the parent module of the type is defined in the module
-    parent_module = parentmodule(T)
-    parent_name = nameof(parent_module)
-    # keep looking as long as submodule suffix matches suffix from XsdToStruct
-    while endswith(string(parent_name), XsdToStruct_SUBMODULE_SUFFIX)
-        if parent_name in unames(module_ref, all = true)
-            return true
-        end
-        parent_module = parentmodule(parent_module)
-        parent_name = nameof(parent_module)
-    end
-    return false
 end
 
 """
-	type_in_module(::Type{ZonedDateTime}, ::Module)
+	type_in_module(::Type{<:Union{Date,DateTime,Time,ZonedDateTime}}, ::Module)
 
-Handles special edge case that should always return false.
+The temporal types a field can hold directly are never schema-generated, whatever module they are
+reached through.
+
+Named one by one rather than as `Dates.AbstractTime`: a generated simple type for `xs:dateTime`,
+`xs:date` or `xs:time` subtypes `AbstractXSDDateTime`, `AbstractXSDDate` or `AbstractXSDTime`, all
+of which are themselves `Dates.AbstractTime`, and excluding the whole hierarchy sends those
+generated types to the parser for types the module does not define.
 """
-type_in_module(::Type{T}, ::Module) where {T<:Dates.AbstractTime} = false
+type_in_module(::Type{<:Union{Date, DateTime, Time, ZonedDateTime}}, ::Module) = false
 
 """
 	get_field_type(::Type{T}, field_specification::Union{Symbol, Int}) where T <: Any
@@ -57,33 +52,53 @@ function get_base_field_type(@nospecialize(T::Type), field_index::Int)::DataType
     return field_type
 end
 
-const field_type_cache = Dict{Tuple{DataType,Symbol},DataType}()
+# Keyed by whatever struct types a user's schema generates, so a dict rather than dispatch.
+# Nested rather than keyed by the pair `(T, field_symbol)`: a tuple holding a type is not plain
+# data, so a single-level cache has to allocate its key on every lookup, hit or miss.
+const field_type_cache = IdDict{Type,Dict{Symbol,DataType}}()
 
-get_type_from_symbol(type_symbol::Tuple{DataType,Symbol}) = get(field_type_cache, type_symbol, Nothing)
+# Two tasks loading documents at the same time reach this cache at the same time, and a `Dict`
+# being grown by one while another reads it has no defined behaviour. The values are
+# task-independent, so the lock is only there to keep the structure intact.
+const field_type_cache_lock = ReentrantLock()
 
 function get_base_field_type(@nospecialize(T::Type), field_symbol::Symbol)
-    field_type = get_type_from_symbol((T, field_symbol))
-
-    if field_type == Nothing
-        if isprimitivetype(T)
-            field_type = T
-        elseif hasfield(T, field_symbol)
-            field_type = fieldtype(T, field_symbol)
-        elseif T <: AbstractVector
-            field_type = fieldtype(eltype(T), field_symbol)
-        else
-            # field could be inside NamedTuple
-            named_tuples = filter(field_type -> field_type <: NamedTuple, fieldtypes(T))
-            matching_named_tuple = first(filter(named_tuple -> hasfield(named_tuple, field_symbol), named_tuples))
-            field_type = fieldtype(matching_named_tuple, field_symbol)
+    lock(field_type_cache_lock)
+    try
+        by_field = get(field_type_cache, T, nothing)
+        if !isnothing(by_field)
+            hit = get(by_field, field_symbol, nothing)
+            isnothing(hit) || return hit
         end
+    finally
+        unlock(field_type_cache_lock)
+    end
 
-        if typeof(field_type) == Union
-            # extract type from optional
-            field_type = first(filter(a -> a !== Nothing, Base.uniontypes(field_type)))
-        end
+    if isprimitivetype(T)
+        field_type = T
+    elseif hasfield(T, field_symbol)
+        field_type = fieldtype(T, field_symbol)
+    elseif T <: AbstractVector
+        # The element type is asked the same question, so a field of a repeated choice type
+        # reaches the named-tuple lookup below instead of failing here.
+        field_type = get_base_field_type(eltype(T), field_symbol)
+    else
+        # field could be inside NamedTuple
+        named_tuples = filter(field_type -> field_type <: NamedTuple, fieldtypes(T))
+        matching_named_tuple = first(filter(named_tuple -> hasfield(named_tuple, field_symbol), named_tuples))
+        field_type = fieldtype(matching_named_tuple, field_symbol)
+    end
 
-        field_type_cache[(T, field_symbol)] = field_type
+    if typeof(field_type) == Union
+        # extract type from optional
+        field_type = first(filter(a -> a !== Nothing, Base.uniontypes(field_type)))
+    end
+
+    lock(field_type_cache_lock)
+    try
+        get!(() -> Dict{Symbol,DataType}(), field_type_cache, T)[field_symbol] = field_type
+    finally
+        unlock(field_type_cache_lock)
     end
 
     return field_type

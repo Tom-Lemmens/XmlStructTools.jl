@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Sample:document xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="Sample sample.xsd" xmlns:Sample="Sample">
+    <Branch>
+        <Leaf_string>aaaa</Leaf_string>
+        <Leaf_double>100.22</Leaf_double>
+        <Leaf_boolean>true</Leaf_boolean>
+    </Branch>
+
+    <Text>99A9</Text>
+
+    <Empty/>
+</Sample:document>
