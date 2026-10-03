@@ -16,14 +16,13 @@ end
 """
 	get_module_symbol(xml_io::IO)::Symbol
 
-The module name is the namespace prefix of the root element, e.g. `TestChoice` for
-`<TestChoice:document>`. pugixml has no incremental/streaming parse mode (unlike libxml2's
-StreamReader, which this used to use to stop at the first element without a full DOM parse), so
-this does a full parse just to read the root tag - measured against the large synthetic fixture
-(bench/run_module_symbol_bench.jl): a full-document-sized parse costs low single-digit ms even on
-a 5MB fixture, well under 1% of that fixture's overall `load()` time, and is actually faster than
-the old StreamReader-based peek on small documents. Chosen over keeping EzXML as a
-single-purpose leftover dependency for this one function.
+The module a document belongs to: the namespace prefix of its root element, e.g. `TestChoice` for
+`<TestChoice:document>`.
+
+pugixml has no streaming mode, so reading one tag means parsing the document, and the load that
+follows parses it again. Two passes over the bytes cost a few milliseconds per 30 MB against the
+hundreds a load spends building objects, so the second parse is the price of not keeping a second
+XML library for this one function.
 """
 function get_module_symbol(xml_io::IO)::Symbol
     doc = XmlStructPugixml.parse_buffer(read(xml_io))

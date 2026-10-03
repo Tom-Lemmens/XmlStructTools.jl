@@ -27,7 +27,16 @@ jobs:
           version: '1.10'
       - uses: julia-actions/cache@v3
       - name: Install dependencies
-        run: julia --project=docs/ -e 'using Pkg; Pkg.develop(PackageSpec(path=pwd())); Pkg.instantiate()'
+        # The packages in this repository are not registered, so a docs environment has to be
+        # pointed at the ones in the checkout before it can resolve the package it documents.
+        run: >
+          julia --project=docs/ -e '
+          using Pkg;
+          siblings = filter(isdir, [abspath(joinpath("..", p)) for p in
+            ["AbstractXsdTypes.jl", "XmlStructPugixml.jl", "XsdToStruct.jl", "XmlStructLoader.jl", "XmlStructWriter.jl"]]);
+          Pkg.develop([PackageSpec(path = p) for p in siblings]);
+          Pkg.develop(PackageSpec(path = pwd()));
+          Pkg.instantiate()'
       - name: Build and deploy
         env:
           DOCUMENTER_KEY: ${{ secrets.DOCUMENTER_KEY }}

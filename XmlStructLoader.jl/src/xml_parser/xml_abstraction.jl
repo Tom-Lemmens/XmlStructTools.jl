@@ -19,7 +19,7 @@ content(node::Ptr{Cvoid})::String = strip(XmlStructPugixml.node_text(node))
 	name_symbol(node::UnifiedXMLElement)::Symbol
 
 The node's tag name as a `Symbol`, with any namespace prefix stripped: the struct-field lookup
-key for `node`, and the `Symbol` form of what [`name`](@ref) returns as a `String`.
+key for `node`, and the `Symbol` form of what `name` returns as a `String`.
 
 Interned from pugixml's own name bytes rather than built from a `String`, because this runs
 several times per node visited and the `String` would be hashed once and discarded.
@@ -42,8 +42,23 @@ namespace-aware, so a prefixed attribute like `xsi:schemaLocation` keeps its pre
 """
 getattributes_dict(x::Ptr{Cvoid})::Dict{String, String} = XmlStructPugixml.each_attribute(x)
 
+# pugixml decodes UTF-8, UTF-16 and UTF-32. A document declaring anything else is read as raw
+# bytes, which turns non-ASCII text into invalid `String`s rather than failing, so the declaration
+# is checked before the parse.
+function _warn_unsupported_encoding(declaration::AbstractString, source::AbstractString)::Nothing
+    m = match(r"encoding\s*=\s*[\"']([^\"']+)[\"']", declaration)
+    isnothing(m) && return nothing
+    encoding = uppercase(m.captures[1])
+    startswith(encoding, "UTF") && return nothing
+    @warn "pugixml decodes UTF-8, UTF-16 and UTF-32 only; text in $source may be read incorrectly" declaration = encoding
+    return nothing
+end
+
 function readxmlfile(f::Function, filename::AbstractString)
     @debug "Loading with pugixml..."
+    open(filename) do probe
+        _warn_unsupported_encoding(String(read(probe, 128)), filename)
+    end
     doc = XmlStructPugixml.parse_file(filename)
     doc == C_NULL && error("pugixml failed to parse $filename")
     try
@@ -55,7 +70,9 @@ end
 
 function readxmlfile(f::Function, io::IO)
     @debug "Loading with pugixml..."
-    doc = XmlStructPugixml.parse_buffer(read(io))
+    bytes = read(io)
+    _warn_unsupported_encoding(String(bytes[1:min(128, end)]), "this document")
+    doc = XmlStructPugixml.parse_buffer(bytes)
     doc == C_NULL && error("pugixml failed to parse XML from IO")
     try
         return f(doc)
