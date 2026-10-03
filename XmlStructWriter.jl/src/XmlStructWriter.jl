@@ -1,6 +1,7 @@
 module XmlStructWriter
 
 using LightXML
+using Base64
 using TimeZones
 using Printf
 using Format
@@ -160,6 +161,12 @@ end
     @debug "Generating XML string from $xml_object"
     return xml_object.value
 end
+
+# A binary XSD type holds decoded bytes, so writing it means encoding them again.
+@inline generate_xml_string(xml_object::AbstractXsdTypes.AbstractXSDBinary)::String =
+    Base64.base64encode(xml_object.value)
+
+@inline generate_xml_string(bytes::AbstractVector{UInt8})::String = Base64.base64encode(bytes)
 
 @inline function generate_xml_string(s::String)::String
     @debug "Generating XML string from $s"

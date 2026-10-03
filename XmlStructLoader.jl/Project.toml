@@ -5,6 +5,7 @@ authors = ["Tom Lemmens"]
 
 [deps]
 AbstractXsdTypes = "894546dd-dc3f-42e8-9b69-a7785ccf72be"
+Base64 = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
 ConcreteStructs = "2569d6c7-a4a2-43d3-a901-331e8e4be471"
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
 Memoization = "6fafb56a-5788-4b4e-91ca-c0cea6611c73"
@@ -16,6 +17,7 @@ XmlStructPugixml = "69c5dbe4-038b-4614-a603-8f259d1fd840"
 
 [compat]
 AbstractXsdTypes = "0.1"
+Base64 = "1"
 ConcreteStructs = "0.2"
 Memoization = "0.2"
 Parsers = "2"

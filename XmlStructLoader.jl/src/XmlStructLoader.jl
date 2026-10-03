@@ -2,6 +2,7 @@ module XmlStructLoader
 
 using Reexport
 using Dates
+using Base64
 using TimeZones
 using Parsers
 using Memoization

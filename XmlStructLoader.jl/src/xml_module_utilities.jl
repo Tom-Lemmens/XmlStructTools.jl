@@ -1,3 +1,10 @@
+# A tag name is either "prefix:local" or "local"; the prefix names the module the type lives in.
+function partition_prefix(raw_name::AbstractString)
+    colon = findlast(==(':'), raw_name)
+    isnothing(colon) && return "", raw_name
+    return raw_name[1:(colon - 1)], raw_name[(colon + 1):end]
+end
+
 function get_module_file_path(module_path::AbstractString)
     if isdir(module_path)
         # assume base module is located in given directory and has same name as base part of directory
@@ -27,14 +34,24 @@ XML library for this one function.
 function get_module_symbol(xml_io::IO)::Symbol
     doc = XmlStructPugixml.parse_buffer(read(xml_io))
     doc == C_NULL && error("pugixml failed to parse XML from IO")
-    raw_name = try
-        XmlStructPugixml.node_name(XmlStructPugixml.root(doc))
+    raw_name, default_namespace = try
+        root = XmlStructPugixml.root(doc)
+        XmlStructPugixml.node_name(root), get(XmlStructPugixml.each_attribute(root), "xmlns", "")
     finally
         XmlStructPugixml.free_doc(doc)
     end
     seekstart(xml_io)  # rewind stream
-    module_name = split(raw_name, ":") |> first  # module name should be the name of namespace of the root
-    return Symbol(module_name)
+
+    prefix, _ = partition_prefix(raw_name)
+    isempty(prefix) || return Symbol(prefix)
+
+    # An unprefixed root element belongs to the document's default namespace, and the generator
+    # named the module after that namespace for exactly this case.
+    isempty(default_namespace) && error(
+        "the root element <$raw_name> carries neither a namespace prefix nor an xmlns declaration, " *
+        "so the module it belongs to cannot be determined",
+    )
+    return AbstractXsdTypes.namespace_module_name(default_namespace)
 end
 
 # A module of a given name is included once per session. Regenerating the file on disk does not

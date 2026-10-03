@@ -42,9 +42,18 @@ function write_struct_module_to_io(xsd_module_builder::XSDStructModuleBuilderTyp
         @debug "Skipped node names:\n$(skipped_node_names(xsd_module_builder))"
 
         if missing_nodes == previous_missing_nodes
-            @warn "No more nodes defined with respect to previous loop, stopping the loop over missed nodes."
-            @warn "Still missing:\n$(xsd_module_builder.skipped_nodes)"
-            break
+            # A node is skipped until the types it refers to are defined, so a round that defines
+            # nothing new will never define these. Writing the module anyway produces one that
+            # refers to types it does not contain, and the error then surfaces when a document is
+            # loaded rather than here - including for the schema's root type, which takes every
+            # type containing an unsupported one down with it.
+            error(
+                "cannot generate $(length(xsd_module_builder.skipped_nodes)) type(s), because each " *
+                "refers to a type this generator does not produce: " *
+                join(skipped_node_names(xsd_module_builder), ", ") *
+                ". A type is not produced when it uses an XSD built-in that has no mapping " *
+                "(see built_in_data_type_dict).",
+            )
         elseif missing_nodes > previous_missing_nodes
             error(
                 "Amount of missing nodes has increased from $previous_missing_nodes to $missing_nodes;" *

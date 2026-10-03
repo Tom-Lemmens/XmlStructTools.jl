@@ -25,9 +25,7 @@ function create_xsd_tree(xsd_root::XMLElement)::SchemaTreeNode
     @debug "Starting to create xsd tree"
 
     node_attributes = xsd_attributes_dict(xsd_root)
-    xml_namespace = xsd_namespace_prefix(xsd_root)
-    isnothing(xml_namespace) &&
-        error("No xmlns: namespace declaration found on the schema root element; generated module names come from it.")
+    xml_namespace = String(xsd_schema_module_name(xsd_root))
 
     child_nodes = Vector{AbstractTreeNode}()
     group_nodes = Vector{ComplexTreeNode}()

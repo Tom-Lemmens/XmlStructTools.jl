@@ -62,9 +62,18 @@ const xsd_abstract_type_map = Dict((
 	Dates.AbstractDateTime => "$ABSTRACT_TYPE_PACKAGE.AbstractXSDDateTime",
 	Dates.TimeType => "$ABSTRACT_TYPE_PACKAGE.AbstractXSDDate"))
 
+# `Date` and `Time` share `Dates.TimeType` as their supertype, so which abstract XSD type a
+# simple type belongs to cannot be read off the supertype alone.
+const xsd_abstract_type_by_julia_type = Dict((
+	"Date" => "$ABSTRACT_TYPE_PACKAGE.AbstractXSDDate",
+	"Time" => "$ABSTRACT_TYPE_PACKAGE.AbstractXSDTime",
+	"Vector{UInt8}" => "$ABSTRACT_TYPE_PACKAGE.AbstractXSDBinary"))
+
 function get_supertype(type_string::AbstractString)
 	if type_string == "Union{ZonedDateTime, DateTime}"
 		supertype_value = Dates.AbstractDateTime
+	elseif type_string == "Vector{UInt8}"
+		supertype_value = DenseVector{UInt8}
 	else
 		supertype_value = supertype(eval(Symbol(type_string)))
 	end
@@ -75,7 +84,9 @@ const built_in_super_types = Dict(val => get_supertype(val) for val in values(bu
 
 function get_simple_node_super_type(type_name::AbstractString, xsd_module_builder::XSDStructModuleBuilderType)::String
 
-	if type_name in keys(built_in_super_types)
+	if haskey(xsd_abstract_type_by_julia_type, type_name)
+		super_type = xsd_abstract_type_by_julia_type[type_name]
+	elseif type_name in keys(built_in_super_types)
 		built_in_super_type = built_in_super_types[type_name]
 		super_type = xsd_abstract_type_map[built_in_super_type]
 	else
@@ -121,6 +132,10 @@ const JULIA_SUPER_TYPES = Dict(
     "AbstractXsdTypes.AbstractXSDFloat" => "Number",
     "AbstractXsdTypes.AbstractXSDSigned" => "Number",
     "AbstractXsdTypes.AbstractXSDUnsigned" => "Number",
+    "Time" => "Dates.TimeType",
+    "AbstractXsdTypes.AbstractXSDTime" => "Dates.TimeType",
+    "Vector{UInt8}" => "AbstractVector{UInt8}",
+    "AbstractXsdTypes.AbstractXSDBinary" => "AbstractVector{UInt8}",
 )
 function write_inner_constructor(
 	xsd_node::SimpleTreeNode,

@@ -29,26 +29,25 @@ end
 xsd_attributes_dict(node::Ptr{Cvoid})::Dict{String, String} = XmlStructPugixml.each_attribute(node)
 
 """
-	xsd_namespace_prefix(node::XMLElement)
+	xsd_schema_module_name(node::XMLElement)::Symbol
 
-The first `xmlns:*` prefix declared on `node`, in document order, skipping the
-XMLSchema-instance binding `xmlns:xsi`; `nothing` if `node` declares no prefixed namespace.
+The module name for the schema rooted at `node`: the prefix bound to its `targetNamespace`, or a
+name derived from the namespace itself when it is bound to the default `xmlns`.
 
-Document order is part of the contract: a schema root may bind several prefixes, and the
-generated module takes its name from the first one declared. pugixml exposes `xmlns:*` as
-ordinary attributes and keeps them in document order, so the attribute list is walked directly
-rather than going through xsd_attributes_dict, whose `Dict` has no order.
+Published ISO 20022 schemas take the second path - they declare `xmlns="urn:iso:...:pacs.008.001.09"`
+and prefix only the XML Schema namespace as `xs`, so a rule based on the first prefixed binding
+names the module after the schema language rather than the schema.
 """
-function xsd_namespace_prefix(node::Ptr{Cvoid})
-    attr = XmlStructPugixml.first_attribute(node)
-    while attr != C_NULL
-        key = XmlStructPugixml.attribute_name(attr)
-        if startswith(key, "xmlns:") && key != "xmlns:xsi"
-            return last(split(key, ":"))
-        end
-        attr = XmlStructPugixml.next_attribute(attr)
+function xsd_schema_module_name(node::Ptr{Cvoid})::Symbol
+    attributes = xsd_attributes_dict(node)
+    target = get(attributes, "targetNamespace", "")
+    isempty(target) &&
+        error("the schema root element declares no targetNamespace; generated module names come from it")
+
+    for (key, value) in attributes
+        startswith(key, "xmlns:") && value == target && return Symbol(last(split(key, ":")))
     end
-    return nothing
+    return AbstractXsdTypes.namespace_module_name(target)
 end
 
 xsd_has_attribute(node::Ptr{Cvoid}, key::AbstractString)::Bool = haskey(xsd_attributes_dict(node), key)

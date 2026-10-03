@@ -2,6 +2,7 @@ module XsdToStruct
 
 using TOML
 import XmlStructPugixml
+import AbstractXsdTypes
 using Dates
 using Downloads: download
 
