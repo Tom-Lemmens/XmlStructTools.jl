@@ -21,7 +21,10 @@ function _child_fields(
         field_type = get_base_field_type(T, field_symbol)
         default_value = get(field_defaults, field_symbol, nothing)
 
-        if field_type <: AbstractVector
+        # A byte vector is the decoded content of ONE element, not a field that repeats:
+        # `xs:base64Binary` maps to `Vector{UInt8}`, which would otherwise look like a repeated
+        # element and have each byte parsed from the whole base64 text.
+        if field_type <: AbstractVector && !(field_type <: AbstractVector{UInt8})
             element = construct_element(eltype(field_type), child, default_value, module_ref, validate)
             if haskey(kw, field_symbol)
                 push!(kw[field_symbol], element)

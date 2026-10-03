@@ -112,6 +112,12 @@ function add_child_element!(xml_element, property, value::Any)::Nothing
     return nothing
 end
 
+# Bytes are one element carrying base64 text, where any other vector is a field that repeats.
+function add_child_element!(xml_element, property, value::AbstractVector{UInt8})::Nothing
+    add_child_element!(xml_element, property, Base64.base64encode(value))
+    return nothing
+end
+
 function add_child_element!(xml_element, property, value::AbstractVector)::Nothing
     for sub_value in value
         add_child_element!(xml_element, property, sub_value)

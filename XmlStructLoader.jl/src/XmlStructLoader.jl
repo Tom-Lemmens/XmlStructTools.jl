@@ -103,8 +103,10 @@ function import_module_from_xml(xml_path::AbstractString, module_path::AbstractS
     return module_ref
 end
 
-import_module_from_xml(xml_io::IO, module_path::AbstractString)::Module =
-    import_module(get_module_file_path(module_path), get_module_symbol(xml_io))
+function import_module_from_xml(xml_io::IO, module_path::AbstractString)::Module
+    module_file = get_module_file_path(module_path)
+    return import_module(module_file, module_symbol_in_file(module_file))
+end
 
 """
 	use_module_from_xml(xml_path::AbstractString, module_path::AbstractString)::Module
@@ -125,7 +127,9 @@ function use_module_from_xml(xml_path::AbstractString, module_path::AbstractStri
     return module_ref
 end
 
-use_module_from_xml(xml_io::IO, module_path::AbstractString)::Module =
-    use_module(get_module_file_path(module_path), get_module_symbol(xml_io))
+function use_module_from_xml(xml_io::IO, module_path::AbstractString)::Module
+    module_file = get_module_file_path(module_path)
+    return use_module(module_file, module_symbol_in_file(module_file))
+end
 
 end # module XmlStructLoader

@@ -10,6 +10,9 @@
             :pacs_008_001_09
         @test AbstractXsdTypes.namespace_module_name("http://example.com/schemas/Orders") === :Orders
         @test AbstractXsdTypes.namespace_module_name("urn:example:2024") === :_2024
+        # A segment that is a Julia keyword cannot name a module: `module end` does not parse.
+        @test AbstractXsdTypes.namespace_module_name("http://example.com/schemas/end") === :_end
+        @test AbstractXsdTypes.namespace_module_name("urn:example:true") === :_true
         @test_throws ArgumentError AbstractXsdTypes.namespace_module_name("")
     end
 

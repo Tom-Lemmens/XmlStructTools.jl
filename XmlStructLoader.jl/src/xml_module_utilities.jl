@@ -1,8 +1,21 @@
-# A tag name is either "prefix:local" or "local"; the prefix names the module the type lives in.
-function partition_prefix(raw_name::AbstractString)
-    colon = findlast(==(':'), raw_name)
-    isnothing(colon) && return "", raw_name
-    return raw_name[1:(colon - 1)], raw_name[(colon + 1):end]
+"""
+	module_symbol_in_file(module_file_path::AbstractString)::Symbol
+
+The name of the module a generated file defines, read from the file.
+
+Taken from the file rather than from a document's root element: a document may bind the schema's
+namespace to whatever prefix it likes, or to the default `xmlns`, while the module's name comes
+from the schema. Deriving it from the document only agrees with the generator when the two happen
+to choose the same name.
+"""
+function module_symbol_in_file(module_file_path::AbstractString)::Symbol
+    for line in eachline(module_file_path)
+        # A `module` at the start of a line, so the name quoted in the file's own docstring is
+        # not mistaken for the declaration.
+        declaration = match(r"^module\s+([A-Za-z_][A-Za-z0-9_]*)", line)
+        isnothing(declaration) || return Symbol(declaration.captures[1])
+    end
+    return error("no module declaration found in $module_file_path")
 end
 
 function get_module_file_path(module_path::AbstractString)
@@ -18,40 +31,6 @@ function get_module_file_path(module_path::AbstractString)
     end
 
     return module_file_path
-end
-
-"""
-	get_module_symbol(xml_io::IO)::Symbol
-
-The module a document belongs to: the namespace prefix of its root element, e.g. `TestChoice` for
-`<TestChoice:document>`.
-
-pugixml has no streaming mode, so reading one tag means parsing the document, and the load that
-follows parses it again. Two passes over the bytes cost a few milliseconds per 30 MB against the
-hundreds a load spends building objects, so the second parse is the price of not keeping a second
-XML library for this one function.
-"""
-function get_module_symbol(xml_io::IO)::Symbol
-    doc = XmlStructPugixml.parse_buffer(read(xml_io))
-    doc == C_NULL && error("pugixml failed to parse XML from IO")
-    raw_name, default_namespace = try
-        root = XmlStructPugixml.root(doc)
-        XmlStructPugixml.node_name(root), get(XmlStructPugixml.each_attribute(root), "xmlns", "")
-    finally
-        XmlStructPugixml.free_doc(doc)
-    end
-    seekstart(xml_io)  # rewind stream
-
-    prefix, _ = partition_prefix(raw_name)
-    isempty(prefix) || return Symbol(prefix)
-
-    # An unprefixed root element belongs to the document's default namespace, and the generator
-    # named the module after that namespace for exactly this case.
-    isempty(default_namespace) && error(
-        "the root element <$raw_name> carries neither a namespace prefix nor an xmlns declaration, " *
-        "so the module it belongs to cannot be determined",
-    )
-    return AbstractXsdTypes.namespace_module_name(default_namespace)
 end
 
 # A module of a given name is included once per session. Regenerating the file on disk does not

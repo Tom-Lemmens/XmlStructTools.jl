@@ -16,7 +16,19 @@ function namespace_module_name(namespace::AbstractString)::Symbol
     isempty(segments) &&
         throw(ArgumentError("cannot derive a module name from the namespace \"$namespace\""))
     cleaned = replace(last(segments), r"[^A-Za-z0-9_]" => "_")
-    # A Julia identifier cannot start with a digit.
-    occursin(r"^[0-9]", cleaned) && (cleaned = "_" * cleaned)
+    # A Julia identifier cannot start with a digit, and a module cannot be named after a
+    # keyword: `module end` does not parse.
+    if occursin(r"^[0-9]", cleaned) || !Base.isidentifier(cleaned) || _is_reserved(cleaned)
+        cleaned = "_" * cleaned
+    end
     return Symbol(cleaned)
 end
+
+# `Base.iskeyword` is not public API, so the few words that can appear as a namespace segment and
+# would break `module <name>` are listed.
+_is_reserved(name::AbstractString) = name in (
+    "begin", "const", "do", "else", "elseif", "end", "export", "for", "function", "global", "if",
+    "import", "let", "local", "macro", "module", "quote", "return", "struct", "try", "using",
+    "while", "baremodule", "abstract", "primitive", "mutable", "type", "where", "in", "isa",
+    "true", "false", "break", "catch", "continue", "finally",
+)
