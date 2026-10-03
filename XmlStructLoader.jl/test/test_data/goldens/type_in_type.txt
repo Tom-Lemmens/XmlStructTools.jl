@@ -52,7 +52,19 @@ documentType
           __validated:
             true
       B:
-        "CCCC"
+        B
+          value:
+            TestSimpleType1
+              value:
+                "CCCC"
+              __xml_attributes:
+                "extended_b" => "b"
+              __validated:
+                true
+          __xml_attributes:
+            "extended_b" => "b"
+          __validated:
+            true
       C:
         C
           Element_string:
@@ -110,9 +122,33 @@ documentType
   TestElement2:
     TestComplexType2
       A:
-        "AAAA"
+        A
+          value:
+            TestSimpleType1
+              value:
+                "AAAA"
+              __xml_attributes:
+                (no attributes)
+              __validated:
+                true
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
       B:
-        "BBBB"
+        B
+          value:
+            TestSimpleType2
+              value:
+                "BBBB"
+              __xml_attributes:
+                (no attributes)
+              __validated:
+                true
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
       __xml_attributes:
         (no attributes)
       __validated:
@@ -120,13 +156,49 @@ documentType
   TestElement3:
     TestComplexType3
       A:
-        "A9A9"
+        A
+          value:
+            TestSimpleType1
+              value:
+                "A9A9"
+              __xml_attributes:
+                (no attributes)
+              __validated:
+                true
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
       S1:
-        "B44B"
+        TestSimpleType2
+          value:
+            "B44B"
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
       B:
-        "2D7D"
+        B
+          value:
+            TestSimpleType2
+              value:
+                "2D7D"
+              __xml_attributes:
+                (no attributes)
+              __validated:
+                true
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
       S2:
-        "FGHK"
+        TestSimpleType2
+          value:
+            "FGHK"
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
       __xml_attributes:
         (no attributes)
       __validated:

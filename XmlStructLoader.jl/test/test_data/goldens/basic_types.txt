@@ -58,7 +58,13 @@ documentType
       __validated:
         true
   TestElement2:
-    "99A9"
+    TestSimpleType1
+      value:
+        "99A9"
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
   TestElement3:
     TestComplexType6
       Element_string:

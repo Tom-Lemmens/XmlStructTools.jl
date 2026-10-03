@@ -1,6 +1,22 @@
 documentType
   TestElement1:
-    "RR6R"
+    TestComplexType1
+      value:
+        TestSimpleType1
+          value:
+            "RR6R"
+          __xml_attributes:
+            "extended_simple1" => "6"
+            "extended_simple2" => "99"
+            "extended_simple3" => "ou"
+          __validated:
+            true
+      __xml_attributes:
+        "extended_simple1" => "6"
+        "extended_simple2" => "99"
+        "extended_simple3" => "ou"
+      __validated:
+        true
   __xml_attributes:
     "__root_name" => "document"
     "xmlns:TestSimpleContent" => "TestSimpleContent"

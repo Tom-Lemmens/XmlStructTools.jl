@@ -1,6 +1,12 @@
 documentType
   TestSimple2:
-    "Z2ZZ"
+    TestSimple2
+      value:
+        "Z2ZZ"
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
   TestComplex1:
     TestComplex1
       Element_string:
@@ -14,9 +20,33 @@ documentType
       __validated:
         true
   TestComplex2:
-    "UYTY"
+    TestComplex2
+      value:
+        TestSimpleType1
+          value:
+            "UYTY"
+          __xml_attributes:
+            "extended_simple" => "extend"
+          __validated:
+            true
+      __xml_attributes:
+        "extended_simple" => "extend"
+      __validated:
+        true
   TestComplex3:
-    5.5
+    TestComplex3
+      value:
+        TestSimpleType2
+          value:
+            5.5
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
   __xml_attributes:
     "__root_name" => "document"
     "xmlns:TestTypeInElement" => "TestTypeInElement"

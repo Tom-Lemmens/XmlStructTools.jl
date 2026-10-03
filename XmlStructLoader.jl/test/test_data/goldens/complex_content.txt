@@ -126,7 +126,19 @@ documentType
   TestElement5:
     TestComplexType5
       simple1:
-        5.5
+        simple1
+          value:
+            SimpleType1
+              value:
+                5.5
+              __xml_attributes:
+                (no attributes)
+              __validated:
+                true
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
       __xml_attributes:
         (no attributes)
       __validated:

@@ -1,8 +1,32 @@
 documentType
   TestElement1:
-    "A0A0"
+    TestSimpleType2
+      value:
+        TestSimpleType1
+          value:
+            "A0A0"
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
   TestElement2:
-    150
+    TestSimpleType4
+      value:
+        TestSimpleType3
+          value:
+            150
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
   __xml_attributes:
     "__root_name" => "document"
     "xmlns:TestStackedSimple" => "TestStackedSimple"

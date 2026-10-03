@@ -22,7 +22,13 @@ documentType
         choice2:
           nothing
         choice3:
-          "E2R3"
+          choice3
+            value:
+              "E2R3"
+            __xml_attributes:
+              (no attributes)
+            __validated:
+              true
       __xml_attributes:
         (no attributes)
       __validated:

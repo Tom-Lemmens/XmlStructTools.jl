@@ -6,9 +6,21 @@ documentType
       Element_double:
         100.22
       Element_simple1:
-        10.0
+        TestSimpleType1
+          value:
+            10.0
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
       Element_simple2:
-        "TTTT"
+        TestSimpleType2
+          value:
+            "TTTT"
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
       __xml_attributes:
         (no attributes)
       __validated:
@@ -20,9 +32,21 @@ documentType
       Element_double:
         550.22
       Element_simple1:
-        70.0
+        TestSimpleType1
+          value:
+            70.0
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
       Element_simple2:
-        "YUYU"
+        TestSimpleType2
+          value:
+            "YUYU"
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
       __xml_attributes:
         (no attributes)
       __validated:
@@ -32,25 +56,73 @@ documentType
       Element_simple1:
         Vector of 4 (XmlStructLoader.OptionalElements.OptionalElements_struct.TestSimpleType1)
           [1]
-            70.0
+            TestSimpleType1
+              value:
+                70.0
+              __xml_attributes:
+                (no attributes)
+              __validated:
+                true
           [2]
-            70.0
+            TestSimpleType1
+              value:
+                70.0
+              __xml_attributes:
+                (no attributes)
+              __validated:
+                true
           [3]
-            78.0
+            TestSimpleType1
+              value:
+                78.0
+              __xml_attributes:
+                (no attributes)
+              __validated:
+                true
           [4]
-            77.0
+            TestSimpleType1
+              value:
+                77.0
+              __xml_attributes:
+                (no attributes)
+              __validated:
+                true
       Element_simple2:
         Vector of 1 (XmlStructLoader.OptionalElements.OptionalElements_struct.TestSimpleType2)
           [1]
-            "YUII"
+            TestSimpleType2
+              value:
+                "YUII"
+              __xml_attributes:
+                (no attributes)
+              __validated:
+                true
       Element_simple2_or_nothing:
         Vector of 3 (XmlStructLoader.OptionalElements.OptionalElements_struct.TestSimpleType2)
           [1]
-            "YUI1"
+            TestSimpleType2
+              value:
+                "YUI1"
+              __xml_attributes:
+                (no attributes)
+              __validated:
+                true
           [2]
-            "YUI2"
+            TestSimpleType2
+              value:
+                "YUI2"
+              __xml_attributes:
+                (no attributes)
+              __validated:
+                true
           [3]
-            "YUI3"
+            TestSimpleType2
+              value:
+                "YUI3"
+              __xml_attributes:
+                (no attributes)
+              __validated:
+                true
       __xml_attributes:
         (no attributes)
       __validated:
@@ -62,13 +134,37 @@ documentType
           [1]
             TestComplexType4_element
               Element_simple1_1:
-                51.0
+                TestSimpleType1
+                  value:
+                    51.0
+                  __xml_attributes:
+                    (no attributes)
+                  __validated:
+                    true
               Element_simple1_2:
-                14.0
+                TestSimpleType1
+                  value:
+                    14.0
+                  __xml_attributes:
+                    (no attributes)
+                  __validated:
+                    true
               Element_simple2_1:
-                "ERER"
+                TestSimpleType2
+                  value:
+                    "ERER"
+                  __xml_attributes:
+                    (no attributes)
+                  __validated:
+                    true
               Element_simple2_2:
-                "UYUY"
+                TestSimpleType2
+                  value:
+                    "UYUY"
+                  __xml_attributes:
+                    (no attributes)
+                  __validated:
+                    true
               __xml_attributes:
                 (no attributes)
               __validated:
@@ -76,13 +172,37 @@ documentType
           [2]
             TestComplexType4_element
               Element_simple1_1:
-                74.0
+                TestSimpleType1
+                  value:
+                    74.0
+                  __xml_attributes:
+                    (no attributes)
+                  __validated:
+                    true
               Element_simple1_2:
-                25.0
+                TestSimpleType1
+                  value:
+                    25.0
+                  __xml_attributes:
+                    (no attributes)
+                  __validated:
+                    true
               Element_simple2_1:
-                "U555"
+                TestSimpleType2
+                  value:
+                    "U555"
+                  __xml_attributes:
+                    (no attributes)
+                  __validated:
+                    true
               Element_simple2_2:
-                "A5A5"
+                TestSimpleType2
+                  value:
+                    "A5A5"
+                  __xml_attributes:
+                    (no attributes)
+                  __validated:
+                    true
               __xml_attributes:
                 (no attributes)
               __validated:
@@ -108,9 +228,21 @@ documentType
   TestElement5:
     TestComplexType5
       Element_simple1:
-        "aaa"
+        Element_simple1
+          value:
+            "aaa"
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
       Element_simple2:
-        "\"aaaaa\""
+        Element_simple2
+          value:
+            "\"aaaaa\""
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
       __xml_attributes:
         (no attributes)
       __validated:

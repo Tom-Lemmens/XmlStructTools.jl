@@ -1,16 +1,52 @@
 documentType
   TestElement1:
-    1.123
+    TestSimpleType1
+      value:
+        1.123
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
   TestElement2:
-    4.759
+    TestSimpleType2
+      value:
+        4.759
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
   TestElement3:
-    10.1
+    TestSimpleType3
+      value:
+        10.1
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
   TestElement4:
-    15.1
+    TestSimpleType4
+      value:
+        15.1
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
   TestElement5:
-    -11.6
+    TestSimpleType5
+      value:
+        -11.6
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
   TestElement6:
-    -77.2
+    TestSimpleType6
+      value:
+        -77.2
+      __xml_attributes:
+        (no attributes)
+      __validated:
+        true
   __xml_attributes:
     "__root_name" => "document"
     "xmlns:TestDecimalRestrictions" => "TestDecimalRestrictions"

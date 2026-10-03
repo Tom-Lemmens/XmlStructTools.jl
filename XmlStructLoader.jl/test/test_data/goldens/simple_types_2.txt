@@ -2,15 +2,39 @@ documentType
   TestElement1:
     TestComplexType1
       TestElement1:
-        "AAAA"
+        TestSimpleType1
+          value:
+            "AAAA"
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
       TestElement2:
-        125
+        TestSimpleType2
+          value:
+            125
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
       TestElement3:
         true
       TestElement4:
-        0x0000000000000019
+        TestSimpleType4
+          value:
+            0x0000000000000019
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
       TestElement5:
-        5.55
+        TestSimpleType5
+          value:
+            5.55
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
       __xml_attributes:
         (no attributes)
       __validated:
@@ -18,13 +42,37 @@ documentType
   TestElement2:
     TestComplexType2
       TestElement11:
-        "AAAA"
+        TestSimpleType1
+          value:
+            "AAAA"
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
       TestElement12:
-        ""
+        TestSimpleType1
+          value:
+            ""
+          __xml_attributes:
+            nothing
+          __validated:
+            true
       TestElement21:
-        250
+        TestSimpleType2
+          value:
+            250
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
       TestElement22:
-        100
+        TestSimpleType2
+          value:
+            100
+          __xml_attributes:
+            (no attributes)
+          __validated:
+            true
       __xml_attributes:
         (no attributes)
       __validated:

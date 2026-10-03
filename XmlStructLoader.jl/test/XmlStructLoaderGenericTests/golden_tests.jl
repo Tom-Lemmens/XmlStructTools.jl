@@ -13,8 +13,15 @@
 
 const GOLDEN_DIR = joinpath(generic_data_dir, "..", "goldens")
 
-_is_leaf(x) = x === nothing || x isa AbstractString || x isa Number || x isa Symbol ||
-    x isa Bool || x isa Type || !isstructtype(typeof(x))
+# A generated simple type is a struct that also behaves like a string or a number, so asking
+# "does this quack like a leaf?" renders only its `value` and hides the attributes and validation
+# flag it carries. Those are exactly what a change to the loader can drop, so anything from the
+# generated type hierarchy is walked field by field however it behaves.
+_is_leaf(x) =
+    !(x isa XmlStructLoader.AbstractXsdTypes.AbstractXSDAllTypes) && (
+        isnothing(x) || x isa AbstractString || x isa Number || x isa Symbol ||
+        x isa Bool || x isa Type || !isstructtype(typeof(x))
+    )
 
 function render(io::IO, x, indent::Int = 0)
     pad = "  "^indent
