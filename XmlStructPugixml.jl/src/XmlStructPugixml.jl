@@ -94,6 +94,18 @@ local part - the caller gets the literal string as written in the source XML.
 node_name(node::Ptr{Cvoid})::String = unsafe_string(ccall((:pugishim_node_name, libxmlstructpugixml), Cstring, (Ptr{Cvoid},), node))
 
 """
+    node_name_ptr(node::Ptr{Cvoid})::Ptr{UInt8}
+
+The node's tag name as pugixml's own NUL-terminated C string, not copied.
+
+[`node_name`](@ref) copies those bytes into a Julia `String`. This hands back the pointer
+itself, for a caller that wants to intern the name or inspect part of it without paying for the
+copy. The bytes belong to the parsed document and stay valid only until it is freed.
+"""
+node_name_ptr(node::Ptr{Cvoid})::Ptr{UInt8} =
+    ccall((:pugishim_node_name, libxmlstructpugixml), Ptr{UInt8}, (Ptr{Cvoid},), node)
+
+"""
     node_text(node::Ptr{Cvoid})::String
 
 The node's direct text content (pugixml's `child_value()` - the first text/CDATA child only, not
