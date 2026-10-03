@@ -190,7 +190,9 @@ lazyload(xml_path::AbstractString, module_path::AbstractString; validate::Bool =
 function lazyload(f::Function, xml_path::AbstractString, module_or_path; validate::Bool = true)
     doc = lazyload(xml_path, module_or_path; validate = validate)
     try
-        return f(doc)
+        # The module may have been included by the call above, which leaves `f` older than the
+        # types it is about to touch.
+        return Base.@invokelatest f(doc)
     finally
         close(doc)
     end
@@ -206,10 +208,28 @@ Base.close(doc::LazyDocument)::Nothing = close(getfield(doc, :_handle))
 
 Base.isopen(doc::LazyDocument)::Bool = isopen(getfield(doc, :_handle))
 
-_public_fieldnames(@nospecialize(T::Type)) =
-    Symbol[f for f in fieldnames(T) if f !== :__xml_attributes && f !== :__validated]
+# The fields a caller reads, which are not the struct's fields: a choice's members live inside a
+# named tuple that the keyword constructor assembles, so the tuple's own field is private and its
+# members are what a document actually contains.
+function _public_fieldnames(@nospecialize(T::Type))
+    names = Symbol[]
+    for field in fieldnames(T)
+        (field === :__xml_attributes || field === :__validated) && continue
+        field_type = fieldtype(T, field)
+        if field_type <: NamedTuple
+            append!(names, fieldnames(field_type))
+        else
+            push!(names, field)
+        end
+    end
+    return names
+end
 
-Base.propertynames(doc::LazyDocument) = Tuple(getfield(doc, :_names))
+# The same surface the eager object presents: the fields a document can contain, plus the
+# attribute dictionary and validation flag, which `getproperty` answers from the handle rather
+# than by parsing.
+Base.propertynames(doc::LazyDocument) =
+    (getfield(doc, :_names)..., :__xml_attributes, :__validated)
 
 function Base.getproperty(doc::LazyDocument, name::Symbol)
     name in _LAZY_DOCUMENT_FIELDS && return getfield(doc, name)

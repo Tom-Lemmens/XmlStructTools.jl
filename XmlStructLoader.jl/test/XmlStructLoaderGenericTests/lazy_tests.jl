@@ -109,3 +109,33 @@
         close(doc)
     end
 end
+
+# Every fixture, not just the two this file names: a deferred read has to agree with an eager one
+# for every shape a schema can take, and the choice types that a shortlist missed are the ones a
+# real message is full of.
+@testset "Lazy document - agrees with an eager load on every fixture" begin
+    for (module_dir, xml_files) in generic_test_files, xml_path in xml_files
+        @testset "Lazy document - $(basename(xml_path))" begin
+            module_ref = XmlStructLoader.import_module_from_xml(xml_path, module_dir)
+            eager = load(xml_path, module_ref)
+            doc = lazyload(xml_path, module_ref)
+            try
+                @test Set(propertynames(doc)) == Set(propertynames(eager))
+                for field in propertynames(doc)
+                    lazy_value = getproperty(doc, field)
+                    eager_value = getproperty(eager, field)
+                    if lazy_value isa XmlStructLoader.LazyVector
+                        @test collect(lazy_value) == eager_value
+                    elseif lazy_value isa XmlStructLoader.LazyDocument
+                        @test string(materialize(lazy_value)) == string(eager_value)
+                    else
+                        @test string(lazy_value) == string(eager_value)
+                    end
+                end
+                @test string(materialize(doc)) == string(eager)
+            finally
+                close(doc)
+            end
+        end
+    end
+end
