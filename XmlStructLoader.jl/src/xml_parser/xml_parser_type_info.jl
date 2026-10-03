@@ -51,11 +51,21 @@ end
 # data, so a single-level cache has to allocate its key on every lookup, hit or miss.
 const field_type_cache = IdDict{Type,Dict{Symbol,DataType}}()
 
+# Two tasks loading documents at the same time reach this cache at the same time, and a `Dict`
+# being grown by one while another reads it has no defined behaviour. The values are
+# task-independent, so the lock is only there to keep the structure intact.
+const field_type_cache_lock = ReentrantLock()
+
 function get_base_field_type(@nospecialize(T::Type), field_symbol::Symbol)
-    by_field = get(field_type_cache, T, nothing)
-    if by_field !== nothing
-        hit = get(by_field, field_symbol, nothing)
-        hit === nothing || return hit
+    lock(field_type_cache_lock)
+    try
+        by_field = get(field_type_cache, T, nothing)
+        if !isnothing(by_field)
+            hit = get(by_field, field_symbol, nothing)
+            isnothing(hit) || return hit
+        end
+    finally
+        unlock(field_type_cache_lock)
     end
 
     if isprimitivetype(T)
@@ -76,7 +86,12 @@ function get_base_field_type(@nospecialize(T::Type), field_symbol::Symbol)
         field_type = first(filter(a -> a !== Nothing, Base.uniontypes(field_type)))
     end
 
-    get!(() -> Dict{Symbol,DataType}(), field_type_cache, T)[field_symbol] = field_type
+    lock(field_type_cache_lock)
+    try
+        get!(() -> Dict{Symbol,DataType}(), field_type_cache, T)[field_symbol] = field_type
+    finally
+        unlock(field_type_cache_lock)
+    end
 
     return field_type
 end
