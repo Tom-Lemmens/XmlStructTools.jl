@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pacs.008.001.09">
+    <FIToFICstmrCdtTrf>
+        <GrpHdr>
+            <MsgId>20220718USDDSA9153934686BLUEUSNY001</MsgId>
+            <CreDtTm>2022-07-18T13:22:32</CreDtTm>
+            <NbOfTxs>1</NbOfTxs>
+            <SttlmInf>
+                <SttlmMtd>TDSA</SttlmMtd>
+                <SttlmAcct>
+                    <Id>
+                        <Othr>
+                            <Id>bluebank</Id>
+                        </Othr>
+                    </Id>
+                    <Nm>main</Nm>
+                </SttlmAcct>
+            </SttlmInf>
+            <PmtTpInf>
+                <SvcLvl>
+                    <Prtry>bluebank</Prtry>
+                </SvcLvl>
+            </PmtTpInf>
+            <InstgAgt>
+                <FinInstnId>
+                    <BICFI>BLUEUSNY001</BICFI>
+                    <Othr>
+                        <Id>bluebank</Id>
+                    </Othr>
+                </FinInstnId>
+            </InstgAgt>
+            <InstdAgt>
+                <FinInstnId>
+                    <BICFI>GRENCHZZ002</BICFI>
+                    <Othr>
+                        <Id>greenbank</Id>
+                    </Othr>
+                </FinInstnId>
+            </InstdAgt>
+        </GrpHdr>
+        <CdtTrfTxInf>
+            <PmtId>
+                <InstrId>USDDSA20220718BLUEUSNY001B382477953</InstrId>
+                <EndToEndId>8f01d8db87fa4ef888e223a6f5eef3aa</EndToEndId>
+                <TxId>455d2a5faecb4167ad8c1d985588e8e2</TxId>
+            </PmtId>
+            <IntrBkSttlmAmt Ccy="USD">125000</IntrBkSttlmAmt>
+            <IntrBkSttlmDt>2022-07-18</IntrBkSttlmDt>
+            <InstdAmt Ccy="USD">124850</InstdAmt>
+            <XchgRate>1</XchgRate>
+            <ChrgBr>DEBT</ChrgBr>
+            <ChrgsInf>
+                <Amt Ccy="USD">150</Amt>
+                <Agt>
+                    <FinInstnId>
+                        <BICFI>BLUEUSNY001</BICFI>
+                        <Othr>
+                            <Id>bluebank</Id>
+                        </Othr>
+                    </FinInstnId>
+                </Agt>
+            </ChrgsInf>
+            <Dbtr>
+                <Nm>COMPANY AAA INC</Nm>
+                <PstlAdr>
+                    <StrtNm>Times Square</StrtNm>
+                    <BldgNb>7</BldgNb>
+                    <PstCd>10036</PstCd>
+                    <TwnNm>New York</TwnNm>
+                    <Ctry>US</Ctry>
+                </PstlAdr>
+            </Dbtr>
+            <DbtrAgt>
+                <FinInstnId>
+                    <BICFI>BLUEUSNY001</BICFI>
+                    <Othr>
+                        <Id>bluebank</Id>
+                    </Othr>
+                </FinInstnId>
+            </DbtrAgt>
+            <CdtrAgt>
+                <FinInstnId>
+                    <BICFI>GRENCHZZ002</BICFI>
+                    <Othr>
+                        <Id>greenbank</Id>
+                    </Othr>
+                </FinInstnId>
+            </CdtrAgt>
+            <Cdtr>
+                <Nm>COMPANY BBB INC</Nm>
+                <PstlAdr>
+                    <StrtNm>HOCHSTRASSE</StrtNm>
+                    <BldgNb>27</BldgNb>
+                    <PstCd>8022</PstCd>
+                    <TwnNm>ZURICH</TwnNm>
+                    <Ctry>CH</Ctry>
+                </PstlAdr>
+            </Cdtr>
+        </CdtTrfTxInf>
+    </FIToFICstmrCdtTrf>
+</Document>

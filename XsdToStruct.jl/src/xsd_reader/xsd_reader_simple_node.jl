@@ -1,11 +1,10 @@
-
 function parse_xsd_simple_type(
-    xsd_simple::XMLElement,
-    type_name::Union{Nothing,AbstractString} = nothing,
-    sub_module::Union{Nothing,AbstractString} = nothing;
-    extra_docstring::Union{Nothing,AbstractString} = nothing,
-)::Union{UnionTreeNode,SimpleTreeNode}
-    node_attributes = attributes_dict(xsd_simple)
+        xsd_simple::XMLElement,
+        type_name::Union{Nothing, AbstractString} = nothing,
+        sub_module::Union{Nothing, AbstractString} = nothing;
+        extra_docstring::Union{Nothing, AbstractString} = nothing,
+    )::Union{UnionTreeNode, SimpleTreeNode}
+    node_attributes = xsd_attributes_dict(xsd_simple)
 
     # default to name specified in xsd element
     if isnothing(type_name)
@@ -23,10 +22,10 @@ function parse_xsd_simple_type(
 
     if is_union(xsd_simple)
         @debug "Creating union node for $(type_name)"
-        xsd_union = find_element(xsd_simple, "union")
+        xsd_union = xsd_find_element(xsd_simple, "union")
 
         nodes = Vector{AbstractTreeNode}()
-        for (index, union_child) in enumerate(child_elements(xsd_union))
+        for (index, union_child) in enumerate(xsd_child_elements(xsd_union))
             child_type_name = "type_$(index)"
             this_sub_module = sub_module_name(type_name)
             this_node = parse_xsd_simple_type(union_child, child_type_name, this_sub_module)
@@ -37,7 +36,7 @@ function parse_xsd_simple_type(
     else
         @debug "Creating simple node for $(type_name)"
 
-        xsd_restriction = find_element(xsd_simple, "restriction")
+        xsd_restriction = xsd_find_element(xsd_simple, "restriction")
         restrictions = parse_restriction(xsd_restriction)
 
         if isnothing(sub_module)
@@ -64,5 +63,5 @@ function parse_xsd_simple_type(
 end
 
 function is_union(xsd_simple::XMLElement)
-    return !isnothing(find_element(xsd_simple, "union"))
+    return !isnothing(xsd_find_element(xsd_simple, "union"))
 end

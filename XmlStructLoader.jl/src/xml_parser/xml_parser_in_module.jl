@@ -1,90 +1,82 @@
+"""
+	_child_fields(T, raw, module_ref, validate)
 
-function parse_xml_node_in_module(node::XmlStructLoaderNode, module_ref::Module, validate::Bool)
+The constructor arguments for one complex element of type `T`: every child element under its
+field name, with repeated elements of a `Vector`-typed field accumulated in document order.
 
-    # this is parse_simple
+Siblings are a loop and only nesting recurses, so the call depth is the document's nesting depth
+and not its element count: a flat document with 120,000 sibling records descends one level.
+"""
+function _child_fields(
+        @nospecialize(T::Type),
+        @nospecialize(raw::UnifiedXMLElement),
+        module_ref::Module,
+        validate::Bool,
+    )
+    kw = Dict{Symbol, Any}()
+    field_defaults = AbstractXsdTypes.defaults(T)
+    child = XmlStructPugixml.first_child_element(raw)
+    while child != C_NULL
+        field_symbol = name_symbol(child)
+        field_type = get_base_field_type(T, field_symbol)
+        default_value = get(field_defaults, field_symbol, nothing)
 
-    xml_node = node.node
-    T = node.type
-    default_value = get_default(node)
-
-    if isempty(content(xml_node))
-        if !isnothing(default_value)
-            # no data in node, construct with default value
-            @debug "Constructing $T with default value."
-            constructed_object = T(value = default_value)
-        elseif T <: module_ref.AbstractXsdTypes.AbstractXSDString && isnothing(default_value)
-            # special case for empty string
-            @debug "Constructing $T with empty string."
-            constructed_object = T(value = "")
-        elseif T <: module_ref.AbstractXsdTypes.AbstractXSDComplex && isnothing(default_value)
-            @debug "Constructing $T with only default values."
-            constructed_object = T()
+        # A byte vector is the decoded content of ONE element, not a field that repeats:
+        # `xs:base64Binary` maps to `Vector{UInt8}`, which would otherwise look like a repeated
+        # element and have each byte parsed from the whole base64 text.
+        if field_type <: AbstractVector && !(field_type <: AbstractVector{UInt8})
+            element = construct_element(eltype(field_type), child, default_value, module_ref, validate)
+            if haskey(kw, field_symbol)
+                push!(kw[field_symbol], element)
+            else
+                elements = field_type()
+                push!(elements, element)
+                kw[field_symbol] = elements
+            end
         else
-            @debug "Skip constructing $T, no node content or default value."
-            constructed_object = nothing
+            kw[field_symbol] = construct_element(field_type, child, default_value, module_ref, validate)
         end
-    else
-        # data in node content, only a single field should be defined for type T apart from __xml_attributes
-        field_type = get_base_field_type(T, 1)
-        field_value =
-            construct_xml_node_object(XmlStructLoaderNode(node.node, field_type, node.parent), module_ref, validate)
-        xml_attributes = getattributes_dict(xml_node)  # get xml attributes
-        @debug "Constructing $T with $field_value."
-        constructed_object = T(field_value, xml_attributes, validate)
-    end
 
-    return constructed_object
+        child = XmlStructPugixml.next_sibling_element(child)
+    end
+    return kw
 end
 
-function construct_xml_node_child_objects(
-    @nospecialize(xml_node::UnifiedXMLElement),
-    module_ref::Module,
-    validate::Bool,
-)::Dict
-    root_type = module_ref.__meta.root_type
-    start_node = XmlStructLoaderNode(xml_node, root_type, nothing)
-    dfs = AbstractTrees.PostOrderDFS(start_node) |> collect
+"""
+	construct_element(::Type{T}, raw, default_value, module_ref, validate)
 
-    fields = Dict{typeof(xml_node),Dict{Symbol,Any}}()
+The object for the XML element `raw` at field type `T`, children first.
 
-    @inbounds for node in filter(!isroot, dfs)
-        xml_child = node.node
-        field_symbol = Symbol(name(xml_child))
-        field_type = get_base_field_type(node.parent.type, field_symbol)
-        @debug "Parsing: node ->\n\t$xml_child,\ntype -> $field_type"
-
-        if !haschildren(xml_child)
-            element = construct_xml_node_object(node, module_ref, validate)
-        else
-            xml_attributes = getattributes_dict(xml_child)
-            child_object_dict = pop!(fields, xml_child)
-            # construct object with child objects
-            @debug begin
-                child_string = join(["$key => $value" for (key, value) in child_object_dict], "\n")
-                "Constructing: $field_type\n from children:\n\t$child_string"
-            end
-
-            if field_type <: Vector  # TODO:handle with dispatch in a minute
-                T = eltype(field_type)
-                element = [T(; __xml_attributes = xml_attributes, __validated = validate, child_object_dict...)]
-            else
-                element = field_type(; __xml_attributes = xml_attributes, __validated = validate, child_object_dict...)
-            end
-        end
-
-        parent_key = AbstractTrees.parent(xml_child)
-        working_dict = get(fields, parent_key, Dict{Symbol,Any}())
-
-        if field_type <: Vector  # TODO:handle with dispatch in a minute
-            if haskey(working_dict, field_symbol)
-                append!(working_dict[field_symbol], element)
-            else
-                working_dict[field_symbol] = element
-            end
-        else
-            push!(working_dict, field_symbol => element)
-        end
-        fields[parent_key] = working_dict
+`T` is a static parameter rather than a struct field, which keeps everything below this call
+specialized: the one dynamic call per element happens here, where the field type is only known
+at run time.
+"""
+function construct_element(
+        ::Type{T},
+        @nospecialize(raw::UnifiedXMLElement),
+        default_value,
+        module_ref::Module,
+        validate::Bool,
+    ) where {T}
+    if haschildren(raw)
+        kw = _child_fields(T, raw, module_ref, validate)
+        return T(; __xml_attributes = getattributes_dict(raw), __validated = validate, kw...)
     end
-    return fields |> first |> last |> Dict
+
+    type_in_module(T, module_ref) ||
+        return parse_xml_node_not_module(raw, T, module_ref, validate, default_value)
+
+    if isempty(content(raw))
+        isnothing(default_value) || return T(value = default_value)
+        # An empty element still produces an object for these: a string type gets the empty
+        # string, a complex type its own defaults. Anything else has no value to carry.
+        T <: AbstractXsdTypes.AbstractXSDString && return T(value = "")
+        T <: AbstractXsdTypes.AbstractXSDComplex && return T()
+        return nothing
+    end
+
+    # Simple content: `T` wraps one public field whose type parses the element's text, so the
+    # same element is read again under that type.
+    value = construct_element(get_base_field_type(T, 1), raw, default_value, module_ref, validate)
+    return T(value, getattributes_dict(raw), validate)
 end
