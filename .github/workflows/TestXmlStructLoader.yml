@@ -24,6 +24,8 @@ jobs:
           version: ${{ inputs.version }}
           arch: ${{ inputs.arch }}
       - uses: julia-actions/cache@v3
+      - name: Install local XmlStructPugixml
+        run: julia --project=XmlStructLoader.jl -e 'using Pkg; Pkg.add(path=".", subdir="XmlStructPugixml.jl");'
       - name: Install local AbstractXsdTypes
         run: julia --project=XmlStructLoader.jl -e 'using Pkg; Pkg.add(path=".", subdir="AbstractXsdTypes.jl");'
       - name: Install local XsdToStruct
