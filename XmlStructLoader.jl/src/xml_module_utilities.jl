@@ -29,6 +29,10 @@ function get_module_symbol(xml_io::IO)::Symbol
     return Symbol(module_name)
 end
 
+# A module of a given name is included once per session. Regenerating the file on disk does not
+# replace a module already loaded under that name: the types a loaded document holds stay the ones
+# that module defined, and a session that regenerates a schema has to be restarted to see the new
+# definitions.
 function import_module(module_path::AbstractString, module_symbol::Symbol)::Module
     if isdefined(XmlStructLoader, module_symbol)
         @info "Module $module_symbol already loaded"
@@ -41,6 +45,10 @@ function import_module(module_path::AbstractString, module_symbol::Symbol)::Modu
     return eval(module_symbol)
 end
 
+# A module of a given name is included once per session. Regenerating the file on disk does not
+# replace a module already loaded under that name: the types a loaded document holds stay the ones
+# that module defined, and a session that regenerates a schema has to be restarted to see the new
+# definitions.
 function use_module(module_path::AbstractString, module_symbol::Symbol)::Module
     if isdefined(XmlStructLoader, module_symbol)
         @info "Module $module_symbol already loaded"
