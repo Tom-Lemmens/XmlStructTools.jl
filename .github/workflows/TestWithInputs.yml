@@ -54,3 +54,13 @@ jobs:
       version: ${{ inputs.version }}
       os: ${{ inputs.os }}
       arch: ${{ inputs.arch }}
+  test-TestXmlStructPugixml:
+    permissions:
+      contents: read
+      pull-requests: read
+      statuses: read
+    uses: ./.github/workflows/TestXmlStructPugixml.yml
+    with:
+      version: ${{ inputs.version }}
+      os: ${{ inputs.os }}
+      arch: ${{ inputs.arch }}
